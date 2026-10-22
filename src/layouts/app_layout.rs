@@ -38,54 +38,55 @@ pub fn AppLayout(props: AppLayoutProps) -> Node {
                 </a>
             </div>
 
-            // Sticky High-Precision Header
-            <header class="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/85 dark:border-zinc-800/80 dark:bg-[#09090b]/85 backdrop-blur-md transition-colors">
+            // Sticky High-Precision Header (Next.js / Tailwind / Shuttle Grade)
+            <header class="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/80 dark:border-zinc-800/80 dark:bg-[#09090b]/80 backdrop-blur-xl transition-all">
                 <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-8">
                     // Left: Logo & Main Navigation
                     <div class="flex items-center gap-8">
                         <a href="/" class="flex items-center gap-2.5 hover:opacity-90 transition-opacity group">
                             <img src="/public/favicon.svg" class="w-8 h-8 rounded-lg group-hover:scale-105 transition-transform" alt="Yav logo" />
-                            <div class="flex items-baseline gap-1.5">
-                                <span class="font-bold tracking-tight text-zinc-900 dark:text-white text-lg">"yav"</span>
-                                <span class="font-mono text-zinc-400 dark:text-zinc-500 text-xs">".rs"</span>
+                            <div class="flex items-baseline gap-1">
+                                <span class="font-extrabold tracking-tight text-zinc-900 dark:text-white text-lg">"yav"</span>
+                                <span class="font-mono text-amber-500 font-bold text-xs">".rs"</span>
                             </div>
-                            <span class="rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 px-2 py-0.5 text-[10px] font-mono font-medium border border-zinc-200 dark:border-zinc-700/80">
-                                "v0.1.3"
+                            <span class="rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300 px-2 py-0.5 text-[10px] font-mono font-medium border border-zinc-200 dark:border-zinc-700/80 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                <span>"v0.1.3"</span>
                             </span>
                         </a>
 
-                        <nav class="hidden md:flex items-center gap-6 text-sm text-zinc-600 dark:text-zinc-400 font-medium">
-                            <a href="/" class="hover:text-zinc-900 dark:hover:text-white transition-colors" data-i18n="nav.overview">
+                        <nav class="hidden md:flex items-center gap-1 text-sm font-medium">
+                            <a href="/" class="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-colors" data-i18n="nav.overview">
                                 "Overview"
                             </a>
-                            <a href="/about" class="hover:text-zinc-900 dark:hover:text-white transition-colors" data-i18n="nav.architecture">
+                            <a href="/about" class="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-colors" data-i18n="nav.architecture">
                                 "Architecture"
                             </a>
-                            <a href="/docs" class="hover:text-zinc-900 dark:hover:text-white transition-colors flex items-center gap-1">
+                            <a href="/docs" class="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-colors flex items-center gap-1">
                                 <span data-i18n="nav.docs">"Docs"</span>
                             </a>
-                            <a href="/benchmarks" class="hover:text-zinc-900 dark:hover:text-white transition-colors" data-i18n="nav.benchmarks">
+                            <a href="/benchmarks" class="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-colors" data-i18n="nav.benchmarks">
                                 "Benchmarks"
                             </a>
-                            <a href="/components" class="hover:text-zinc-900 dark:hover:text-white transition-colors" data-i18n="nav.components">
+                            <a href="/components" class="px-3 py-1.5 rounded-lg text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60 transition-colors" data-i18n="nav.components">
                                 "Components"
                             </a>
                         </nav>
                     </div>
 
-                    // Right: Actions (Search, Quick Copy, Language Switcher, Theme, GitHub)
-                    <div class="flex items-center gap-3">
+                    // Right: Actions (Search, Quick Copy, Language Switcher, Theme, GitHub, Mobile Menu)
+                    <div class="flex items-center gap-2.5">
                         // Search Button (Trigger ⌘K)
                         <button
                             onclick="openCmdPalette()"
-                            class="hidden lg:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-800/60 dark:hover:bg-zinc-800 text-xs text-zinc-500 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-700/60 transition-all cursor-pointer shadow-xs"
+                            class="hidden lg:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-xs text-zinc-500 dark:text-zinc-400 border border-zinc-200/80 dark:border-zinc-800 transition-all cursor-pointer shadow-xs"
                             title="Open Search Palette (⌘K)"
                         >
                             <span class="flex items-center gap-2">
                                 {render_icon("search", IconSize::Sm, Some("w-3.5 h-3.5 text-zinc-400"), None)}
                                 <span data-i18n="nav.search">"Quick search..."</span>
                             </span>
-                            <kbd class="flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono bg-white dark:bg-zinc-900 text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
+                            <kbd class="flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono bg-white dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
                                 "⌘K"
                             </kbd>
                         </button>
@@ -93,10 +94,10 @@ pub fn AppLayout(props: AppLayoutProps) -> Node {
                         // Quick Copy `cargo add yav`
                         <button
                             onclick="navigator.clipboard.writeText('cargo add yav'); const el=this.querySelector('.copy-txt'); el.innerText='copied!'; setTimeout(()=>el.innerText='cargo add yav', 1500);"
-                            class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200/80 dark:bg-zinc-800/80 dark:hover:bg-zinc-700/80 text-xs font-mono text-zinc-700 dark:text-zinc-300 transition-all cursor-pointer border border-zinc-200 dark:border-zinc-700 shadow-xs active:scale-95"
+                            class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-100 hover:bg-zinc-200/80 dark:bg-zinc-900 dark:hover:bg-zinc-800 text-xs font-mono text-zinc-700 dark:text-zinc-300 transition-all cursor-pointer border border-zinc-200 dark:border-zinc-800 shadow-xs active:scale-95"
                             title="Copy dependency command"
                         >
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                             <span class="copy-txt">"cargo add yav"</span>
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 opacity-60 ml-0.5"), None)}
                         </button>
@@ -120,7 +121,25 @@ pub fn AppLayout(props: AppLayoutProps) -> Node {
                         <div class="border-l border-zinc-200 dark:border-zinc-800 pl-1 sm:pl-2">
                             <ThemeToggle />
                         </div>
+
+                        // Mobile Menu Button
+                        <button
+                            onclick="const m=document.getElementById('mobile-nav-panel'); m.classList.toggle('hidden');"
+                            class="md:hidden p-2 rounded-lg text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer"
+                            aria-label="Toggle navigation"
+                        >
+                            {render_icon("menu", IconSize::Sm, Some("w-5 h-5"), None)}
+                        </button>
                     </div>
+                </div>
+
+                // Mobile Navigation Dropdown
+                <div id="mobile-nav-panel" class="hidden md:hidden border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-[#09090b] px-4 py-4 space-y-2 text-sm font-medium">
+                    <a href="/" class="block px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200" data-i18n="nav.overview">"Overview"</a>
+                    <a href="/about" class="block px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200" data-i18n="nav.architecture">"Architecture"</a>
+                    <a href="/docs" class="block px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200" data-i18n="nav.docs">"Documentation"</a>
+                    <a href="/benchmarks" class="block px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200" data-i18n="nav.benchmarks">"Benchmarks"</a>
+                    <a href="/components" class="block px-3 py-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200" data-i18n="nav.components">"Components"</a>
                 </div>
             </header>
 

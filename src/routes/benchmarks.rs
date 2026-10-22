@@ -158,9 +158,9 @@ pub async fn benchmarks(_req: Request) -> yav::server::HtmlPage {
                     </div>
                 </div>
 
-                // Why Yav is so Fast
+                // Why Yav is so Fast (Next.js / Shuttle Style Bento Cards)
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 shadow-xs">
+                    <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 shadow-xs card-hover glow-border">
                         <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
                             {render_icon("zap", IconSize::Sm, None, None)}
                         </div>
@@ -172,7 +172,7 @@ pub async fn benchmarks(_req: Request) -> yav::server::HtmlPage {
                         </p>
                     </div>
 
-                    <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 shadow-xs">
+                    <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 shadow-xs card-hover glow-border">
                         <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-500 flex items-center justify-center">
                             {render_icon("cpu", IconSize::Sm, None, None)}
                         </div>
@@ -184,7 +184,7 @@ pub async fn benchmarks(_req: Request) -> yav::server::HtmlPage {
                         </p>
                     </div>
 
-                    <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 shadow-xs">
+                    <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-3 shadow-xs card-hover glow-border">
                         <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
                             {render_icon("shield", IconSize::Sm, None, None)}
                         </div>
