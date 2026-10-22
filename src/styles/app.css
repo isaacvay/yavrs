@@ -122,62 +122,56 @@
   animation: subtle-pulse 4s ease-in-out infinite;
 }
 
-/* Next.js & Shuttle Inspired Architectural Spotlights */
-.bg-spotlight-top {
-  background: radial-gradient(1000px circle at 50% -20%, rgba(245, 158, 11, 0.12), rgba(249, 115, 22, 0.04), transparent 70%);
-}
-.dark .bg-spotlight-top {
-  background: radial-gradient(1000px circle at 50% -20%, rgba(245, 158, 11, 0.18), rgba(249, 115, 22, 0.06), transparent 75%);
-}
-
-.bg-spotlight-card {
-  background: radial-gradient(600px circle at 50% 0%, rgba(245, 158, 11, 0.06), transparent 80%);
-}
-.dark .bg-spotlight-card {
-  background: radial-gradient(600px circle at 50% 0%, rgba(245, 158, 11, 0.09), transparent 80%);
-}
-
-/* Shuttle.dev High-Contrast Terminal Styling */
-.terminal-card {
-  box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-.dark .terminal-card {
-  box-shadow: 0 25px 60px -20px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
-}
-
-/* Tailwind CSS Style Interactive Preview Badge */
-.live-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 9999px;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-/* Next.js & Tailwind Glowing Border on Hover */
-.glow-border {
-  position: relative;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.glow-border:hover {
-  border-color: rgba(245, 158, 11, 0.45);
-  box-shadow: 0 0 25px -5px rgba(245, 158, 11, 0.12);
-}
-
-/* Shimmer Animation for Badges and Accents */
-@keyframes shimmer {
-  from { background-position: 0 0; }
-  to { background-position: -200% 0; }
-}
-.animate-shimmer {
-  background: linear-gradient(90deg, #f59e0b, #fbbf24, #f97316, #f59e0b);
-  background-size: 200% auto;
-  color: transparent;
+/* Next.js & Tailwind Style Radiant Gradients & Borders */
+.gradient-text-amber {
+  background: linear-gradient(135deg, #f59e0b 0%, #ea580c 50%, #d97706 100%);
   -webkit-background-clip: text;
-  background-clip: text;
-  animation: shimmer 5s linear infinite;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-hero {
+  background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dark .gradient-text-hero {
+  background: linear-gradient(180deg, #ffffff 20%, #71717a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Next.js Style 1px Subtle Border Gradient */
+.border-gradient-card {
+  position: relative;
+  background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .border-gradient-card:hover {
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* Shuttle.dev Style Terminal Console Glow */
+.terminal-glow {
+  box-shadow: 0 0 50px -10px rgba(245, 158, 11, 0.08);
+}
+
+/* Tailwind-grade Interactive Component Playground Container */
+.playground-preview {
+  background-image: 
+    linear-gradient(45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(0, 0, 0, 0.02) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.02) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.02) 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+}
+
+.dark .playground-preview {
+  background-image: 
+    linear-gradient(45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.02) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.02) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.02) 75%);
 }
