@@ -18,6 +18,7 @@ pub fn AppLayout(props: AppLayoutProps) -> Node {
     rsx! {
         <div class="min-h-screen bg-[#fafafa] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 antialiased selection:bg-amber-500 selection:text-white flex flex-col justify-between font-sans relative">
             {anti_fouc}
+            <ScrollProgressBar class="fixed top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 z-50 origin-left" />
             <script id="yav-i18n-payload" type="application/json">
                 {i18n_payload}
             </script>
@@ -231,6 +232,7 @@ pub fn AppLayout(props: AppLayoutProps) -> Node {
                     </div>
                 </div>
             </footer>
+            {motion_script()}
         </div>
     }
 }

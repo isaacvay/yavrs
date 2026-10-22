@@ -16,8 +16,14 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                     // Subtle Background Glow (Pure CSS, Non-AI)
                     <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-full max-w-4xl h-72 bg-radial-glow pointer-events-none -z-10"></div>
 
-                    // Status Pill
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/80 text-xs font-mono text-zinc-700 dark:text-zinc-300 shadow-xs">
+                    // Status Pill with Spring Entrance
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/80 text-xs font-mono text-zinc-700 dark:text-zinc-300 shadow-xs"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":-10}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":20}"
+                    >
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span class="font-semibold text-zinc-900 dark:text-white" data-i18n="hero.pill.engine">"Axum 0.8"</span>
                         <span class="text-zinc-400">"•"</span>
@@ -26,8 +32,14 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                         <span class="text-amber-600 dark:text-amber-400 font-semibold" data-i18n="hero.pill.nohydration">"Zero JS Hydration"</span>
                     </div>
 
-                    // Main Headline & Subtitle
-                    <div class="space-y-4 max-w-4xl">
+                    // Main Headline & Subtitle with Physics Entry
+                    <div
+                        class="space-y-4 max-w-4xl"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":20}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":200,\"damping\":22,\"delay_ms\":80}"
+                    >
                         <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-zinc-950 dark:text-white leading-[1.08]">
                             <span data-i18n="hero.title.line1">"Fast by nature."</span>
                             <br />
@@ -43,7 +55,13 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                     </div>
 
                     // Primary Call To Actions
-                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+                    <div
+                        class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":20}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":200,\"damping\":22,\"delay_ms\":140}"
+                    >
                         <a
                             href="/docs"
                             class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 text-sm font-semibold transition-all shadow-md active:scale-98"
@@ -80,8 +98,14 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                     // ==========================================
                     // HERO WORKBENCH & INTERACTIVE LIVE SANDBOX
                     // ==========================================
-                    <div class="pt-6">
-                        <div class="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/70 shadow-xl overflow-hidden">
+                    <div
+                        class="pt-6"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":30}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":180,\"damping\":22,\"delay_ms\":200}"
+                    >
+                        <div class="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/70 shadow-xl overflow-hidden card-hover">
                             // Window Header with macOS Dots and Tabs
                             <div class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/90 dark:bg-zinc-950/70 flex items-center justify-between flex-wrap gap-2">
                                 <div class="flex items-center gap-4">
@@ -262,7 +286,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                 // ==========================================
                 <section class="max-w-7xl mx-auto px-4 sm:px-8">
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+                        <div
+                            class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors card-hover cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":16}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.02}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":260,\"damping\":20}"
+                        >
                             <span class="text-xs font-mono text-zinc-400 uppercase tracking-wider font-semibold" data-i18n="metrics.throughput">"Throughput"</span>
                             <div class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white font-mono tracking-tight">
                                 "124,500"
@@ -272,7 +304,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                             </p>
                         </div>
 
-                        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+                        <div
+                            class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors card-hover cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":16}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.02}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":260,\"damping\":20,\"delay_ms\":60}"
+                        >
                             <span class="text-xs font-mono text-amber-500 uppercase tracking-wider font-semibold" data-i18n="metrics.latency">"Median Latency"</span>
                             <div class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white font-mono tracking-tight">
                                 "&lt; 0.32" <span class="text-lg font-normal text-zinc-400">"ms"</span>
@@ -282,7 +322,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                             </p>
                         </div>
 
-                        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+                        <div
+                            class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors card-hover cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":16}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.02}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":260,\"damping\":20,\"delay_ms\":120}"
+                        >
                             <span class="text-xs font-mono text-emerald-500 uppercase tracking-wider font-semibold" data-i18n="metrics.hydration">"Client Hydration"</span>
                             <div class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white font-mono tracking-tight">
                                 "0" <span class="text-lg font-normal text-zinc-400">"KB"</span>
@@ -292,7 +340,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                             </p>
                         </div>
 
-                        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors">
+                        <div
+                            class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-1 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors card-hover cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":16}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.02}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":260,\"damping\":20,\"delay_ms\":180}"
+                        >
                             <span class="text-xs font-mono text-sky-500 uppercase tracking-wider font-semibold" data-i18n="metrics.memory">"Idle Memory"</span>
                             <div class="text-3xl sm:text-4xl font-extrabold text-zinc-900 dark:text-white font-mono tracking-tight">
                                 "8.2" <span class="text-lg font-normal text-zinc-400">"MB"</span>
@@ -325,7 +381,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         // Bento Card 1 (Span 2): Zero-Hydration SSR
-                        <div class="md:col-span-2 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-6 flex flex-col justify-between card-hover shadow-xs">
+                        <div
+                            class="md:col-span-2 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-6 flex flex-col justify-between card-hover shadow-xs cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":24}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.008}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":22}"
+                        >
                             <div class="space-y-4">
                                 <div class="w-10 h-10 rounded-xl bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
                                     {render_icon("zap", IconSize::Md, None, None)}
@@ -353,7 +417,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                         </div>
 
                         // Bento Card 2: Compile-Time RSX Macro
-                        <div class="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4 flex flex-col justify-between card-hover shadow-xs">
+                        <div
+                            class="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4 flex flex-col justify-between card-hover shadow-xs cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":24}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.01}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":22,\"delay_ms\":60}"
+                        >
                             <div class="space-y-3">
                                 <div class="w-10 h-10 rounded-xl bg-sky-500/10 dark:bg-sky-500/20 text-sky-600 dark:text-sky-400 flex items-center justify-center">
                                     {render_icon("code", IconSize::Md, None, None)}
@@ -374,7 +446,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                         </div>
 
                         // Bento Card 3: Autonomous Tailwind Pipeline
-                        <div class="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4 flex flex-col justify-between card-hover shadow-xs">
+                        <div
+                            class="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4 flex flex-col justify-between card-hover shadow-xs cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":24}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.01}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":22,\"delay_ms\":120}"
+                        >
                             <div class="space-y-3">
                                 <div class="w-10 h-10 rounded-xl bg-purple-500/10 dark:bg-purple-500/20 text-purple-600 dark:text-purple-400 flex items-center justify-center">
                                     {render_icon("box", IconSize::Md, None, None)}
@@ -394,7 +474,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                         </div>
 
                         // Bento Card 4: Matchit Radix Routing
-                        <div class="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4 flex flex-col justify-between card-hover shadow-xs">
+                        <div
+                            class="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4 flex flex-col justify-between card-hover shadow-xs cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":24}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.01}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":22,\"delay_ms\":180}"
+                        >
                             <div class="space-y-3">
                                 <div class="w-10 h-10 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
                                     {render_icon("activity", IconSize::Md, None, None)}
@@ -414,7 +502,15 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                         </div>
 
                         // Bento Card 5: Full Axum 0.8 Integration (Span 2)
-                        <div class="md:col-span-2 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4 flex flex-col justify-between card-hover shadow-xs">
+                        <div
+                            class="md:col-span-2 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4 flex flex-col justify-between card-hover shadow-xs cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":24}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.008}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":22,\"delay_ms\":240}"
+                        >
                             <div class="space-y-3">
                                 <div class="w-10 h-10 rounded-xl bg-orange-500/10 dark:bg-orange-500/20 text-orange-600 dark:text-orange-400 flex items-center justify-center">
                                     {render_icon("server", IconSize::Md, None, None)}

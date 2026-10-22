@@ -34,7 +34,15 @@ pub async fn about(_req: Request) -> yav::server::HtmlPage {
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 font-mono text-xs">
                         // Stage 1
-                        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-4 flex flex-col justify-between shadow-xs">
+                        <div
+                            class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-4 flex flex-col justify-between shadow-xs card-hover cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":20}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.01}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":22}"
+                        >
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <span class="px-2 py-0.5 rounded text-[10px] bg-zinc-100 dark:bg-zinc-800 font-bold text-zinc-600 dark:text-zinc-400">
@@ -55,7 +63,15 @@ pub async fn about(_req: Request) -> yav::server::HtmlPage {
                         </div>
 
                         // Stage 2
-                        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-4 flex flex-col justify-between shadow-xs">
+                        <div
+                            class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-4 flex flex-col justify-between shadow-xs card-hover cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":20}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.01}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":22,\"delay_ms\":80}"
+                        >
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <span class="px-2 py-0.5 rounded text-[10px] bg-amber-50 dark:bg-amber-950/60 font-bold text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800">
@@ -76,7 +92,15 @@ pub async fn about(_req: Request) -> yav::server::HtmlPage {
                         </div>
 
                         // Stage 3
-                        <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-4 flex flex-col justify-between shadow-xs">
+                        <div
+                            class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/50 space-y-4 flex flex-col justify-between shadow-xs card-hover cursor-pointer"
+                            data-motion="true"
+                            data-motion-inview="true"
+                            data-motion-initial="{\"opacity\":0,\"y\":20}"
+                            data-motion-animate="{\"opacity\":1,\"y\":0}"
+                            data-motion-hover="{\"y\":-3,\"scale\":1.01}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":22,\"delay_ms\":160}"
+                        >
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-50 dark:bg-emerald-950/60 font-bold text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">

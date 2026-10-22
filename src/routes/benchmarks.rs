@@ -21,14 +21,29 @@ pub async fn benchmarks(_req: Request) -> yav::server::HtmlPage {
                     <p class="text-base sm:text-lg text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
                         "Independent performance measurements comparing Yav against industry web frameworks under identical high-concurrency loads."
                     </p>
-                    <div class="benchmark-highlights" aria-label="Yav benchmark highlights">
+                    <div
+                        class="benchmark-highlights"
+                        aria-label="Yav benchmark highlights"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":15}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":20,\"delay_ms\":80}"
+                    >
                         <div><strong>"124.5k"</strong><span>"requests / second"</span></div>
                         <div><strong>"0.32 ms"</strong><span>"median latency"</span></div>
                         <div><strong>"24 MB"</strong><span>"memory under load"</span></div>
                     </div>
                 </div>
 
-                <section class="benchmark-visual" aria-labelledby="benchmark-chart-title">
+                <section
+                    class="benchmark-visual"
+                    aria-labelledby="benchmark-chart-title"
+                    data-motion="true"
+                    data-motion-inview="true"
+                    data-motion-initial="{\"opacity\":0,\"y\":20}"
+                    data-motion-animate="{\"opacity\":1,\"y\":0}"
+                    data-motion-transition="{\"is_spring\":true,\"stiffness\":200,\"damping\":22}"
+                >
                     <div class="benchmark-visual-heading">
                         <div>
                             <span class="section-eyebrow">"THROUGHPUT / REQUESTS PER SECOND"</span>

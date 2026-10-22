@@ -52,6 +52,7 @@ pub async fn docs(_req: Request) -> yav::server::HtmlPage {
                             </span>
                             <ul class="space-y-1 text-zinc-600 dark:text-zinc-400">
                                 <li><a href="#tailwind-pipeline" class="block py-1 hover:text-zinc-900 dark:hover:text-white transition-colors">"Tailwind Pipeline"</a></li>
+                                <li><a href="#yav-motion" class="block py-1 hover:text-amber-500 text-amber-600 dark:text-amber-400 font-semibold transition-colors">"Motion &amp; Physics"</a></li>
                                 <li><a href="#asset-fingerprinting" class="block py-1 hover:text-zinc-900 dark:hover:text-white transition-colors">"Production Bundling"</a></li>
                                 <li><a href="#docker-deployment" class="block py-1 hover:text-zinc-900 dark:hover:text-white transition-colors">"Docker &amp; Single Binary"</a></li>
                             </ul>
@@ -184,6 +185,48 @@ pub async fn docs(_req: Request) -> yav::server::HtmlPage {
                                 <div class="px-4 py-3 flex justify-between">
                                     <span class="text-zinc-800 dark:text-zinc-200">"src/routes/api/health.rs"</span>
                                     <span class="text-amber-600 dark:text-amber-400 font-bold">"GET /api/health"</span>
+                                </div>
+                            </div>
+                        </section>
+
+                        // Section 5: Declarative Motion & Physics (yav-motion)
+                        <section id="yav-motion" class="space-y-6 pt-6 border-t border-zinc-200 dark:border-zinc-800">
+                            <h2 class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-white flex items-center gap-2">
+                                <span class="text-amber-500">"#"</span>
+                                <span>"Declarative Motion &amp; Spring Physics (yav-motion)"</span>
+                            </h2>
+                            <p class="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed font-sans">
+                                "Yav provides a declarative animation system inspired by Framer Motion. Components animate smoothly using CSS transforms, spring dynamics, and scroll triggers without pulling in hundreds of kilobytes of client JavaScript libraries."
+                            </p>
+
+                            <div class="space-y-4">
+                                <h3 class="text-base font-bold text-zinc-900 dark:text-white">"1. Declarative Motion Component"</h3>
+                                <div class="p-4 rounded-xl bg-zinc-950 text-zinc-200 font-mono text-xs overflow-x-auto leading-relaxed shadow-inner">
+                                    <div><span class="token-keyword">"use"</span><span> " yav::prelude::*;"</span></div>
+                                    <div class="pt-2"><span class="token-macro">"rsx!"</span><span> " {"</span></div>
+                                    <div class="pl-4"><span class="token-tag">"&lt;Motion"</span></div>
+                                    <div class="pl-8"><span class="token-attr">"initial="</span><span class="token-val">"{MotionState::new().opacity(0.0).y(24.0)}"</span></div>
+                                    <div class="pl-8"><span class="token-attr">"animate="</span><span class="token-val">"{MotionState::new().opacity(1.0).y(0.0)}"</span></div>
+                                    <div class="pl-8"><span class="token-attr">"while_hover="</span><span class="token-val">"{MotionState::new().scale(1.02).y(-2.0)}"</span></div>
+                                    <div class="pl-8"><span class="token-attr">"while_tap="</span><span class="token-val">"{MotionState::new().scale(0.98)}"</span></div>
+                                    <div class="pl-8"><span class="token-attr">"transition="</span><span class="token-val">"{Transition::spring().stiffness(260.0).damping(20.0)}"</span></div>
+                                    <div class="pl-8"><span class="token-attr">"in_view="</span><span class="token-val">"{true}"</span></div>
+                                    <div class="pl-4"><span class="token-tag">"&gt;"</span></div>
+                                    <div class="pl-8"><span class="token-tag">"&lt;Card&gt;"</span><span>"\"Physical spring animation\""</span><span class="token-tag">"&lt;/Card&gt;"</span></div>
+                                    <div class="pl-4"><span class="token-tag">"&lt;/Motion&gt;"</span></div>
+                                    <div><span>"}"</span></div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4 pt-2">
+                                <h3 class="text-base font-bold text-zinc-900 dark:text-white">"2. Top Scroll Reading Indicator"</h3>
+                                <p class="text-xs text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
+                                    "Place &lt;ScrollProgressBar /&gt; inside your top-level layout to automatically track scroll percentage from 0% to 100% across the viewport."
+                                </p>
+                                <div class="p-4 rounded-xl bg-zinc-950 text-zinc-200 font-mono text-xs overflow-x-auto leading-relaxed shadow-inner">
+                                    <div><span class="token-tag">"&lt;ScrollProgressBar"</span></div>
+                                    <div class="pl-4"><span class="token-attr">"class="</span><span class="token-string">"\"fixed top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-amber-500 to-orange-500 z-50 origin-left\""</span></div>
+                                    <div><span class="token-tag">"/&gt;"</span></div>
                                 </div>
                             </div>
                         </section>
