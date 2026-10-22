@@ -10,269 +10,199 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
         <AppLayout>
             <div class="space-y-24 py-6 sm:py-12">
                 // ==========================================
-                // 1. HERO SECTION: THE HIGH-VELOCITY COCKPIT
+                // 1. HERO SECTION (FLAGSHIP STUDIO GRADE)
                 // ==========================================
-                <section class="max-w-7xl mx-auto px-4 sm:px-8 space-y-10 text-center sm:text-left relative">
-                    // Subtle Background Glow & Engineering Grid (Linear Style)
-                    <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-full max-w-6xl h-[420px] bg-radial-glow pointer-events-none -z-10"></div>
+                <section class="max-w-7xl mx-auto px-4 sm:px-8 space-y-8 text-center sm:text-left relative">
+                    // Subtle Background Glow & Engineering Grid (Pure CSS, Linear Style)
+                    <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-full max-w-5xl h-96 bg-radial-glow pointer-events-none -z-10"></div>
 
-                    // Hero Header Block
-                    <div class="space-y-6 max-w-4xl">
-                        // Interactive Status Pill with Spring Entrance
+                    // Interactive Status Pill with Spring Entrance
+                    <a
+                        href="/docs"
+                        class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/90 dark:border-zinc-800/90 text-xs font-mono shadow-xs hover:border-amber-500/60 dark:hover:border-amber-500/60 transition-all group backdrop-blur-md cursor-pointer"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":-12}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":20}"
+                    >
+                        <span class="flex h-2 w-2 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="font-bold text-zinc-900 dark:text-white" data-i18n="hero.pill.engine">"Yav v0.1.3 Released"</span>
+                        <span class="text-zinc-300 dark:text-zinc-700">"|"</span>
+                        <span class="text-zinc-600 dark:text-zinc-400 hidden sm:inline" data-i18n="hero.pill.rsx">"Axum 0.8 • Compiled RSX • 0 KB Hydration JS"</span>
+                        <span class="text-amber-500 group-hover:translate-x-0.5 transition-transform font-bold">"→"</span>
+                    </a>
+
+                    // Main Headline & Subtitle with Physics Entry
+                    <div
+                        class="space-y-4 max-w-4xl"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":20}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":200,\"damping\":22,\"delay_ms\":80}"
+                    >
+                        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.035em] text-zinc-950 dark:text-white leading-[1.05]">
+                            <span data-i18n="hero.title.line1">"Fast by nature."</span>
+                            <br />
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 dark:from-amber-400 dark:via-orange-400 dark:to-amber-500" data-i18n="hero.title.line2">
+                                "Safe by design."
+                            </span>
+                            <br />
+                            <span data-i18n="hero.title.line3">"The full-stack web framework for Rust."</span>
+                        </h1>
+                        <p class="text-lg sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed font-sans pt-1" data-i18n="hero.subtitle">
+                            "Build production-grade web applications with compiled RSX templates, automatic file-system routing, and built-in Tailwind CSS. Powered by Axum 0.8 and Tokio. No Node.js. No npm. Zero client runtime hydration tax."
+                        </p>
+                    </div>
+
+                    // Primary Call To Actions & Quick Install
+                    <div
+                        class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":20}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":200,\"damping\":22,\"delay_ms\":140}"
+                    >
                         <a
                             href="/docs"
-                            class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-zinc-200/90 dark:border-zinc-800/90 text-xs font-mono shadow-xs hover:border-amber-500/60 dark:hover:border-amber-500/60 transition-all group backdrop-blur-md cursor-pointer"
+                            class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 text-sm font-semibold transition-all shadow-md active:scale-98"
                             data-motion="true"
-                            data-motion-initial="{\"opacity\":0,\"y\":-12}"
-                            data-motion-animate="{\"opacity\":1,\"y\":0}"
-                            data-motion-transition="{\"is_spring\":true,\"stiffness\":240,\"damping\":20}"
+                            data-motion-hover="{\"scale\":1.02}"
+                            data-motion-tap="{\"scale\":0.98}"
                         >
-                            <span class="flex h-2 w-2 relative">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                            </span>
-                            <span class="font-bold text-zinc-900 dark:text-white" data-i18n="hero.pill.engine">"Yav v0.1.3"</span>
-                            <span class="text-zinc-300 dark:text-zinc-700">"|"</span>
-                            <span class="text-zinc-600 dark:text-zinc-400 hidden sm:inline">"Axum 0.8.9 • Compiled RSX • 0 KB Hydration JS"</span>
-                            <span class="text-amber-500 group-hover:translate-x-0.5 transition-transform font-bold">"→"</span>
+                            <span data-i18n="hero.cta.start">"Start Building (5-min guide)"</span>
+                            {render_icon("arrow-right", IconSize::Sm, Some("w-4 h-4"), None)}
                         </a>
 
-                        // Commanding Visionary Headline
-                        <div
-                            class="space-y-4"
-                            data-motion="true"
-                            data-motion-initial="{\"opacity\":0,\"y\":20}"
-                            data-motion-animate="{\"opacity\":1,\"y\":0}"
-                            data-motion-transition="{\"is_spring\":true,\"stiffness\":200,\"damping\":22,\"delay_ms\":80}"
-                        >
-                            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.04em] text-zinc-950 dark:text-white leading-[1.04]">
-                                <span>"The speed of native Rust."</span>
-                                <br />
-                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400 dark:from-amber-400 dark:via-orange-400 dark:to-amber-500">
-                                    "The ergonomics of modern web."
-                                </span>
-                            </h1>
-                            <p class="text-lg sm:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl leading-relaxed font-sans pt-1">
-                                "A next-generation full-stack framework where your UI compiles directly into high-throughput native byte streams. 124,500 req/s, sub-millisecond TTFB, and zero JavaScript hydration tax."
-                            </p>
+                        // Interactive Copyable Install Command with Feedback
+                        <div class="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-900 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-800 font-mono text-xs text-zinc-800 dark:text-zinc-200 shadow-xs transition-all">
+                            <div class="flex items-center gap-2">
+                                <span class="text-amber-500 font-bold">"$"</span>
+                                <span id="hero-cmd-display">"cargo add yav"</span>
+                            </div>
+                            <button
+                                onclick="const cmd=document.getElementById('hero-cmd-display').innerText; navigator.clipboard.writeText(cmd); const el=this.querySelector('.copy-txt'); el.innerText='copied!'; setTimeout(()=>el.innerText='copy', 1500);"
+                                class="copy-btn px-2.5 py-1 rounded-md bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 text-[11px] text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 active:scale-95 shadow-xs"
+                                title="Copy dependency command"
+                            >
+                                {render_icon("copy", IconSize::Sm, Some("w-3 h-3"), None)}
+                                <span class="copy-txt font-mono">"copy"</span>
+                            </button>
                         </div>
 
-                        // Action Deck: CTA Button + 1-Click Terminal Copy + Architecture Link
-                        <div
-                            class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2"
-                            data-motion="true"
-                            data-motion-initial="{\"opacity\":0,\"y\":20}"
-                            data-motion-animate="{\"opacity\":1,\"y\":0}"
-                            data-motion-transition="{\"is_spring\":true,\"stiffness\":200,\"damping\":22,\"delay_ms\":140}"
+                        <a
+                            href="/about"
+                            class="inline-flex items-center justify-center gap-1.5 px-5 py-3.5 rounded-xl bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300 text-sm font-medium transition-all"
                         >
-                            <a
-                                href="/docs"
-                                class="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-white dark:hover:bg-zinc-100 text-white dark:text-zinc-900 text-sm font-semibold transition-all shadow-md active:scale-98"
-                                data-motion="true"
-                                data-motion-hover="{\"scale\":1.02}"
-                                data-motion-tap="{\"scale\":0.98}"
-                            >
-                                <span>"Start Building (5-min quickstart)"</span>
-                                {render_icon("arrow-right", IconSize::Sm, Some("w-4 h-4"), None)}
-                            </a>
+                            <span data-i18n="hero.cta.arch">"Architecture deep dive"</span>
+                            {render_icon("chevron-right", IconSize::Sm, Some("w-4 h-4 opacity-70"), None)}
+                        </a>
+                    </div>
 
-                            // Interactive Copyable Install Command with Feedback
-                            <div class="flex items-center justify-between gap-3 px-4 py-3 rounded-xl bg-zinc-100 hover:bg-zinc-200/70 dark:bg-zinc-900 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-800 font-mono text-xs text-zinc-800 dark:text-zinc-200 shadow-xs transition-all">
-                                <div class="flex items-center gap-2">
-                                    <span class="text-amber-500 font-bold">"$"</span>
-                                    <span id="hero-cmd-display">"cargo add yav"</span>
-                                </div>
-                                <button
-                                    onclick="const cmd=document.getElementById('hero-cmd-display').innerText; navigator.clipboard.writeText(cmd); const el=this.querySelector('.copy-txt'); el.innerText='copied!'; setTimeout(()=>el.innerText='copy', 1500);"
-                                    class="copy-btn px-2.5 py-1 rounded-md bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 dark:hover:border-zinc-600 text-[11px] text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 active:scale-95 shadow-xs"
-                                    title="Copy dependency command"
-                                >
-                                    {render_icon("copy", IconSize::Sm, Some("w-3 h-3"), None)}
-                                    <span class="copy-txt font-mono">"copy"</span>
-                                </button>
-                            </div>
-
-                            <a
-                                href="/about"
-                                class="inline-flex items-center justify-center gap-1.5 px-5 py-3.5 rounded-xl bg-transparent hover:bg-zinc-100 dark:hover:bg-zinc-800/60 text-zinc-700 dark:text-zinc-300 text-sm font-medium transition-all"
-                            >
-                                <span>"Architecture deep dive"</span>
-                                {render_icon("chevron-right", IconSize::Sm, Some("w-4 h-4 opacity-70"), None)}
-                            </a>
+                    // Trust & Engineering Proof Badges
+                    <div
+                        class="pt-1 flex flex-wrap items-center justify-center sm:justify-start gap-5 sm:gap-6 text-xs font-mono text-zinc-500 dark:text-zinc-400"
+                        data-motion="true"
+                        data-motion-initial="{\"opacity\":0,\"y\":10}"
+                        data-motion-animate="{\"opacity\":1,\"y\":0}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":200,\"damping\":22,\"delay_ms\":180}"
+                    >
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <strong class="text-zinc-900 dark:text-zinc-200">"124,500 req/s"</strong>
+                            <span>"Throughput"</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                            <strong class="text-zinc-900 dark:text-zinc-200">"0.32 ms"</strong>
+                            <span>"Median TTFB"</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                            <strong class="text-zinc-900 dark:text-zinc-200">"0 KB JS"</strong>
+                            <span>"Client Hydration"</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                            <strong class="text-zinc-900 dark:text-zinc-200">"Tokio &amp; Axum 0.8"</strong>
+                            <span>"Engine"</span>
                         </div>
                     </div>
 
                     // ==========================================
-                    // THE NEW HERO CENTERPIECE: 3-MODE COCKPIT
+                    // HERO WORKBENCH: DUAL-PANE INTERACTIVE STUDIO
                     // ==========================================
                     <div
-                        class="pt-4"
+                        class="pt-6"
                         data-motion="true"
                         data-motion-initial="{\"opacity\":0,\"y\":30}"
                         data-motion-animate="{\"opacity\":1,\"y\":0}"
-                        data-motion-transition="{\"is_spring\":true,\"stiffness\":180,\"damping\":22,\"delay_ms\":200}"
+                        data-motion-transition="{\"is_spring\":true,\"stiffness\":180,\"damping\":22,\"delay_ms\":220}"
                     >
-                        <div class="rounded-3xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white/90 dark:bg-zinc-900/80 shadow-2xl overflow-hidden card-hover backdrop-blur-xl">
-                            // Top Cockpit Mode Switcher
-                            <div class="p-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/90 dark:bg-zinc-950/80 flex items-center justify-between flex-wrap gap-3">
-                                <div class="flex items-center gap-2 p-1 rounded-2xl bg-zinc-200/60 dark:bg-zinc-800/60 font-mono text-xs">
-                                    <button
-                                        id="btn-mode-pipeline"
-                                        onclick="switchHeroMode('pipeline')"
-                                        class="hero-mode-btn active px-4 py-2 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold shadow-xs transition-all flex items-center gap-2 text-xs cursor-pointer"
-                                    >
-                                        {render_icon("activity", IconSize::Sm, Some("w-3.5 h-3.5 text-amber-500"), None)}
-                                        <span>"Request Velocity Engine"</span>
-                                    </button>
-                                    <button
-                                        id="btn-mode-studio"
-                                        onclick="switchHeroMode('studio')"
-                                        class="hero-mode-btn px-4 py-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60 font-medium transition-all flex items-center gap-2 text-xs cursor-pointer"
-                                    >
-                                        {render_icon("code", IconSize::Sm, Some("w-3.5 h-3.5 text-sky-500"), None)}
-                                        <span>"Declarative RSX Studio"</span>
-                                    </button>
-                                    <button
-                                        id="btn-mode-audit"
-                                        onclick="switchHeroMode('audit')"
-                                        class="hero-mode-btn px-4 py-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60 font-medium transition-all flex items-center gap-2 text-xs cursor-pointer"
-                                    >
-                                        {render_icon("shield", IconSize::Sm, Some("w-3.5 h-3.5 text-emerald-500"), None)}
-                                        <span>"Zero-Hydration Tax Audit"</span>
-                                    </button>
-                                </div>
-
-                                <div class="hidden sm:flex items-center gap-2 font-mono text-xs text-zinc-400">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                                    <span>"Axum 0.8.9 • Tokio Multi-Threaded"</span>
-                                </div>
-                            </div>
-
-                            // ----------------------------------------------------
-                            // MODE 1: REQUEST VELOCITY SIMULATOR (DEFAULT)
-                            // ----------------------------------------------------
-                            <div id="hero-mode-pipeline" class="p-6 sm:p-10 space-y-8 bg-zinc-50/40 dark:bg-[#0a0a0d]">
-                                // Visual Pipeline Schematic
-                                <div class="space-y-4">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-xs font-mono uppercase tracking-wider text-amber-500 font-bold flex items-center gap-2">
-                                            {render_icon("zap", IconSize::Sm, Some("w-3.5 h-3.5"), None)}
-                                            <span>"Live Sub-Millisecond Execution Path"</span>
-                                        </span>
-                                        <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-bold">
-                                            "Cumulative: ~0.28 ms"
-                                        </span>
+                        <div class="rounded-2xl border border-zinc-200/90 dark:border-zinc-800/90 bg-white dark:bg-zinc-900/80 shadow-2xl overflow-hidden card-hover">
+                            // Studio Top Navigation Bar with Traffic Lights and File Tabs
+                            <div class="px-4 py-3 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50/95 dark:bg-zinc-950/90 flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-4">
+                                    // macOS Traffic Lights
+                                    <div class="flex items-center gap-1.5">
+                                        <div class="w-3 h-3 rounded-full bg-red-400/90 hover:opacity-80 transition-opacity cursor-pointer" title="Close window"></div>
+                                        <div class="w-3 h-3 rounded-full bg-amber-400/90 hover:opacity-80 transition-opacity cursor-pointer" title="Minimize window"></div>
+                                        <div class="w-3 h-3 rounded-full bg-emerald-400/90 hover:opacity-80 transition-opacity cursor-pointer" title="Fullscreen window"></div>
                                     </div>
 
-                                    // Pipeline Nodes
-                                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 relative">
-                                        // Node 1: Ingest
-                                        <div class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/70 space-y-2 shadow-xs">
-                                            <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400">
-                                                <span>"01. INGEST"</span>
-                                                <span class="text-emerald-500 font-bold">"0.04 ms"</span>
-                                            </div>
-                                            <h4 class="text-sm font-bold text-zinc-900 dark:text-white">"Tokio epoll Reactor"</h4>
-                                            <p class="text-xs text-zinc-500 dark:text-zinc-400 font-sans leading-relaxed">
-                                                "Work-stealing async scheduler captures TCP socket with zero lock contention."
-                                            </p>
-                                        </div>
-
-                                        // Node 2: Radix Router
-                                        <div class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/70 space-y-2 shadow-xs">
-                                            <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400">
-                                                <span>"02. ROUTING"</span>
-                                                <span class="text-emerald-500 font-bold">"0.02 ms"</span>
-                                            </div>
-                                            <h4 class="text-sm font-bold text-zinc-900 dark:text-white">"Matchit Radix Tree"</h4>
-                                            <p class="text-xs text-zinc-500 dark:text-zinc-400 font-sans leading-relaxed">
-                                                "Constant time O(k) path lookup. Resolves dynamic route parameters without heap alloc."
-                                            </p>
-                                        </div>
-
-                                        // Node 3: RSX Fast Buffer
-                                        <div class="p-4 rounded-2xl border border-amber-500/40 bg-amber-500/5 dark:bg-amber-500/10 space-y-2 shadow-xs">
-                                            <div class="flex items-center justify-between text-[11px] font-mono text-amber-600 dark:text-amber-400">
-                                                <span>"03. RSX RENDER"</span>
-                                                <span class="font-bold">"0.12 ms"</span>
-                                            </div>
-                                            <h4 class="text-sm font-bold text-zinc-900 dark:text-white">"Compiled Buffer Append"</h4>
-                                            <p class="text-xs text-zinc-500 dark:text-zinc-400 font-sans leading-relaxed">
-                                                "Static slices &amp; escaped variables write directly to contiguous memory. No VDOM diffing."
-                                            </p>
-                                        </div>
-
-                                        // Node 4: Wire Stream
-                                        <div class="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/70 space-y-2 shadow-xs">
-                                            <div class="flex items-center justify-between text-[11px] font-mono text-zinc-400">
-                                                <span>"04. WIRE SEND"</span>
-                                                <span class="text-emerald-500 font-bold">"0.10 ms"</span>
-                                            </div>
-                                            <h4 class="text-sm font-bold text-zinc-900 dark:text-white">"Hyper 1.0 HTTP/2"</h4>
-                                            <p class="text-xs text-zinc-500 dark:text-zinc-400 font-sans leading-relaxed">
-                                                "Paint-ready HTML dispatched directly across wire. Zero JavaScript hydration needed."
-                                            </p>
-                                        </div>
+                                    // Interactive File Tabs
+                                    <div class="flex items-center gap-1 p-1 rounded-lg bg-zinc-200/60 dark:bg-zinc-800/80 text-xs font-mono">
+                                        <button
+                                            id="btn-file-rsx"
+                                            onclick="switchHeroTab('rsx')"
+                                            class="hero-tab-btn active px-3 py-1 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-xs font-medium cursor-pointer transition-all flex items-center gap-1.5"
+                                        >
+                                            {render_icon("code", IconSize::Sm, Some("w-3 h-3 text-amber-500"), None)}
+                                            <span>"src/routes/index.rs"</span>
+                                        </button>
+                                        <button
+                                            id="btn-file-api"
+                                            onclick="switchHeroTab('api')"
+                                            class="hero-tab-btn px-3 py-1 rounded-md text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white cursor-pointer transition-all flex items-center gap-1.5"
+                                        >
+                                            {render_icon("server", IconSize::Sm, Some("w-3 h-3 text-sky-500"), None)}
+                                            <span>"src/routes/api/users.rs"</span>
+                                        </button>
+                                        <button
+                                            id="btn-file-yavml"
+                                            onclick="switchHeroTab('yavml')"
+                                            class="hero-tab-btn px-3 py-1 rounded-md text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white cursor-pointer transition-all flex items-center gap-1.5"
+                                        >
+                                            {render_icon("file-text", IconSize::Sm, Some("w-3 h-3 text-purple-500"), None)}
+                                            <span>"package.yavml"</span>
+                                        </button>
+                                        <button
+                                            id="btn-file-term"
+                                            onclick="switchHeroTab('term')"
+                                            class="hero-tab-btn px-3 py-1 rounded-md text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white cursor-pointer transition-all flex items-center gap-1.5"
+                                        >
+                                            {render_icon("terminal", IconSize::Sm, Some("w-3 h-3 text-emerald-500"), None)}
+                                            <span>"$ yav dev"</span>
+                                        </button>
                                     </div>
                                 </div>
 
-                                // Live Concurrency Simulator Interactive Panel
-                                <div class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 shadow-xs flex flex-col md:flex-row items-center justify-between gap-6">
-                                    <div class="space-y-1 text-left w-full md:w-auto">
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-xs font-mono uppercase tracking-wider text-zinc-400 font-semibold">"Interactive Benchmark Trigger"</span>
-                                            <span id="sim-status-badge" class="px-2 py-0.5 rounded text-[10px] font-mono bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
-                                                "Ready for test"
-                                            </span>
-                                        </div>
-                                        <div class="flex items-baseline gap-2 font-mono">
-                                            <span id="sim-req-num" class="text-3xl font-extrabold text-zinc-900 dark:text-white">"10,000"</span>
-                                            <span class="text-xs text-zinc-400">"simulated concurrent requests"</span>
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        id="sim-run-btn"
-                                        onclick="runHeroSim()"
-                                        class="w-full md:w-auto px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs font-mono transition-all shadow-md active:scale-95 cursor-pointer flex items-center justify-center gap-2"
-                                    >
-                                        {render_icon("activity", IconSize::Sm, Some("w-4 h-4 text-zinc-950"), None)}
-                                        <span>"Run Concurrency Test (wrk -c200)"</span>
-                                    </button>
-                                </div>
-
-                                // 4 Hardware Telemetry Cards
-                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-left font-mono">
-                                    <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/40">
-                                        <span class="text-[11px] text-zinc-400 block">"THROUGHPUT"</span>
-                                        <span class="text-2xl font-black text-zinc-900 dark:text-white">"124,500"</span>
-                                        <span class="text-[10px] text-zinc-500 block">"req/s on 8-core CPU"</span>
-                                    </div>
-                                    <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/40">
-                                        <span class="text-[11px] text-amber-500 block">"MEDIAN LATENCY"</span>
-                                        <span class="text-2xl font-black text-zinc-900 dark:text-white">"0.32 ms"</span>
-                                        <span class="text-[10px] text-zinc-500 block">"Instantaneous TTFB"</span>
-                                    </div>
-                                    <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/40">
-                                        <span class="text-[11px] text-sky-500 block">"MEMORY FOOTPRINT"</span>
-                                        <span class="text-2xl font-black text-zinc-900 dark:text-white">"8.2 MB"</span>
-                                        <span class="text-[10px] text-zinc-500 block">"Zero GC stop-the-world"</span>
-                                    </div>
-                                    <div class="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/40">
-                                        <span class="text-[11px] text-emerald-500 block">"CLIENT HYDRATION"</span>
-                                        <span class="text-2xl font-black text-zinc-900 dark:text-white">"0 KB"</span>
-                                        <span class="text-[10px] text-zinc-500 block">"Zero hydration JS tax"</span>
+                                <div class="flex items-center gap-3 text-xs font-mono">
+                                    <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 font-semibold text-[11px]">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                        <span>"Live: http://127.0.0.1:3000"</span>
                                     </div>
                                 </div>
                             </div>
 
-                            // ----------------------------------------------------
-                            // MODE 2: DECLARATIVE RSX STUDIO (CODE + REACTIVE ISLAND)
-                            // ----------------------------------------------------
-                            <div id="hero-mode-studio" class="hidden grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 dark:divide-zinc-800 text-left">
-                                // Code View
+                            // Split Grid: Code Viewer on Left (7 cols), Live Interactive Studio on Right (5 cols)
+                            <div class="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 dark:divide-zinc-800">
+                                // Left Pane: Code Viewer with Line Numbers (7 cols)
                                 <div class="lg:col-span-7 p-6 overflow-x-auto text-xs font-mono leading-relaxed bg-[#0b0b0e] text-zinc-200">
-                                    <div class="space-y-1">
+                                    // File 1: RSX Component
+                                    <div id="hero-code-rsx" class="space-y-1">
                                         <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"01"</span><span class="token-keyword">"use"</span><span> " yav::prelude::*;"</span></div>
                                         <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"02"</span><span class="token-keyword">"use"</span><span> " axum::extract::Request;"</span></div>
                                         <div class="flex items-center text-zinc-500 pt-1"><span class="w-6 select-none opacity-40">"03"</span><span class="token-comment">"// Discovered at compile time by yav::auto_routes!()"</span></div>
@@ -292,119 +222,138 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                                         <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"17"</span><span class="pl-4">"}"</span></div>
                                         <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"18"</span><span>"}"</span></div>
                                     </div>
+
+                                    // File 2: Axum JSON API Handler
+                                    <div id="hero-code-api" class="space-y-1 hidden">
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"01"</span><span class="token-keyword">"use"</span><span> " yav::prelude::*;"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"02"</span><span class="token-keyword">"use"</span><span> " axum::extract::{Path, State};"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"03"</span><span class="token-keyword">"use"</span><span> " serde::{Serialize, Deserialize};"</span></div>
+                                        <div class="flex items-center text-zinc-500 pt-1"><span class="w-6 select-none opacity-40">"04"</span><span class="token-comment">"// Native Axum 0.8 JSON Endpoint with sub-microsecond latency"</span></div>
+                                        <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"05"</span><span class="token-keyword">"#[derive(Serialize)]"</span></div>
+                                        <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"06"</span><span class="token-keyword">"pub struct"</span> <span class="token-type">"User"</span><span> " {"</span></div>
+                                        <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"07"</span><span class="pl-4">"pub id: "</span><span class="token-type">"u64"</span><span>","</span></div>
+                                        <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"08"</span><span class="pl-4">"pub name: "</span><span class="token-type">"String"</span><span>","</span></div>
+                                        <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"09"</span><span class="pl-4">"pub latency_us: "</span><span class="token-type">"u32"</span><span>","</span></div>
+                                        <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"10"</span><span>"}"</span></div>
+                                        <div class="flex items-center pt-1"><span class="w-6 select-none text-zinc-600 opacity-40">"11"</span><span class="token-keyword">"pub async fn"</span> <span class="token-fn">"get_user"</span><span>"(Path(id): Path&lt;u64&gt;) -&gt; json_response&lt;User&gt; {"</span></div>
+                                        <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"12"</span><span class="pl-4">"json_response(User { id, name: "</span><span class="token-string">"\"Isaac\""</span><span class="token-fn">".into()"</span><span>", latency_us: 42 })"</span></div>
+                                        <div class="flex items-center"><span class="w-6 select-none text-zinc-600 opacity-40">"13"</span><span>"}"</span></div>
+                                    </div>
+
+                                    // File 3: package.yavml (hidden by default)
+                                    <div id="hero-code-yavml" class="space-y-1 hidden">
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"01"</span><span class="token-keyword">"[package]"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"02"</span><span>"name = "</span><span class="token-string">"\"website\""</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"03"</span><span>"version = "</span><span class="token-string">"\"0.1.0\""</span></div>
+                                        <div class="flex items-center text-zinc-600 pt-1"><span class="w-6 select-none opacity-40">"04"</span><span class="token-keyword">"[server]"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"05"</span><span>"port = "</span><span class="token-val">"3000"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"06"</span><span>"host = "</span><span class="token-string">"\"127.0.0.1\""</span></div>
+                                        <div class="flex items-center text-zinc-600 pt-1"><span class="w-6 select-none opacity-40">"07"</span><span class="token-keyword">"[tailwind]"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"08"</span><span>"enabled = "</span><span class="token-val">"true"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"09"</span><span>"input = "</span><span class="token-string">"\"src/styles/app.css\""</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"10"</span><span>"output = "</span><span class="token-string">"\"public/styles.css\""</span></div>
+                                        <div class="flex items-center text-zinc-600 pt-1"><span class="w-6 select-none opacity-40">"11"</span><span class="token-keyword">"[motion]"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"12"</span><span>"enabled = "</span><span class="token-val">"true"</span></div>
+                                        <div class="flex items-center text-zinc-600"><span class="w-6 select-none opacity-40">"13"</span><span>"reduced_motion = "</span><span class="token-string">"\"user\""</span></div>
+                                    </div>
+
+                                    // File 4: Terminal Output ($ yav dev) (hidden by default)
+                                    <div id="hero-code-term" class="space-y-1 hidden">
+                                        <div class="text-emerald-400 font-bold">"╔═══════════════════════════════════════════════════╗"</div>
+                                        <div class="text-emerald-400 font-bold">"║               🚀 YAV DEV SERVER                   ║"</div>
+                                        <div class="text-emerald-400 font-bold">"╚═══════════════════════════════════════════════════╝"</div>
+                                        <div class="text-zinc-400">"⚡ Live reload server listening on http://127.0.0.1:35729"</div>
+                                        <div class="text-zinc-400">"✔ Initial CSS compiled to public/styles.css in 320ms"</div>
+                                        <div class="text-zinc-400">"📦 Starting application server..."</div>
+                                        <div class="text-emerald-400 font-semibold">"🌐 Application running at http://127.0.0.1:3000"</div>
+                                        <div class="text-zinc-500 pt-2">"👀 Watching src/ for changes"</div>
+                                        <div class="text-zinc-500">"👀 Watching public/ for changes"</div>
+                                        <div class="text-amber-400 pt-2">"✔ Route registered: GET /"</div>
+                                        <div class="text-amber-400">"✔ Route registered: GET /docs"</div>
+                                        <div class="text-amber-400">"✔ Route registered: GET /benchmarks"</div>
+                                        <div class="text-amber-400">"✔ Route registered: GET /components"</div>
+                                    </div>
                                 </div>
 
-                                // Live Sandbox View
+                                // Right Pane: Live Interactive Sandbox & Browser Inspector (5 cols)
                                 <div class="lg:col-span-5 p-6 flex flex-col justify-between space-y-6 bg-zinc-50/60 dark:bg-zinc-950/50">
                                     <div class="space-y-4">
+                                        // Mini Browser Top Bar
                                         <div class="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 flex items-center justify-between text-xs font-mono shadow-xs">
                                             <div class="flex items-center gap-2 text-zinc-400">
                                                 {render_icon("lock", IconSize::Sm, Some("w-3 h-3 text-emerald-500"), None)}
                                                 <span class="text-zinc-700 dark:text-zinc-300">"http://localhost:3000/"</span>
                                             </div>
-                                            <span class="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">"0 KB Hydration"</span>
+                                            <button
+                                                onclick="const el=document.getElementById('demo-count'); el.innerText='42'; this.classList.add('rotate-180'); setTimeout(()=>this.classList.remove('rotate-180'), 300);"
+                                                class="text-zinc-400 hover:text-zinc-800 dark:hover:text-white transition-transform cursor-pointer"
+                                                title="Reload &amp; Reset state"
+                                            >
+                                                {render_icon("refresh-cw", IconSize::Sm, Some("w-3 h-3"), None)}
+                                            </button>
                                         </div>
 
+                                        // Interactive Micro-Counter Island
                                         <div class="p-5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-4">
                                             <div class="flex items-center justify-between">
                                                 <div>
-                                                    <h3 class="text-sm font-bold text-zinc-900 dark:text-white">"Reactive State Island"</h3>
-                                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">"Zero-cost client interaction"</p>
+                                                    <h3 class="text-sm font-bold text-zinc-900 dark:text-white" data-i18n="sandbox.island.title">
+                                                        "Reactive State Island"
+                                                    </h3>
+                                                    <p class="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5" data-i18n="sandbox.island.desc">
+                                                        "Zero-cost client interaction"
+                                                    </p>
                                                 </div>
-                                                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 font-semibold">"Active"</span>
+                                                <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 font-semibold" data-i18n="sandbox.active">
+                                                    "Active"
+                                                </span>
                                             </div>
 
                                             <div class="flex items-center justify-center gap-3 py-2">
                                                 <button
                                                     onclick="const el=document.getElementById('demo-count'); el.innerText=Math.max(0, parseInt(el.innerText)-1);"
                                                     class="w-10 h-10 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 font-mono font-bold text-base text-zinc-800 dark:text-zinc-200 flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-xs"
+                                                    aria-label="Decrement counter"
                                                 >
                                                     "-"
                                                 </button>
+
                                                 <div class="px-6 py-2 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 font-mono text-2xl font-black text-zinc-900 dark:text-white min-w-[90px] text-center shadow-inner">
                                                     <span id="demo-count">"42"</span>
                                                 </div>
+
                                                 <button
                                                     onclick="const el=document.getElementById('demo-count'); el.innerText=parseInt(el.innerText)+1;"
                                                     class="w-10 h-10 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 font-mono font-bold text-base text-zinc-800 dark:text-zinc-200 flex items-center justify-center transition-all cursor-pointer active:scale-95 shadow-xs"
+                                                    aria-label="Increment counter"
                                                 >
                                                     "+"
                                                 </button>
                                             </div>
 
                                             <div class="flex items-center justify-between pt-2 border-t border-zinc-100 dark:border-zinc-800/80 text-[11px] font-mono text-zinc-400">
-                                                <span>"Simulated TTFB"</span>
+                                                <div class="flex items-center gap-1.5">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                                    <span data-i18n="sandbox.ttfb">"Measured TTFB"</span>
+                                                </div>
                                                 <span class="text-emerald-600 dark:text-emerald-400 font-bold">"0.28 ms"</span>
                                             </div>
                                         </div>
                                     </div>
 
+                                    // Quick Verification Card
                                     <div class="p-3.5 rounded-xl bg-zinc-100/90 dark:bg-zinc-900/60 border border-zinc-200/90 dark:border-zinc-800/90 text-xs font-mono space-y-1.5 shadow-xs">
                                         <div class="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
-                                            <span>"Compiler check:"</span>
-                                            <span class="text-emerald-600 dark:text-emerald-400 font-semibold">"rustc verified"</span>
+                                            <span data-i18n="sandbox.compiler">"Compiler check:"</span>
+                                            <span class="text-emerald-600 dark:text-emerald-400 font-semibold" data-i18n="sandbox.verified">"rustc verified"</span>
                                         </div>
                                         <div class="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
-                                            <span>"HTML Escaping:"</span>
-                                            <span class="text-emerald-600 dark:text-emerald-400 font-semibold">"Zero-XSS by default"</span>
+                                            <span data-i18n="sandbox.escaping">"HTML Escaping:"</span>
+                                            <span class="text-emerald-600 dark:text-emerald-400 font-semibold" data-i18n="sandbox.no_xss">"Zero-XSS by default"</span>
                                         </div>
                                         <div class="flex items-center justify-between text-zinc-600 dark:text-zinc-400">
-                                            <span>"Node.js dependency:"</span>
-                                            <span class="text-zinc-900 dark:text-white font-semibold">"None (0 MB)"</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            // ----------------------------------------------------
-                            // MODE 3: ZERO-HYDRATION TAX AUDIT (YAV VS OTHERS)
-                            // ----------------------------------------------------
-                            <div id="hero-mode-audit" class="hidden p-6 sm:p-10 space-y-6 text-left bg-zinc-50/40 dark:bg-[#0a0a0d]">
-                                <div class="space-y-2">
-                                    <h3 class="text-lg font-bold text-zinc-900 dark:text-white">
-                                        "The JavaScript Hydration Tax vs Native Rust Execution"
-                                    </h3>
-                                    <p class="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-sans leading-relaxed">
-                                        "Traditional SSR frameworks force client browsers to download, parse, and evaluate hundreds of kilobytes of runtime JavaScript just to recreate the DOM and bind event listeners. Yav compiles HTML buffer appends at build time for instantaneous Time-To-Interactive (TTI)."
-                                    </p>
-                                </div>
-
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 font-mono text-xs">
-                                    // Card A: Traditional SSR (Next.js / Nuxt)
-                                    <div class="p-6 rounded-2xl border border-red-200 dark:border-red-900/40 bg-red-50/20 dark:bg-red-950/10 space-y-4">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-red-600 dark:text-red-400 font-bold uppercase tracking-wider text-[11px]">"Traditional SSR (Next / Nuxt)"</span>
-                                            <span class="px-2 py-0.5 rounded text-[10px] bg-red-100 dark:bg-red-900/60 text-red-700 dark:text-red-300 font-bold">"Hydration Tax"</span>
-                                        </div>
-
-                                        <div class="space-y-2.5 text-zinc-600 dark:text-zinc-400">
-                                            <div class="flex justify-between"><span>"Client JS Payload:"</span><strong class="text-red-600 dark:text-red-400">"410 KB JS"</strong></div>
-                                            <div class="flex justify-between"><span>"Browser CPU Parse Lag:"</span><strong class="text-red-600 dark:text-red-400">"~340 ms"</strong></div>
-                                            <div class="flex justify-between"><span>"Server Idle Memory:"</span><strong class="text-red-600 dark:text-red-400">"180 MB RAM"</strong></div>
-                                            <div class="flex justify-between"><span>"Runtime Engine:"</span><span>"V8 / Node Single-Thread"</span></div>
-                                        </div>
-
-                                        <div class="p-3 rounded-lg bg-red-100/50 dark:bg-red-900/20 text-[11px] text-red-700 dark:text-red-300 font-sans">
-                                            "Pages look loaded, but buttons freeze while client JavaScript hydrates the DOM tree."
-                                        </div>
-                                    </div>
-
-                                    // Card B: Yav.rs
-                                    <div class="p-6 rounded-2xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50/20 dark:bg-emerald-950/10 space-y-4 shadow-sm">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-emerald-600 dark:text-emerald-400 font-bold uppercase tracking-wider text-[11px]">"Yav Native Rust Engine"</span>
-                                            <span class="px-2 py-0.5 rounded text-[10px] bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 font-bold">"Zero Tax"</span>
-                                        </div>
-
-                                        <div class="space-y-2.5 text-zinc-600 dark:text-zinc-400">
-                                            <div class="flex justify-between"><span>"Client JS Payload:"</span><strong class="text-emerald-600 dark:text-emerald-400">"0 KB (Zero)"</strong></div>
-                                            <div class="flex justify-between"><span>"Browser CPU Parse Lag:"</span><strong class="text-emerald-600 dark:text-emerald-400">"&lt; 0.3 ms (Instant)"</strong></div>
-                                            <div class="flex justify-between"><span>"Server Idle Memory:"</span><strong class="text-emerald-600 dark:text-emerald-400">"8.2 MB RAM"</strong></div>
-                                            <div class="flex justify-between"><span>"Runtime Engine:"</span><strong class="text-emerald-600 dark:text-emerald-400">"Tokio Multi-Threaded"</strong></div>
-                                        </div>
-
-                                        <div class="p-3 rounded-lg bg-emerald-100/50 dark:bg-emerald-900/20 text-[11px] text-emerald-700 dark:text-emerald-300 font-sans">
-                                            "Instant Time-to-Interactive. Zero client hydration delay, and minimal battery impact on mobile devices."
+                                            <span data-i18n="sandbox.node">"Node.js dependency:"</span>
+                                            <span class="text-zinc-900 dark:text-white font-semibold" data-i18n="sandbox.none">"None (0 MB)"</span>
                                         </div>
                                     </div>
                                 </div>
@@ -889,61 +838,24 @@ pub async fn index(_req: Request) -> yav::server::HtmlPage {
                 </section>
             </div>
 
-            // Client Script for Hero Interactive Modes & Benchmark Simulation
+            // Client Script for Hero Code Tabs
             <script>
                 {r#"
-                function switchHeroMode(mode) {
-                    const modes = ['pipeline', 'studio', 'audit'];
-                    modes.forEach(function(m) {
-                        const el = document.getElementById('hero-mode-' + m);
-                        const btn = document.getElementById('btn-mode-' + m);
-                        if (el && btn) {
-                            if (m === mode) {
-                                el.classList.remove('hidden');
-                                btn.className = 'hero-mode-btn active px-4 py-2 rounded-xl bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 font-semibold shadow-xs transition-all flex items-center gap-2 text-xs cursor-pointer';
+                function switchHeroTab(tab) {
+                    const tabs = ['rsx', 'api', 'yavml', 'term'];
+                    tabs.forEach(t => {
+                        const codeEl = document.getElementById('hero-code-' + t);
+                        const btnEl = document.getElementById('btn-file-' + t);
+                        if (codeEl && btnEl) {
+                            if (t === tab) {
+                                codeEl.classList.remove('hidden');
+                                btnEl.className = 'hero-tab-btn active px-3 py-1 rounded-md bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white shadow-xs font-medium cursor-pointer transition-all flex items-center gap-1.5';
                             } else {
-                                el.classList.add('hidden');
-                                btn.className = 'hero-mode-btn px-4 py-2 rounded-xl text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800/60 font-medium transition-all flex items-center gap-2 text-xs cursor-pointer';
+                                codeEl.classList.add('hidden');
+                                btnEl.className = 'hero-tab-btn px-3 py-1 rounded-md text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white cursor-pointer transition-all flex items-center gap-1.5';
                             }
                         }
                     });
-                }
-
-                let heroSimActive = false;
-                function runHeroSim() {
-                    if (heroSimActive) return;
-                    heroSimActive = true;
-                    const btn = document.getElementById('sim-run-btn');
-                    const badge = document.getElementById('sim-status-badge');
-                    const numEl = document.getElementById('sim-req-num');
-                    
-                    if (btn) btn.classList.add('opacity-75', 'cursor-not-allowed');
-                    if (badge) {
-                        badge.innerText = 'Benchmarking 200 concurrent threads...';
-                        badge.className = 'px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/20 text-amber-500 border border-amber-500/30 animate-pulse font-bold';
-                    }
-                    
-                    let count = 0;
-                    const target = 10000;
-                    const startTime = performance.now();
-                    const interval = setInterval(function() {
-                        count += Math.floor(Math.random() * 950) + 450;
-                        if (count >= target) {
-                            count = target;
-                            clearInterval(interval);
-                            if (numEl) numEl.innerText = count.toLocaleString();
-                            if (badge) {
-                                badge.innerText = '10,000 req finished in 78.4ms (127,550 req/s)';
-                                badge.className = 'px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 font-bold';
-                            }
-                            if (btn) {
-                                btn.classList.remove('opacity-75', 'cursor-not-allowed');
-                            }
-                            heroSimActive = false;
-                        } else {
-                            if (numEl) numEl.innerText = count.toLocaleString();
-                        }
-                    }, 20);
                 }
                 "#}
             </script>
