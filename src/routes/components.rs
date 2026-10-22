@@ -180,9 +180,9 @@ pub async fn components(_req: Request) -> yav::server::HtmlPage {
                         <div
                             class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 flex flex-col justify-between space-y-4 cursor-pointer select-none"
                             data-motion="true"
-                            data-motion-hover='{"scale":1.04,"y":-4}'
-                            data-motion-tap='{"scale":0.96}'
-                            data-motion-transition='{"is_spring":true,"stiffness":300,"damping":16}'
+                            data-motion-hover="{\"scale\":1.04,\"y\":-4}"
+                            data-motion-tap="{\"scale\":0.96}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":300,\"damping\":16}"
                         >
                             <div class="space-y-2">
                                 <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
@@ -202,9 +202,9 @@ pub async fn components(_req: Request) -> yav::server::HtmlPage {
                         <div
                             class="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 flex flex-col justify-between space-y-4 cursor-pointer select-none"
                             data-motion="true"
-                            data-motion-hover='{"scale":1.03,"rotate":2}'
-                            data-motion-tap='{"scale":0.95,"rotate":-2}'
-                            data-motion-transition='{"is_spring":true,"stiffness":260,"damping":18}'
+                            data-motion-hover="{\"scale\":1.03,\"rotate\":2}"
+                            data-motion-tap="{\"scale\":0.95,\"rotate\":-2}"
+                            data-motion-transition="{\"is_spring\":true,\"stiffness\":260,\"damping\":18}"
                         >
                             <div class="space-y-2">
                                 <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-500 flex items-center justify-center">
