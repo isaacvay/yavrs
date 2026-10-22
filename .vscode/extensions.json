@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "yav-framework.yav-vscode",
+    "rust-lang.rust-analyzer",
+    "bradlc.vscode-tailwindcss"
+  ]
+}

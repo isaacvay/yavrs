@@ -1,0 +1,28 @@
+{
+  "files.associations": {
+    "*.yav": "yav",
+    "*.rsx": "yav",
+    "*.yavml": "yavml"
+  },
+  "emmet.includeLanguages": {
+    "yav": "html",
+    "rsx": "html"
+  },
+  "material-icon-theme.files.associations": {
+    "*.yav": "react",
+    "*.rsx": "react_ts",
+    "*.yavml": "settings"
+  },
+  "vsicons.associations.files": [
+    {
+      "icon": "react",
+      "extensions": ["yav", "rsx"],
+      "format": "svg"
+    },
+    {
+      "icon": "toml",
+      "extensions": ["yavml"],
+      "format": "svg"
+    }
+  ]
+}

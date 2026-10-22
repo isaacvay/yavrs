@@ -1,0 +1,37 @@
+[package]
+name = "website"
+version = "0.1.0"
+description = "A modern web application built with Yav"
+authors = []
+license = "MIT"
+
+[server]
+port = 3000
+host = "127.0.0.1"
+
+[tailwind]
+enabled = true
+version = "3.4.17"
+input = "src/styles/app.css"
+output = "public/styles.css"
+
+[motion]
+enabled = true
+reduced_motion = "user"
+
+[build]
+out_dir = "dist"
+public_dir = "public"
+minify = true
+fingerprint = true
+
+[dependencies]
+
+[scripts]
+dev = "yav dev"
+build = "yav build"
+test = "cargo test"
+
+[assets]
+favicon = "public/favicon.svg"
+icon = "public/yav-document.png"
