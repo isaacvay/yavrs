@@ -12,7 +12,12 @@ pub struct AppLayoutProps {
 
 #[component]
 pub fn AppLayout(props: AppLayoutProps) -> Node {
-    let anti_fouc = anti_fouc_script();
+    // Default to dark mode unless explicitly set to 'light' in localStorage
+    let anti_fouc = rsx! {
+        <script data-yav-anti-fouc="true">
+            {r#"try{var s=localStorage.getItem('theme');if(s==='light'){document.documentElement.classList.remove('dark')}else{document.documentElement.classList.add('dark')}}catch(e){}"#}
+        </script>
+    };
     let i18n_payload = get_i18n_json();
 
     rsx! {
