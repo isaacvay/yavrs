@@ -29,7 +29,7 @@ Write-Host "✔ Étape 1 terminée avec succès ! Le dossier dist/ est prêt.`n"
 Write-Host "⏳ Étape 2/2 : Téléversement vers Cloudflare Pages..." -ForegroundColor Yellow
 Write-Host "ℹ Si vous n'êtes pas connecté, Cloudflare ouvrira votre navigateur une seule fois.`n" -ForegroundColor DarkGray
 
-npx --yes wrangler pages deploy dist --project-name yav-website
+npx --yes wrangler pages deploy dist --project-name yavrs
 
 Write-Host ""
 Write-Host "✨ Déploiement Cloudflare Pages terminé avec succès !" -ForegroundColor Green
