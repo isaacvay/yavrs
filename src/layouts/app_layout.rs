@@ -143,11 +143,21 @@ window.copyText = function (btn, text) {
 </script>"#);
     let embedded_css = Node::raw(r#"<style>
 /* Guaranteed popover positioning right below the 64px header */
-#header-search-container, #lang-switcher-container {
-  align-self: stretch !important;
-  display: flex !important;
-  align-items: center !important;
-  position: relative !important;
+@media (max-width: 1023px) {
+  #header-search-container {
+    display: contents !important;
+  }
+  #lang-switcher-container {
+    display: none !important;
+  }
+}
+@media (min-width: 1024px) {
+  #header-search-container, #lang-switcher-container {
+    align-self: stretch !important;
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+  }
 }
 
 #cmd-palette-popover, #lang-menu {
@@ -191,6 +201,10 @@ window.copyText = function (btn, text) {
     margin-top: 8px !important;
     width: 208px !important;
   }
+}
+
+body.mobile-nav-open {
+  overflow: hidden !important;
 }
 
 /* Guaranteed Vivid Emerald Green on copied state */
@@ -264,59 +278,65 @@ button.is-copied:hover svg {
   }
 
   // Mobile Nav & Dropdown Menu Controller
-  var mBtn = document.getElementById('mobile-menu-btn');
-  var mNav = document.getElementById('mobile-nav');
-  var mOpenIcon = document.getElementById('menu-icon-open');
-  var mCloseIcon = document.getElementById('menu-icon-close');
-
-  window.toggleMobileNav = function (e) {
-    if (e && e.stopPropagation) e.stopPropagation();
-    if (!mNav) mNav = document.getElementById('mobile-nav');
-    if (!mBtn) mBtn = document.getElementById('mobile-menu-btn');
-    if (!mOpenIcon) mOpenIcon = document.getElementById('menu-icon-open');
-    if (!mCloseIcon) mCloseIcon = document.getElementById('menu-icon-close');
+  window.openMobileNav = function () {
+    var mNav = document.getElementById('mobile-nav');
+    var mBtn = document.getElementById('mobile-menu-btn');
+    var mOpenIcon = document.getElementById('menu-icon-open');
+    var mCloseIcon = document.getElementById('menu-icon-close');
     if (!mNav) return;
 
     if (window.closeCmdPalette) window.closeCmdPalette();
     if (window.closeLangMenu) window.closeLangMenu();
 
-    var isHidden = mNav.classList.contains('hidden');
-    if (isHidden) {
-      mNav.classList.remove('hidden');
-      document.body.classList.add('mobile-nav-open');
-      if (mBtn) mBtn.setAttribute('aria-expanded', 'true');
-      if (mOpenIcon) { mOpenIcon.classList.add('hidden'); mOpenIcon.classList.remove('inline-flex'); }
-      if (mCloseIcon) { mCloseIcon.classList.remove('hidden'); mCloseIcon.classList.add('inline-flex'); }
-      requestAnimationFrame(function () {
-        mNav.classList.remove('opacity-0', '-translate-y-2');
-        mNav.classList.add('opacity-100', 'translate-y-0');
-      });
-    } else {
-      window.closeMobileNav();
-    }
+    mNav.classList.remove('hidden');
+    mNav.classList.add('is-open');
+    mNav.style.display = 'block';
+    document.body.classList.add('mobile-nav-open');
+    if (mBtn) mBtn.setAttribute('aria-expanded', 'true');
+    if (mOpenIcon) { mOpenIcon.classList.add('hidden'); mOpenIcon.classList.remove('inline-flex'); }
+    if (mCloseIcon) { mCloseIcon.classList.remove('hidden'); mCloseIcon.classList.add('inline-flex'); }
+    requestAnimationFrame(function () {
+      mNav.classList.remove('opacity-0', '-translate-y-2');
+      mNav.classList.add('opacity-100', 'translate-y-0');
+    });
   };
 
   window.closeMobileNav = function () {
-    if (!mNav) mNav = document.getElementById('mobile-nav');
-    if (!mBtn) mBtn = document.getElementById('mobile-menu-btn');
-    if (!mOpenIcon) mOpenIcon = document.getElementById('menu-icon-open');
-    if (!mCloseIcon) mCloseIcon = document.getElementById('menu-icon-close');
-    if (!mNav || mNav.classList.contains('hidden')) return;
+    var mNav = document.getElementById('mobile-nav');
+    var mBtn = document.getElementById('mobile-menu-btn');
+    var mOpenIcon = document.getElementById('menu-icon-open');
+    var mCloseIcon = document.getElementById('menu-icon-close');
+    if (!mNav) return;
 
     document.body.classList.remove('mobile-nav-open');
+    mNav.classList.remove('is-open');
     mNav.classList.remove('opacity-100', 'translate-y-0');
     mNav.classList.add('opacity-0', '-translate-y-2');
     if (mBtn) mBtn.setAttribute('aria-expanded', 'false');
     if (mOpenIcon) { mOpenIcon.classList.remove('hidden'); mOpenIcon.classList.add('inline-flex'); }
     if (mCloseIcon) { mCloseIcon.classList.add('hidden'); mCloseIcon.classList.remove('inline-flex'); }
     setTimeout(function () {
-      mNav.classList.add('hidden');
+      if (!mNav.classList.contains('is-open')) {
+        mNav.classList.add('hidden');
+        mNav.style.display = 'none';
+      }
     }, 180);
   };
 
-  if (mBtn) {
-    mBtn.addEventListener('click', window.toggleMobileNav);
-  }
+  window.toggleMobileNav = function (e) {
+    if (e) {
+      if (e.stopPropagation) e.stopPropagation();
+      if (e.preventDefault) e.preventDefault();
+    }
+    var mNav = document.getElementById('mobile-nav');
+    if (!mNav) return;
+    var isOpen = mNav.classList.contains('is-open') && !mNav.classList.contains('hidden');
+    if (isOpen) {
+      window.closeMobileNav();
+    } else {
+      window.openMobileNav();
+    }
+  };
 
   // Command Palette Popover
   window.toggleCmdPalette = function (e) {
@@ -596,7 +616,7 @@ window.copyText = function (btn, text) {
             </script>
             <div class="rails" aria-hidden="true"></div>
 
-            <header id="site-header" class="site-header sticky top-0 z-40 w-full">
+            <header id="site-header" class="site-header sticky top-0 z-50 w-full">
                 <div class="wrap flex h-16 items-center justify-between gap-2 sm:gap-6">
                     <a href="/" class="flex items-center gap-2 sm:gap-2.5 shrink-0" aria-label="Yav home">
                         <img src="/public/favicon.svg" class="w-6 h-6 shrink-0" alt="" />
@@ -620,12 +640,12 @@ window.copyText = function (btn, text) {
                             href="https://github.com/isaacvay/yav.rs"
                             target="_blank"
                             rel="noreferrer"
-                            class="hidden md:inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors shrink-0"
+                            class="hidden lg:inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors shrink-0"
                             title="GitHub"
                         >
                             {render_icon("minimal:github", IconSize::Sm, Some("w-4 h-4"), None)}
                         </a>
-                        <a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden md:inline-flex shrink-0">"Get started"<span class="arr">"→"</span></a>
+                        <a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden lg:inline-flex shrink-0">"Get started"<span class="arr">"→"</span></a>
                         <button
                             id="mobile-menu-btn"
                             onclick="window.toggleMobileNav(event)"
@@ -638,11 +658,14 @@ window.copyText = function (btn, text) {
                         </button>
                     </div>
                 </div>
-                <nav
-                    id="mobile-nav"
-                    class="hidden lg:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-[#0b0b0d]/98 backdrop-blur-2xl border-t border-rule overflow-y-auto transition-all duration-200 opacity-0 -translate-y-2"
-                    aria-label="Mobile Navigation"
-                >
+                <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
+            </header>
+
+            <nav
+                id="mobile-nav"
+                class="hidden lg:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-[#0b0b0d]/98 backdrop-blur-2xl border-t border-rule overflow-y-auto transition-all duration-200 opacity-0 -translate-y-2"
+                aria-label="Mobile Navigation"
+            >
                     <div class="wrap py-6 space-y-6 max-h-full">
                         // Mobile Search Trigger
                         <button
@@ -834,8 +857,6 @@ window.copyText = function (btn, text) {
                         </div>
                     </div>
                 </nav>
-                <div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div>
-            </header>
 
             <main id="main-content" class="flex-grow w-full">
                 {props.children}

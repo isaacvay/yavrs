@@ -7,18 +7,18 @@ use yav::icons::{render_icon, IconSize};
 pub fn CommandPalette() -> Node {
     rsx! {
         <div class="relative self-stretch flex items-center" id="header-search-container">
-            // Trigger Button
+            // Trigger Button - visible on PC (lg:flex), hidden on mobile (< lg)
             <button
                 id="header-search-btn"
                 onclick="window.toggleCmdPalette(event)"
-                class="hidden md:flex items-center gap-2 h-[34px] px-2.5 xl:pl-3 xl:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
+                class="hidden lg:flex items-center gap-2 h-[34px] px-2.5 xl:pl-3 xl:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
                 title="Search documentation (Ctrl+K)"
                 aria-expanded="false"
                 aria-haspopup="true"
             >
                 {render_icon("search", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                <span class="hidden xl:inline" data-i18n="nav.search">"Search"</span>
-                <kbd class="kbd hidden xl:inline-flex text-[10px]">"Ctrl K"</kbd>
+                <span data-i18n="nav.search">"Search"</span>
+                <kbd class="kbd inline-flex text-[10px]">"Ctrl K"</kbd>
             </button>
 
             // Popover Dropdown — opens strictly directly below the 64px navbar
