@@ -207,6 +207,34 @@ body.mobile-nav-open {
   overflow: hidden !important;
 }
 
+body.mobile-nav-open #site-header {
+  background-color: #0b0b0c !important;
+  background: #0b0b0c !important;
+  border-bottom-color: var(--rule) !important;
+}
+
+/* Mobile Navigation Drawer: Solid carbon background with high-grade blur */
+#mobile-nav {
+  background-color: #0b0b0c !important;
+  background: #0b0b0c !important;
+  backdrop-filter: blur(24px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(140%) !important;
+  height: calc(100dvh - 64px) !important;
+  max-height: calc(100dvh - 64px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.95) !important;
+}
+
+/* Popover menus */
+#cmd-palette-popover, #lang-menu {
+  background-color: #111112 !important;
+  background: #111112 !important;
+  border: 1px solid var(--rule-2) !important;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.95), 0 0 0 1px var(--rule) !important;
+}
+
 /* Guaranteed Vivid Emerald Green on copied state */
 [data-copy-label] {
   transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -663,10 +691,10 @@ window.copyText = function (btn, text) {
 
             <nav
                 id="mobile-nav"
-                class="hidden lg:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-[#0b0b0d]/98 backdrop-blur-2xl border-t border-rule overflow-y-auto transition-all duration-200 opacity-0 -translate-y-2"
+                class="hidden lg:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-[#0b0b0c] border-t border-rule overflow-y-auto transition-all duration-200 opacity-0 -translate-y-2"
                 aria-label="Mobile Navigation"
             >
-                    <div class="wrap py-6 space-y-6 max-h-full">
+                    <div class="wrap py-6 pb-20 space-y-6 min-h-full">
                         // Mobile Search Trigger
                         <button
                             onclick="window.closeMobileNav(); window.openCmdPalette();"
