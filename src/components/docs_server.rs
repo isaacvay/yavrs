@@ -27,54 +27,56 @@ pub fn DocsServer() -> Node {
                     "."
                 </p>
 
-                <table class="dtable">
-                    <thead>
-                        <tr>
-                            <th>"File Path"</th>
-                            <th>"Pattern"</th>
-                            <th>"HTTP Method & Path"</th>
-                            <th>"Parameter Extractor"</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"src/routes/index.rs"</td>
-                            <td>"Root Index"</td>
-                            <td class="text-paper font-semibold">"GET /"</td>
-                            <td class="text-dim">"—"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"src/routes/about.rs"</td>
-                            <td>"Static Endpoint"</td>
-                            <td class="text-paper font-semibold">"GET /about"</td>
-                            <td class="text-dim">"—"</td>
-                        </tr>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"src/routes/users/_id_.rs"</td>
-                            <td>"Dynamic parameter"</td>
-                            <td class="text-paper font-semibold">"GET /users/{id}"</td>
-                            <td class="text-oxide">"Path(id): Path<u64>"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"src/routes/docs/__slug__.rs"</td>
-                            <td>"Catch-all wildcard"</td>
-                            <td class="text-paper font-semibold">"GET /docs/{*slug}"</td>
-                            <td class="text-oxide">"Path(slug): Path<String>"</td>
-                        </tr>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"src/routes/(auth)/login.rs"</td>
-                            <td>"Route grouping"</td>
-                            <td class="text-paper font-semibold">"GET /login"</td>
-                            <td class="text-dim">"— (folder excluded from URL)"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"src/routes/api/health.rs"</td>
-                            <td>"REST API"</td>
-                            <td class="text-paper font-semibold">"GET /api/health"</td>
-                            <td class="text-paper">"Json<HealthResponse>"</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-scroll pb-2">
+                    <table class="dtable min-w-[620px]">
+                        <thead>
+                            <tr>
+                                <th>"File Path"</th>
+                                <th>"Pattern"</th>
+                                <th>"HTTP Method & Path"</th>
+                                <th>"Parameter Extractor"</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"src/routes/index.rs"</td>
+                                <td>"Root Index"</td>
+                                <td class="text-paper font-semibold">"GET /"</td>
+                                <td class="text-dim">"—"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"src/routes/about.rs"</td>
+                                <td>"Static Endpoint"</td>
+                                <td class="text-paper font-semibold">"GET /about"</td>
+                                <td class="text-dim">"—"</td>
+                            </tr>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"src/routes/users/_id_.rs"</td>
+                                <td>"Dynamic parameter"</td>
+                                <td class="text-paper font-semibold">"GET /users/{id}"</td>
+                                <td class="text-oxide">"Path(id): Path<u64>"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"src/routes/docs/__slug__.rs"</td>
+                                <td>"Catch-all wildcard"</td>
+                                <td class="text-paper font-semibold">"GET /docs/{*slug}"</td>
+                                <td class="text-oxide">"Path(slug): Path<String>"</td>
+                            </tr>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"src/routes/(auth)/login.rs"</td>
+                                <td>"Route grouping"</td>
+                                <td class="text-paper font-semibold">"GET /login"</td>
+                                <td class="text-dim">"— (folder excluded from URL)"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"src/routes/api/health.rs"</td>
+                                <td>"REST API"</td>
+                                <td class="text-paper font-semibold">"GET /api/health"</td>
+                                <td class="text-paper">"Json<HealthResponse>"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
             // =========================================================================

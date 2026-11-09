@@ -235,52 +235,54 @@ pub fn DocsGettingStarted() -> Node {
                     </div>
                     <div class="ide-status">
                         <span>"TOML · UTF-8 · package.yavml"</span>
-                        <span>"Yav Engine Parser v0.1.4"</span>
+                        <span>"Yav Engine Parser v0.1.5"</span>
                     </div>
                 </div>
 
-                <table class="dtable">
-                    <thead>
-                        <tr>
-                            <th>"Section"</th>
-                            <th>"Key Fields"</th>
-                            <th>"Default"</th>
-                            <th>"Role"</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="text-paper font-semibold">"[package]"</td>
-                            <td>"name, version, authors"</td>
-                            <td class="text-dim">"—"</td>
-                            <td>"Project identity & semver versioning"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"[server]"</td>
-                            <td>"port, host, cors, https"</td>
-                            <td class="text-dim">"3000, 127.0.0.1"</td>
-                            <td>"Axum HTTP listener & TLS configuration"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"[tailwind]"</td>
-                            <td>"enabled, version, input, output"</td>
-                            <td class="text-dim">"3.4.17"</td>
-                            <td>"Automated standalone compiler integration"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"[motion]"</td>
-                            <td>"enabled, reduced_motion"</td>
-                            <td class="text-dim">"true, user"</td>
-                            <td>"Physics spring runtime injection"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"[build]"</td>
-                            <td>"minify, fingerprint, pre_compress"</td>
-                            <td class="text-dim">"true, br+gz"</td>
-                            <td>"Production asset hashing & compression"</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-scroll pb-2">
+                    <table class="dtable min-w-[580px]">
+                        <thead>
+                            <tr>
+                                <th>"Section"</th>
+                                <th>"Key Fields"</th>
+                                <th>"Default"</th>
+                                <th>"Role"</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-paper font-semibold">"[package]"</td>
+                                <td>"name, version, authors"</td>
+                                <td class="text-dim">"—"</td>
+                                <td>"Project identity & semver versioning"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"[server]"</td>
+                                <td>"port, host, cors, https"</td>
+                                <td class="text-dim">"3000, 127.0.0.1"</td>
+                                <td>"Axum HTTP listener & TLS configuration"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"[tailwind]"</td>
+                                <td>"enabled, version, input, output"</td>
+                                <td class="text-dim">"3.4.17"</td>
+                                <td>"Automated standalone compiler integration"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"[motion]"</td>
+                                <td>"enabled, reduced_motion"</td>
+                                <td class="text-dim">"true, user"</td>
+                                <td>"Physics spring runtime injection"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"[build]"</td>
+                                <td>"minify, fingerprint, pre_compress"</td>
+                                <td class="text-dim">"true, br+gz"</td>
+                                <td>"Production asset hashing & compression"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
             // =========================================================================
@@ -300,7 +302,8 @@ pub fn DocsGettingStarted() -> Node {
                     " binary replaces external task runners, migration managers, icon fetchers, container generators, and static site crawlers with 20 purpose-built subcommands."
                 </p>
 
-                <table class="dtable">
+                <div class="table-scroll pb-2">
+                    <table class="dtable min-w-[640px]">
                     <thead>
                         <tr>
                             <th>"Command"</th>
@@ -416,6 +419,7 @@ pub fn DocsGettingStarted() -> Node {
                         </tr>
                     </tbody>
                 </table>
+                </div>
             </section>
         </div>
     }

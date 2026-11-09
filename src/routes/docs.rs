@@ -27,7 +27,7 @@ pub async fn docs(_req: Request) -> yav::server::HtmlPage {
                     <div class="flex items-center gap-3">
                         <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-sunk border border-rule text-dim text-[11px]">
                             <span class="dot dot-ok"></span>
-                            <span class="text-paper font-semibold">"v0.1.4"</span>
+                            <span class="text-paper font-semibold">"v0.1.5"</span>
                             <span class="text-dim">"· stable"</span>
                         </div>
                         <a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 text-mute hover:text-paper transition-colors text-[11.5px]">

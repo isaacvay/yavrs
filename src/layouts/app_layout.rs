@@ -693,7 +693,7 @@ window.copyText = function (btn, text) {
                                         {render_icon("git-branch", IconSize::Sm, Some("w-3.5 h-3.5 text-ok"), None)}
                                         <span>"Changelog"</span>
                                     </div>
-                                    <p class="text-[11px] text-mute">"v0.1.4 stable"</p>
+                                    <p class="text-[11px] text-mute">"v0.1.5 stable"</p>
                                 </a>
                                 <a href="/privacy" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-paper transition-colors">

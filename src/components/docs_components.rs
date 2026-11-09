@@ -331,7 +331,7 @@ pub fn DocsComponents() -> Node {
                 </div>
                 <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Write standard Rust loops directly inside RSX."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "In Yav v0.1.4, you write standard Rust control flow directly inside "
+                    "In Yav v0.1.5, you write standard Rust control flow directly inside "
                     <code class="inline">"rsx!"</code>
                     " without needing closure wrappers or "
                     <code class="inline">".iter().map(...)"</code>

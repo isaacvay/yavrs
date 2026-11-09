@@ -19,7 +19,7 @@ pub fn DocsInteractivity() -> Node {
                 </div>
                 <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Rich client interactivity without writing a line of JavaScript."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Yav v0.1.4 introduces declarative "
+                    "Yav v0.1.5 introduces declarative "
                     <code class="inline">"yav:*"</code>
                     " attributes that wire accessible dialogs, drawers, copy buttons, synchronized tabs, global keyboard shortcuts, and live search filters powered by an ultra-compact (< 2.1 KB) micro-runtime."
                 </p>
@@ -56,67 +56,69 @@ pub fn DocsInteractivity() -> Node {
                     </div>
                 </div>
 
-                <table class="dtable">
-                    <thead>
-                        <tr>
-                            <th>"Attribute"</th>
-                            <th>"Value Example"</th>
-                            <th>"Behavior & Accessibility"</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"yav:toggle"</td>
-                            <td class="text-oxide">"\"modal-id\""</td>
-                            <td>"Toggles [open] or [hidden] state, manages aria-expanded, ESC key closes"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"yav:click-outside"</td>
-                            <td class="text-oxide">"\"close\""</td>
-                            <td>"Dismisses dialog or popover when clicking anywhere outside target"</td>
-                        </tr>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"yav:group"</td>
-                            <td class="text-oxide">"\"nav-menus\""</td>
-                            <td>"Exclusive popover group: opening one closes all other elements in the group"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"yav:close-on-resize"</td>
-                            <td class="text-oxide">"\"1024\""</td>
-                            <td>"Closes mobile drawers when browser viewport width exceeds threshold"</td>
-                        </tr>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"yav:hotkey"</td>
-                            <td class="text-oxide">"\"cmd+k\""</td>
-                            <td>"Binds global keyboard shortcut with cross-platform Cmd / Ctrl normalisation"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"yav:copy"</td>
-                            <td class="text-oxide">"\"text to copy\""</td>
-                            <td>"Copies string to clipboard; yav:copy-label swaps button text for 2 seconds"</td>
-                        </tr>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"yav:filter"</td>
-                            <td class="text-oxide">"\"input\""</td>
-                            <td>"Client-side search filter targeting selectors (yav:filter-target=\".card\")"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"yav:optimistic"</td>
-                            <td class="text-oxide">"\"like-btn\""</td>
-                            <td>"Applies instant UI mutations before server response with auto-rollback on network failure"</td>
-                        </tr>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"yav:presence-room"</td>
-                            <td class="text-oxide">"\"doc:42\""</td>
-                            <td>"Wires collaborative live presence beacons, cursor tracks, and member count over SSE/WS"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"yav:offline-queue"</td>
-                            <td class="text-oxide">"\"sync-orders\""</td>
-                            <td>"Local-First IndexedDB mutation buffer: auto-drains and merges with CRDT on reconnect"</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-scroll pb-2">
+                    <table class="dtable min-w-[620px]">
+                        <thead>
+                            <tr>
+                                <th>"Attribute"</th>
+                                <th>"Value Example"</th>
+                                <th>"Behavior & Accessibility"</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"yav:toggle"</td>
+                                <td class="text-oxide">"\"modal-id\""</td>
+                                <td>"Toggles [open] or [hidden] state, manages aria-expanded, ESC key closes"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"yav:click-outside"</td>
+                                <td class="text-oxide">"\"close\""</td>
+                                <td>"Dismisses dialog or popover when clicking anywhere outside target"</td>
+                            </tr>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"yav:group"</td>
+                                <td class="text-oxide">"\"nav-menus\""</td>
+                                <td>"Exclusive popover group: opening one closes all other elements in the group"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"yav:close-on-resize"</td>
+                                <td class="text-oxide">"\"1024\""</td>
+                                <td>"Closes mobile drawers when browser viewport width exceeds threshold"</td>
+                            </tr>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"yav:hotkey"</td>
+                                <td class="text-oxide">"\"cmd+k\""</td>
+                                <td>"Binds global keyboard shortcut with cross-platform Cmd / Ctrl normalisation"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"yav:copy"</td>
+                                <td class="text-oxide">"\"text to copy\""</td>
+                                <td>"Copies string to clipboard; yav:copy-label swaps button text for 2 seconds"</td>
+                            </tr>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"yav:filter"</td>
+                                <td class="text-oxide">"\"input\""</td>
+                                <td>"Client-side search filter targeting selectors (yav:filter-target=\".card\")"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"yav:optimistic"</td>
+                                <td class="text-oxide">"\"like-btn\""</td>
+                                <td>"Applies instant UI mutations before server response with auto-rollback on network failure"</td>
+                            </tr>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"yav:presence-room"</td>
+                                <td class="text-oxide">"\"doc:42\""</td>
+                                <td>"Wires collaborative live presence beacons, cursor tracks, and member count over SSE/WS"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"yav:offline-queue"</td>
+                                <td class="text-oxide">"\"sync-orders\""</td>
+                                <td>"Local-First IndexedDB mutation buffer: auto-drains and merges with CRDT on reconnect"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
             // =========================================================================
@@ -297,7 +299,7 @@ pub fn DocsInteractivity() -> Node {
                 </div>
                 <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"8 built-in themes with cookie & localStorage persistence."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Yav v0.1.4 features a complete zero-dependency multi-theme engine equipped with 8 pre-calibrated themes, instant switching, and compile-time anti-FOUC injection ensuring zero flash of unstyled theme on page reload."
+                    "Yav v0.1.5 features a complete zero-dependency multi-theme engine equipped with 8 pre-calibrated themes, instant switching, and compile-time anti-FOUC injection ensuring zero flash of unstyled theme on page reload."
                 </p>
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
@@ -381,42 +383,44 @@ pub fn DocsInteractivity() -> Node {
                     " pushes server-rendered HTML fragments over WebSockets."
                 </p>
 
-                <table class="dtable">
-                    <thead>
-                        <tr>
-                            <th>"Detected Attributes on Page"</th>
-                            <th>"Injected Micro-Runtime"</th>
-                            <th>"Bundle Overhead"</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"yav:toggle, yav:copy, yav:hotkey, yav:tab, yav:filter"</td>
-                            <td class="text-oxide">"yav-micro-actions"</td>
-                            <td>"~2.1 KB"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"yav:cursor, CursorSpotlight, TiltPlate, Magnetic"</td>
-                            <td class="text-oxide">"yav-cursor-runtime"</td>
-                            <td>"~1.3 KB"</td>
-                        </tr>
-                        <tr class="us">
-                            <td class="text-paper font-semibold">"yav:animate, CountUp, AnimatedBar, TypewriterCode"</td>
-                            <td class="text-oxide">"yav-motion-runtime"</td>
-                            <td>"~1.8 KB"</td>
-                        </tr>
-                        <tr>
-                            <td class="text-paper font-semibold">"yav:state, yav:bind, yav:text, yav:on-click"</td>
-                            <td class="text-oxide">"yav-signals-runtime"</td>
-                            <td>"~0.9 KB"</td>
-                        </tr>
-                        <tr class="us">
-                            <td class="text-ok font-semibold">"None of the above (Static Page)"</td>
-                            <td class="text-ok">"None"</td>
-                            <td class="text-ok font-bold">"0 KB JS"</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-scroll pb-2">
+                    <table class="dtable min-w-[580px]">
+                        <thead>
+                            <tr>
+                                <th>"Detected Attributes on Page"</th>
+                                <th>"Injected Micro-Runtime"</th>
+                                <th>"Bundle Overhead"</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"yav:toggle, yav:copy, yav:hotkey, yav:tab, yav:filter"</td>
+                                <td class="text-oxide">"yav-micro-actions"</td>
+                                <td>"~2.1 KB"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"yav:cursor, CursorSpotlight, TiltPlate, Magnetic"</td>
+                                <td class="text-oxide">"yav-cursor-runtime"</td>
+                                <td>"~1.3 KB"</td>
+                            </tr>
+                            <tr class="us">
+                                <td class="text-paper font-semibold">"yav:animate, CountUp, AnimatedBar, TypewriterCode"</td>
+                                <td class="text-oxide">"yav-motion-runtime"</td>
+                                <td>"~1.8 KB"</td>
+                            </tr>
+                            <tr>
+                                <td class="text-paper font-semibold">"yav:state, yav:bind, yav:text, yav:on-click"</td>
+                                <td class="text-oxide">"yav-signals-runtime"</td>
+                                <td>"~0.9 KB"</td>
+                            </tr>
+                            <tr class="us">
+                                <td class="text-ok font-semibold">"None of the above (Static Page)"</td>
+                                <td class="text-ok">"None"</td>
+                                <td class="text-ok font-bold">"0 KB JS"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </section>
 
             // =========================================================================

@@ -1936,7 +1936,7 @@ dependencies = [
 
 [[package]]
 name = "website"
-version = "0.1.0"
+version = "0.1.5"
 dependencies = [
  "axum",
  "serde_json",
