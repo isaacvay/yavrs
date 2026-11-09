@@ -31,6 +31,8 @@ fingerprint = true
 dev = "yav dev"
 build = "yav build"
 test = "cargo test"
+export = "yav export --output dist --base-url https://yav.rs"
+deploy = "powershell -File ./deploy-cloudflare.ps1"
 
 [assets]
 favicon = "public/favicon.svg"

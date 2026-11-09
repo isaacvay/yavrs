@@ -18,6 +18,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "async-compression"
+version = "0.4.50"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee19bd99b43e3691acbad4e840420a4881cea6c0b66a208125a824f8fd53f5a1"
+dependencies = [
+ "compression-codecs",
+ "compression-core",
+ "pin-project-lite",
+ "tokio",
+]
+
+[[package]]
 name = "atomic-waker"
 version = "1.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -146,6 +158,23 @@ dependencies = [
  "cpufeatures 0.3.1",
  "rand_core",
 ]
+
+[[package]]
+name = "compression-codecs"
+version = "0.4.45"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "98fc98460ba0ad5317075d3632b8dfc45d0be8c4a49347c2a38272019717614a"
+dependencies = [
+ "compression-core",
+ "flate2",
+ "memchr",
+]
+
+[[package]]
+name = "compression-core"
+version = "0.4.33"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6e8ccc4ea9f6acc32d102c0f6d471d11d913ad15f20c04de743374861fa1d414"
 
 [[package]]
 name = "core-foundation"
@@ -1642,6 +1671,7 @@ version = "0.6.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4cfcf7e2740e6fc6d4d688b4ef00650406bb94adf4731e43c096c3a19fe40840"
 dependencies = [
+ "async-compression",
  "bitflags",
  "bytes",
  "futures-core",
@@ -2050,7 +2080,7 @@ checksum = "3ad82d2a33cdc9674dc7465672f271e096168fcdbe0f799d9e6db8c5892679dc"
 
 [[package]]
 name = "yav"
-version = "0.1.3"
+version = "0.1.5"
 dependencies = [
  "yav-build",
  "yav-core",
@@ -2063,7 +2093,7 @@ dependencies = [
 
 [[package]]
 name = "yav-build"
-version = "0.1.3"
+version = "0.1.5"
 dependencies = [
  "flate2",
  "reqwest",
@@ -2077,18 +2107,18 @@ dependencies = [
 
 [[package]]
 name = "yav-core"
-version = "0.1.3"
+version = "0.1.5"
 
 [[package]]
 name = "yav-icons"
-version = "0.1.3"
+version = "0.1.5"
 dependencies = [
  "yav-core",
 ]
 
 [[package]]
 name = "yav-macros"
-version = "0.1.3"
+version = "0.1.5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2097,7 +2127,7 @@ dependencies = [
 
 [[package]]
 name = "yav-router"
-version = "0.1.3"
+version = "0.1.5"
 dependencies = [
  "serde",
  "tracing",
@@ -2106,15 +2136,17 @@ dependencies = [
 
 [[package]]
 name = "yav-server"
-version = "0.1.3"
+version = "0.1.5"
 dependencies = [
  "axum",
  "futures-util",
+ "getrandom 0.2.17",
  "hmac",
  "hyper",
  "serde",
  "serde_json",
  "sha2",
+ "subtle",
  "tokio",
  "tower",
  "tower-http",
@@ -2127,8 +2159,9 @@ dependencies = [
 
 [[package]]
 name = "yav-ui"
-version = "0.1.3"
+version = "0.1.5"
 dependencies = [
+ "serde_json",
  "yav-core",
  "yav-icons",
 ]

@@ -1,0 +1,24 @@
+# Git & Version Control
+.git/
+.gitignore
+
+# Rust Build Artifacts
+target/
+Cargo.lock
+
+# Editor & OS Files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# AI / Antigravity Scratch & Transcripts
+.gemini/
+brain/
+
+# Yav Temporary & Dist Folders
+dist/
+tmp/
+*.log

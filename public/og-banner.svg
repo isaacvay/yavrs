@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0b0d" />
+      <stop offset="100%" stop-color="#141418" />
+    </linearGradient>
+    <linearGradient id="oxideGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#e0592f" />
+      <stop offset="100%" stop-color="#ff7a45" />
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(236,233,227,0.04)" stroke-width="1" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <!-- Outer Editorial Blueprint Border -->
+  <rect x="40" y="40" width="1120" height="550" fill="none" stroke="rgba(236,233,227,0.12)" stroke-width="1" />
+  
+  <!-- Corner crosses -->
+  <path d="M 32 40 L 48 40 M 40 32 L 40 48" stroke="#e0592f" stroke-width="2" />
+  <path d="M 1152 40 L 1168 40 M 1160 32 L 1160 48" stroke="#e0592f" stroke-width="2" />
+  <path d="M 32 590 L 48 590 M 40 582 L 40 598" stroke="#e0592f" stroke-width="2" />
+  <path d="M 1152 590 L 1168 590 M 1160 582 L 1160 598" stroke="#e0592f" stroke-width="2" />
+
+  <!-- Header metadata bar -->
+  <g transform="translate(80, 90)">
+    <circle cx="6" cy="6" r="4" fill="#10b981" />
+    <text x="24" y="10" font-family="'Geist Mono', monospace" font-size="13" letter-spacing="0.1em" fill="rgba(236,233,227,0.6)">YAV FRAMEWORK // EDITION 2026 // PRODUCTION READY</text>
+    <text x="1040" y="10" text-anchor="end" font-family="'Geist Mono', monospace" font-size="13" letter-spacing="0.1em" fill="#e0592f">SYS_OK [v0.1.0]</text>
+    <line x1="0" y1="26" x2="1040" y2="26" stroke="rgba(236,233,227,0.1)" stroke-width="1" />
+  </g>
+
+  <!-- Main Content -->
+  <g transform="translate(80, 220)">
+    <!-- Wordmark -->
+    <text x="0" y="0" font-family="'Geist', -apple-system, sans-serif" font-weight="700" font-size="82" letter-spacing="-0.04em" fill="#ece9e3">
+      yav<tspan fill="#e0592f">.rs</tspan>
+    </text>
+
+    <!-- Subtitle / Tagline -->
+    <text x="0" y="70" font-family="'Geist', -apple-system, sans-serif" font-weight="400" font-size="34" letter-spacing="-0.02em" fill="#ece9e3">
+      A web framework for people who read the <tspan font-family="'Instrument Serif', serif" font-style="italic" fill="#ff7a45">assembly</tspan>.
+    </text>
+
+    <!-- Detailed specs -->
+    <text x="0" y="130" font-family="'Geist', -apple-system, sans-serif" font-size="20" fill="rgba(236,233,227,0.6)" max-width="800">
+      Rust 2021 · Axum 0.8 SSR Engine · Zero Unnecessary Runtime · Editorial Blueprint Design System
+    </text>
+  </g>
+
+  <!-- Feature Pills -->
+  <g transform="translate(80, 470)">
+    <!-- Pill 1 -->
+    <rect x="0" y="0" width="220" height="42" fill="rgba(236,233,227,0.03)" stroke="rgba(236,233,227,0.15)" stroke-width="1" />
+    <text x="20" y="26" font-family="'Geist Mono', monospace" font-size="13" fill="#ece9e3">⚡ 480k req/sec</text>
+
+    <!-- Pill 2 -->
+    <rect x="240" y="0" width="220" height="42" fill="rgba(236,233,227,0.03)" stroke="rgba(236,233,227,0.15)" stroke-width="1" />
+    <text x="260" y="26" font-family="'Geist Mono', monospace" font-size="13" fill="#ece9e3">📦 &lt; 9 MB Release Binary</text>
+
+    <!-- Pill 3 -->
+    <rect x="480" y="0" width="220" height="42" fill="rgba(236,233,227,0.03)" stroke="rgba(236,233,227,0.15)" stroke-width="1" />
+    <text x="500" y="26" font-family="'Geist Mono', monospace" font-size="13" fill="#ece9e3">🛡️ Built-in Security &amp; i18n</text>
+
+    <!-- Command Badge -->
+    <rect x="740" y="0" width="300" height="42" fill="rgba(224,89,47,0.08)" stroke="#e0592f" stroke-width="1" />
+    <text x="760" y="26" font-family="'Geist Mono', monospace" font-size="14" fill="#ff7a45">$ cargo install yav-cli</text>
+  </g>
+</svg>
