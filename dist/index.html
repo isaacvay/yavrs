@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Yav.rs — The web framework for Rust</title>
+<link rel="stylesheet" href="/public/styles.1616c727.css" /><link rel="icon" type="image/svg+xml" href="/public/favicon.d1351192.svg" /><meta name="description" content="A web framework for people who read the assembly. High-performance SSR with Rust 2021, Axum 0.8, and zero unnecessary runtime." />
+<link rel="canonical" href="https://yav.rs/" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://yav.rs/" />
+<meta property="og:title" content="Yav.rs — The web framework for Rust" />
+<meta property="og:description" content="A web framework for people who read the assembly. High-performance SSR with Rust 2021, Axum 0.8, and zero unnecessary runtime." />
+<meta property="og:image" content="https://yav.rs/public/og-banner.png" />
+<meta property="og:site_name" content="Yav.rs" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://yav.rs/" />
+<meta name="twitter:title" content="Yav.rs — The web framework for Rust" />
+<meta name="twitter:description" content="A web framework for people who read the assembly. High-performance SSR with Rust 2021, Axum 0.8, and zero unnecessary runtime." />
+<meta name="twitter:image" content="https://yav.rs/public/og-banner.png" />
+<meta name="theme-color" content="#0b0b0d" />
+<meta name="color-scheme" content="dark" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Yav",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://yav.rs",
+  "description": "A web framework for people who read the assembly. High-performance SSR with Rust 2021, Axum 0.8, and zero unnecessary runtime."
+}
+</script></head>
+<body>
+<div class="page-frame min-h-screen flex flex-col font-sans antialiased"><script>
+document.documentElement.classList.add('dark');
+window.copyText = function (btn, text) {
+  var str = text;
+  if (!str || typeof str !== 'string') {
+    str = btn.getAttribute('data-copy');
+  }
+  if (!str) {
+    var win = btn.closest ? btn.closest('.ide-window, .term-window, .plate') : null;
+    if (win) {
+      var c = win.querySelector('.code');
+      if (c) str = c.innerText || c.textContent;
+    }
+  }
+  if (!str && btn.parentElement) {
+    var codeEl = btn.parentElement.querySelector('code');
+    if (codeEl) str = codeEl.innerText || codeEl.textContent;
+  }
+  if (!str) str = '';
+
+  function fallback(t) {
+    var ta = document.createElement('textarea');
+    ta.value = t;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(str).catch(function () { fallback(str); });
+    } else {
+      fallback(str);
+    }
+  } catch (err) {
+    fallback(str);
+  }
+
+  var el = btn.querySelector ? btn.querySelector('[data-copy-label]') : null;
+  if (!el) el = btn;
+  var svg = btn.querySelector ? btn.querySelector('svg') : null;
+  var prev = el.getAttribute('data-prev-text') || el.textContent;
+  el.setAttribute('data-prev-text', prev);
+
+  el.textContent = 'copied ✓';
+  el.classList.add('copied');
+  btn.classList.add('is-copied');
+  el.style.setProperty('color', '#22c55e', 'important');
+  el.style.fontWeight = '600';
+  btn.style.setProperty('border-color', 'rgba(34, 197, 94, 0.6)', 'important');
+  if (svg) {
+    svg.style.setProperty('color', '#22c55e', 'important');
+    svg.style.setProperty('stroke', '#22c55e', 'important');
+  }
+
+  clearTimeout(btn._copyTimer);
+  btn._copyTimer = setTimeout(function () { 
+    el.textContent = prev; 
+    el.classList.remove('copied');
+    btn.classList.remove('is-copied');
+    el.style.removeProperty('color');
+    el.style.fontWeight = '';
+    btn.style.removeProperty('border-color');
+    if (svg) {
+      svg.style.removeProperty('color');
+      svg.style.removeProperty('stroke');
+    }
+  }, 1600);
+};
+</script><style>
+/* Guaranteed popover positioning right below the 64px header */
+#header-search-container, #lang-switcher-container {
+  align-self: stretch !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+}
+
+#cmd-palette-popover, #lang-menu {
+  display: none;
+  position: absolute !important;
+  top: 100% !important;
+  margin-top: 8px !important;
+  z-index: 9999 !important;
+}
+
+@media (max-width: 639px) {
+  #cmd-palette-popover {
+    position: fixed !important;
+    top: 72px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+
+@media (min-width: 640px) {
+  #cmd-palette-popover {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    margin-top: 8px !important;
+    width: 520px !important;
+  }
+}
+
+#lang-menu {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  margin-top: 8px !important;
+  width: 208px !important;
+}
+
+/* Guaranteed Vivid Emerald Green on copied state */
+[data-copy-label] {
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+[data-copy-label].copied,
+button:hover [data-copy-label].copied,
+button [data-copy-label].copied,
+button.is-copied [data-copy-label],
+button.is-copied:hover [data-copy-label] {
+  color: #22c55e !important;
+  font-weight: 600 !important;
+}
+button.is-copied,
+button.is-copied:hover {
+  border-color: rgba(34, 197, 94, 0.6) !important;
+  background-color: rgba(34, 197, 94, 0.08) !important;
+  color: #22c55e !important;
+}
+button.is-copied svg,
+button.is-copied:hover svg {
+  color: #22c55e !important;
+  stroke: #22c55e !important;
+}
+</style><script id="yav-i18n-payload" type="application/json">{"de":{"nav.architecture":"Architektur","bento.card3.desc":"Yav verwaltet den offiziellen Tailwind-Compiler direkt ohne Node.js oder npm.","metrics.hydration":"Client-Hydration","steps.step1.title":"Yav CLI installieren","sandbox.ttfb":"Simulierte TTFB","bento.card2.title":"Kompilierzeit-RSX-Makro","nav.benchmarks":"Benchmarks","hero.subtitle":"Erstellen Sie produktionsreife Webanwendungen mit kompilierten RSX-Templates, automatischem dateibasiertem Routing und integriertem Tailwind CSS. Kein Node.js. Kein npm. Null Client-Runtime-Overhead.","footer.status":"Alle Systeme betriebsbereit","cta.badge":"Nächste Schritte","nav.components":"Komponenten","steps.step2.title":"Neues Projekt gerüsten","bento.card5.desc":"Vollständiger nativer Zugriff auf Tokio-Tasks, Tower-Middlewares, WebSockets und Sessions.","nav.search":"Schnellsuche...","hero.cta.start":"Erste Schritte (5-Min-Guide)","sandbox.active":"Aktiv","metrics.latency.desc":"Sofortige Time-to-First-Byte","privacy.title":"Datenschutzrichtlinie & Sicherheitsmodell","metrics.hydration.desc":"Keine JavaScript-Laufzeit an den Browser gesendet","bento.badge":"Kerninnovationen","metrics.latency":"Mittlere Latenz","faq.badge":"BEGRÜNDUNG · ARCHITEKTUR-ABWÄGUNGEN · FAQ","banner.released":"v0.1.4 VERÖFFENTLICHT","metrics.throughput.desc":"Anfragen/Sek. auf 8-Kern-Standardhardware","cta.title.line2":"Wochenende behalten.","cta.subtitle":"Treten Sie der nächsten Generation von Full-Stack-Rust-Entwicklern bei. Typsicher, speichersicher und rasend schnell.","sandbox.island.desc":"Kostenlose Client-Interaktion","releases.title":"Releases & Entwicklungs-Changelog","privacy.subtitle":"Yav basiert auf dem Prinzip des minimalen Daten-Footprints. Null Tracking, keine Client-Telemetrie und standardmäßige Sicherheit.","sandbox.verified":"durch rustc verifiziert","cta.title.line1":"Binary deployen. ","bento.card2.desc":"Deklaratives Markup mit der Ergonomie von JSX, unterstützt durch den Rust-Compiler.","showcase.submit":"Projekt per GitHub-PR einreichen","steps.title":"Drei Befehle zu Ihrer ersten App.","metrics.memory":"Arbeitsspeicher","bento.card4.title":"Dateibasiertes Matchit-Routing","releases.subtitle":"Transparente Semver-Entwicklung, Abwärtskompatibilität und Performance-Benchmarks des Yav-Toolchains.","faq.title":"Warum Yav? Architektur & Vergleiche","metrics.throughput":"Durchsatz","banner.text":"Produktionsreifes Axum 0.8, RSX-Kompilierungszeit-Rendering, null JS-Hydration.","steps.badge":"In 60 Sekunden starten","showcase.title":"Mit Yav gebaut. In Produktion erprobt.","sandbox.node":"Node.js-Abhängigkeit:","hero.pill.nohydration":"Null JS-Hydration","sandbox.compiler":"Compiler-Prüfung:","showcase.subtitle":"Von extrem schneller Finanztelemetrie bis zu Edge-Storefronts: Erleben Sie, was Teams ohne JavaScript-Hydration aufbauen.","hero.cta.arch":"Architektur-Deep-Dive","bench.badge":"Echte Benchmarks","hero.pill.rsx":"Kompilierzeit-RSX","metrics.memory.desc":"Schlanker nativer Speicher-Footprint","bento.card1.title":"Server-Side Rendering ohne Hydration","cta.docs":"Dokumentation lesen","cta.title":"Binary deployen. Wochenende behalten.","footer.rendered":"Gerendert mit RSX in 0.12ms","bench.subtitle":"Gemessen mit wrk auf identischen 8-vCPU-Linux-Instanzen mit JSON-Serialisierung.","bento.card5.title":"Kompromissloses Axum 0.8- und Tokio-Fundament","bench.title":"Reine Rechenleistung. Keine Kompromisse.","steps.step3.title":"Dev-Server starten","privacy.badge":"DATENETHIK & TECHNISCHE SICHERHEIT","sandbox.island.title":"Reaktive Status-Insel","hero.pill.engine":"Axum 0.8","banner.action":"Loslegen","steps.step2.desc":"Generiert Layouts, Routen, Stile und Konfigurationen.","bento.title":"Entwickelt für Geschwindigkeit, gebaut für Zuverlässigkeit.","showcase.badge":"PRODUKTIONSNACHWEIS · ECHTE SYSTEME","steps.step3.desc":"Startet Live-Reload, Tailwind-Kompilierung und Browser-Synchronisierung.","nav.overview":"Übersicht","bento.card4.desc":"Intuitive Ordnerstruktur, die zur Kompilierzeit in O(k)-Radix-Bäume übersetzt wird.","cta.github":"Auf GitHub sternen","bento.subtitle":"Alles, was Sie zum Erstellen, Testen und Bereitstellen moderner Websoftware benötigen – ohne anfällige JavaScript-Build-Pipelines.","hero.title.line3":"Das moderne Web-Framework für Rust.","steps.step1.desc":"Installiert die eigenständige yav-Toolchain in Ihrem PATH.","faq.subtitle":"Klare Architekturmotivationen, ehrliche technische Kompromisse und ein direkter Vergleich zwischen Yav, Client-WASM und JS-Frameworks.","releases.badge":"SEMVER-ZEITLEISTE · PRODUKTIONS-CHANGELOG","bento.card1.desc":"Yav eliminiert den Hydration-Overhead: HTML wird direkt im Speicher generiert und interaktive Widgets laufen über schlanke Mikro-Skripte.","hero.title.line2":"Sicher durch Design.","bento.card3.title":"Autonomes Tailwind CSS","hero.title.line1":"Von Natur aus schnell.","nav.docs":"Dokumentation","sandbox.no_xss":"Kein XSS standardmäßig","sandbox.none":"Keine (0 MB)","sandbox.escaping":"HTML-Maskierung:","footer.copyright":"Doppelt lizenziert unter MIT oder Apache-2.0."},"en":{"sandbox.escaping":"HTML Escaping:","bento.card2.title":"Compile-Time RSX Macro","bento.badge":"Core Innovations","cta.title.line1":"Ship the binary. ","steps.step1.desc":"Installs the standalone yav development toolchain onto your PATH.","showcase.title":"Built with Yav. Tested in production.","faq.title":"Why Yav? Architecture & Comparisons","bento.card1.desc":"Traditional JavaScript frameworks render HTML on the server, only to serialize all data and force the browser to parse 500KB+ of JS just to attach event listeners. Yav eliminates this hydration tax: HTML is compiled into direct buffer appends, transmitted instantly, and interactive widgets run via lightweight micro-scripts.","hero.title.line1":"Fast by nature.","cta.github":"Star on GitHub","bento.subtitle":"Everything required to build, test, and ship modern web software—without the fragility of multi-tier JavaScript build pipelines.","showcase.badge":"PRODUCTION PROOF · REAL-WORLD SYSTEMS","footer.rendered":"Rendered with RSX in 0.12ms","bento.card4.desc":"Drop route handlers in src/routes/ with intuitive dynamic parameters like [id].rs. At build time, Yav compiles your entire folder hierarchy into high-speed Radix routing trees with constant-time O(k) lookup.","releases.title":"Releases & Engineering Changelog","nav.search":"Quick search...","steps.step2.title":"Scaffold New Project","steps.step1.title":"Install the Yav CLI","nav.benchmarks":"Benchmarks","nav.docs":"Docs","banner.text":"Production-grade Axum 0.8, RSX compile-time rendering, zero JS hydration.","hero.pill.nohydration":"Zero JS Hydration","sandbox.verified":"rustc verified","releases.subtitle":"Transparent semver progression, backward-compatibility invariants, and runtime performance benchmarks across every published edition of the Yav toolchain.","sandbox.none":"None (0 MB)","sandbox.no_xss":"Zero-XSS by default","cta.subtitle":"Join the next generation of full-stack Rust developers. Type safe, memory safe, and blazingly fast.","sandbox.active":"Active","privacy.badge":"DATA ETHICS & TECHNICAL SECURITY SPECIFICATION","steps.step3.title":"Run Dev Server","sandbox.node":"Node.js dependency:","bento.card3.desc":"Yav manages the official standalone Tailwind compiler binary directly. It detects CSS changes, triggers instant incremental re-compilations, and bundles production styles with automatic content hashing.","hero.cta.arch":"Architecture deep dive","bento.card4.title":"File-System Matchit Router","banner.action":"Get Started","metrics.memory.desc":"Lightweight native memory footprint","hero.title.line2":"Safe by design.","metrics.latency":"Median Latency","bento.card1.title":"Zero-Hydration Server-Side Rendering","hero.cta.start":"Get Started (5-min guide)","steps.title":"Three commands to your first app.","bento.title":"Engineered for speed, built for reliability.","bento.card2.desc":"Write intuitive declarative markup with the ergonomics of JSX, backed by the full power of the Rust compiler. Type-checked attributes, automatic HTML escaping, and zero runtime template parsing.","metrics.throughput.desc":"req/sec on standard 8-core hardware","faq.subtitle":"Clear architectural motivations, honest technical trade-offs, and an unvarnished comparison between Yav, client-side WASM, and JavaScript full-stack frameworks.","hero.subtitle":"Build production-grade web applications with compiled RSX templates, automatic file-system routing, and built-in Tailwind CSS. No Node.js. No npm. Zero client runtime overhead.","cta.docs":"Read Documentation","nav.components":"Components","bench.title":"Raw metal performance. Zero compromises.","hero.pill.engine":"Axum 0.8","banner.released":"v0.1.4 RELEASED","bench.subtitle":"Tested with wrk on identical 8 vCPU Linux instances rendering dynamic templates with session validation and JSON serialization.","bento.card5.desc":"Yav is not a black-box wrapper that locks you in. You have complete native access to Tokio multi-threaded asynchronous tasks, Axum extractors, Tower middleware layers, WebSockets, Server-Sent Events, and signed encrypted cookie sessions.","privacy.subtitle":"Yav is built on the principle of minimal data footprint. We collect zero tracking analytics, transmit no client-side telemetry, and enforce cryptographic security by default.","cta.title.line2":"Keep the weekend.","cta.title":"Ship the binary. Keep the weekend.","sandbox.compiler":"Compiler check:","releases.badge":"SEMVER TIMELINE · PRODUCTION CHANGELOG","steps.step3.desc":"Starts live reload, Tailwind compilation, and browser synchronization.","nav.architecture":"Architecture","bench.badge":"Real-World Benchmarks","sandbox.island.title":"Reactive State Island","faq.badge":"RATIONALE · ARCHITECTURE TRADE-OFFS · FAQS","bento.card3.title":"Autonomous Tailwind CSS","nav.overview":"Overview","cta.badge":"Next steps","hero.title.line3":"The modern web framework for Rust.","steps.badge":"Get Started in 60 Seconds","footer.status":"All Systems Operational","metrics.latency.desc":"Instantaneous time-to-first-byte","metrics.hydration":"Client Hydration","footer.copyright":"Dual-licensed under MIT or Apache-2.0.","steps.step2.desc":"Generates all layouts, routes, styles, and package configuration.","metrics.hydration.desc":"Zero JavaScript runtime sent to browser","showcase.subtitle":"From micro-second financial telemetry to edge-deployed e-commerce storefronts, see what engineering teams build when JavaScript hydration taxes and bloated runtimes are eliminated.","sandbox.ttfb":"Simulated TTFB","metrics.memory":"Idle Memory","privacy.title":"Privacy Policy & Security Model","hero.pill.rsx":"Compile-Time RSX","metrics.throughput":"Throughput","bento.card5.title":"Uncompromised Axum 0.8 & Tokio Foundation","showcase.submit":"Submit Showcase via GitHub PR","sandbox.island.desc":"Zero-cost client interaction"},"fr":{"footer.status":"Tous les systèmes opérationnels","bento.card1.desc":"Les frameworks JavaScript traditionnels sérialisent toutes les données et forcent le navigateur à parser 500 Ko+ de JS uniquement pour attacher des écouteurs. Yav élimine cette taxe d'hydratation : le HTML est directement concaténé en mémoire et les widgets interactifs fonctionnent via des micro-scripts légers.","sandbox.active":"Actif","steps.step3.desc":"Lance le rechargement à chaud, la compilation Tailwind et la synchronisation navigateur.","hero.title.line1":"Rapide par nature.","banner.action":"Commencer","steps.badge":"Démarrez en 60 secondes","footer.rendered":"Rendu avec RSX en 0.12ms","cta.github":"Mettre une étoile sur GitHub","sandbox.verified":"vérifié par rustc","bento.card4.title":"Routeur Matchit par système de fichiers","sandbox.escaping":"Échappement HTML :","privacy.subtitle":"Yav repose sur le principe de l'empreinte minimale. Zéro pixel traceur, aucune télémétrie transmise et sécurité cryptographique par défaut.","bento.badge":"Innovations Majeures","metrics.hydration":"Hydratation client","nav.overview":"Aperçu","bento.card4.desc":"Déposez vos gestionnaires dans src/routes/ avec des paramètres dynamiques comme [id].rs. Lors de la compilation, Yav transforme votre arborescence en arbres Radix ultra-rapides en O(k).","metrics.latency.desc":"Délai de premier octet instantané","nav.benchmarks":"Performances","releases.title":"Versions et Journal des Modifications","bento.card2.title":"Macro RSX au moment du build","bench.subtitle":"Mesuré avec wrk sur instances Linux 8 vCPU identiques avec validation de session et sérialisation JSON.","metrics.hydration.desc":"Zéro runtime JavaScript envoyé au navigateur","sandbox.island.desc":"Interaction client à coût zéro","bench.badge":"Benchmarks Réels","hero.pill.rsx":"RSX au build","bento.card2.desc":"Rédigez un balisage déclaratif avec l'ergonomie de JSX, renforcé par la puissance du compilateur Rust. Attributs typés, échappement HTML automatique et zéro parsing de gabarit à l'exécution.","sandbox.none":"Aucune (0 Mo)","bento.subtitle":"Tout le nécessaire pour créer, tester et livrer des logiciels web modernes—sans la fragilité des pipelines de build JavaScript.","sandbox.no_xss":"Zéro faille XSS par défaut","metrics.latency":"Latence médiane","faq.badge":"MOTIVATIONS · COMPROMIS D'ARCHITECTURE · FAQ","hero.cta.start":"Démarrer (guide 5 min)","bench.title":"Performance brute. Zéro compromis.","sandbox.ttfb":"TTFB simulé","metrics.memory":"Mémoire au repos","showcase.title":"Conçu avec Yav. Éprouvé en production.","faq.title":"Pourquoi Yav ? Architecture et Comparatifs","bento.title":"Conçu pour la vitesse, taillé pour la fiabilité.","steps.title":"Trois commandes vers votre première application.","cta.subtitle":"Rejoignez la nouvelle génération de développeurs Rust full-stack. Typé, sûr en mémoire et ultra-rapide.","sandbox.island.title":"Îlot d'état réactif","steps.step3.title":"Démarrer le serveur dev","nav.docs":"Documentation","cta.title":"Livrez le binaire. Gardez votre week-end.","faq.subtitle":"Motivations architecturales claires, compromis techniques honnêtes et comparatif direct entre Yav, WASM côté client et frameworks JavaScript.","nav.search":"Recherche rapide...","hero.subtitle":"Développez des applications web robustes avec des gabarits RSX compilés, un routage par arborescence de fichiers et Tailwind CSS intégré. Sans Node.js. Sans npm. Zéro surcoût d'exécution client.","bento.card3.title":"Tailwind CSS autonome","steps.step2.desc":"Génère l'ensemble des layouts, routes, styles et manifestes.","nav.architecture":"Architecture","cta.title.line2":"Gardez votre week-end.","steps.step2.title":"Générer un nouveau projet","bento.card5.desc":"Yav n'est pas une boîte noire limitante. Vous conservez l'accès natif complet aux tâches asynchrones Tokio, extracteurs Axum, couches middleware Tower, WebSockets, Server-Sent Events et sessions signées HMAC.","metrics.throughput.desc":"req/sec sur machine standard 8 cœurs","bento.card5.title":"Fondation Axum 0.8 & Tokio sans compromis","cta.docs":"Lire la documentation","metrics.throughput":"Débit","sandbox.node":"Dépendance Node.js :","steps.step1.desc":"Installe la chaîne d'outils standalone yav sur votre PATH.","showcase.submit":"Proposer un projet via GitHub PR","showcase.subtitle":"De la télémétrie financière ultra-rapide aux boutiques e-commerce déployées à l'edge, découvrez ce que les équipes construisent sans le fardeau de l'hydratation JavaScript.","privacy.badge":"ÉTHIQUE DES DONNÉES & SÉCURITÉ TECHNIQUE","showcase.badge":"PREUVES DE PRODUCTION · SYSTÈMES RÉELS","releases.subtitle":"Progression semver rigoureuse, garanties de rétrocompatibilité et mesures de performance de l'écosystème Yav.","metrics.memory.desc":"Empreinte mémoire native ultra-légère","sandbox.compiler":"Vérification compilateur :","privacy.title":"Politique de Confidentialité & Modèle de Sécurité","hero.title.line3":"Le framework web moderne pour Rust.","hero.pill.engine":"Axum 0.8","hero.title.line2":"Sûr par conception.","steps.step1.title":"Installer la CLI Yav","hero.cta.arch":"Explorer l'architecture","bento.card3.desc":"Yav gère directement le binaire officiel standalone de Tailwind. Il détecte les modifications de styles, déclenche des recompilations incrémentales instantanées et produit des bundles minifiés avec hachage de contenu.","cta.badge":"Déploiement","hero.pill.nohydration":"Zéro hydratation JS","banner.released":"v0.1.4 DISPONIBLE","footer.copyright":"Sous double licence MIT ou Apache-2.0.","banner.text":"Axum 0.8 de niveau production, rendu RSX au build, zéro hydratation JS.","bento.card1.title":"Rendu serveur sans hydratation","cta.title.line1":"Livrez le binaire. ","nav.components":"Composants","releases.badge":"HISTORIQUE SEMVER · CHANGELOG DE PRODUCTION"},"es":{"nav.docs":"Documentación","bento.card2.title":"Macro RSX en tiempo de compilación","cta.title.line2":"Conserva tu fin de semana.","hero.pill.nohydration":"Cero hidratación JS","bench.badge":"Pruebas de Rendimiento Reales","banner.released":"v0.1.4 PUBLICADO","bench.title":"Rendimiento puro. Cero concesiones.","showcase.title":"Creado con Yav. Probado en producción.","hero.title.line2":"Seguro por diseño.","bento.badge":"Innovaciones Clave","nav.architecture":"Arquitectura","sandbox.ttfb":"TTFB simulado","sandbox.node":"Dependencia de Node.js:","cta.subtitle":"Únase a la nueva generación de desarrolladores full-stack de Rust. Tipado seguro, seguridad de memoria y ultrarrápido.","cta.badge":"Siguiente paso","releases.badge":"LÍNEA TEMPORAL SEMVER · REGISTRO DE CAMBIOS","footer.status":"Todos los sistemas operativos","metrics.latency":"Latencia mediana","hero.pill.engine":"Axum 0.8","faq.title":"¿Por qué Yav? Arquitectura y Comparativas","hero.subtitle":"Cree aplicaciones web de nivel de producción con plantillas RSX compiladas, enrutamiento automático por sistema de archivos y Tailwind CSS integrado. Sin Node.js. Sin npm. Cero sobrecarga del cliente.","bento.card5.title":"Base sólida de Axum 0.8 y Tokio","metrics.hydration":"Hidratación del cliente","showcase.submit":"Enviar proyecto vía GitHub PR","sandbox.verified":"verificado por rustc","metrics.throughput":"Rendimiento","sandbox.compiler":"Verificación del compilador:","showcase.badge":"PRUEBA EN PRODUCCIÓN · SISTEMAS REALES","bento.card5.desc":"Acceso nativo completo a tareas de Tokio, middlewares de Tower, WebSockets y sesiones seguras.","hero.cta.start":"Comenzar (guía de 5 min)","steps.step1.desc":"Instala la herramienta de desarrollo yav en su PATH.","nav.components":"Componentes","hero.title.line3":"El framework web moderno para Rust.","bench.subtitle":"Medido con wrk en instancias Linux de 8 vCPU idénticas con serialización JSON.","cta.github":"Dar estrella en GitHub","cta.docs":"Leer la documentación","nav.search":"Búsqueda rápida...","metrics.hydration.desc":"Cero tiempo de ejecución JavaScript al navegador","metrics.throughput.desc":"req/sec en hardware estándar de 8 núcleos","bento.card4.desc":"Estructura intuitiva de carpetas convertida en tiempo de compilación en árboles Radix ultrarrápidos.","releases.subtitle":"Progresión semver transparente, garantías de compatibilidad y rendimiento del ecosistema Yav.","sandbox.island.desc":"Interacción del cliente sin coste","faq.subtitle":"Motivaciones claras, compromisos técnicos honestos y comparativa directa entre Yav, WASM y frameworks JavaScript.","privacy.subtitle":"Yav se basa en una huella de datos mínima. Cero análisis de rastreo, sin telemetría y seguridad criptográfica por defecto.","metrics.memory.desc":"Huella de memoria nativa ultraligera","steps.step3.desc":"Inicia recarga en vivo, compilación de Tailwind y sincronización.","bento.card1.title":"Renderizado en servidor sin hidratación","bento.title":"Diseñado para la velocidad, construido para la confiabilidad.","banner.text":"Axum 0.8 de nivel de producción, renderizado RSX en compilación, cero hidratación JS.","footer.rendered":"Rendered con RSX en 0.12ms","cta.title.line1":"Despliega el binario. ","metrics.latency.desc":"Tiempo hasta el primer byte instantáneo","steps.step2.desc":"Genera la estructura completa de layouts, rutas y estilos.","sandbox.no_xss":"Cero XSS por defecto","steps.step3.title":"Iniciar servidor de desarrollo","bento.card2.desc":"Escriba marcado declarativo con la ergonomía de JSX, respaldado por la potencia del compilador de Rust.","hero.pill.rsx":"RSX en compilación","privacy.title":"Política de Privacidad y Modelo de Seguridad","bento.card4.title":"Enrutador Matchit por sistema de archivos","privacy.badge":"ÉTICA DE DATOS Y ESPECIFICACIÓN DE SEGURIDAD","nav.benchmarks":"Rendimiento","hero.cta.arch":"Explorar arquitectura","sandbox.active":"Activo","sandbox.island.title":"Isla de estado reactivo","bento.subtitle":"Todo lo necesario para construir, probar y desplegar software web moderno sin herramientas complejas de JavaScript.","footer.copyright":"Con doble licencia MIT o Apache-2.0.","bento.card3.title":"Tailwind CSS autónomo","bento.card3.desc":"Yav gestiona el compilador oficial de Tailwind directamente sin requerir Node.js ni npm.","banner.action":"Comenzar","steps.badge":"Empiece en 60 segundos","steps.step1.title":"Instalar la CLI de Yav","hero.title.line1":"Rápido por naturaleza.","steps.step2.title":"Crear nuevo proyecto","showcase.subtitle":"Desde telemetría financiera hasta tiendas en el edge, descubra lo que los equipos construyen sin el coste de hidratación JavaScript.","steps.title":"Tres comandos para su primera aplicación.","sandbox.none":"Ninguna (0 MB)","faq.badge":"JUSTIFICACIÓN · COMPROMISOS TÉCNICOS · PREGUNTAS FRECUENTES","nav.overview":"Visión general","bento.card1.desc":"Yav elimina el coste de hidratación: el HTML se genera directamente en buffers contiguos de memoria y los widgets interactivos se ejecutan mediante micro-scripts livianos.","sandbox.escaping":"Escape HTML:","cta.title":"Despliega el binario. Conserva tu fin de semana.","metrics.memory":"Memoria inactiva","releases.title":"Versiones y Registro de Cambios de Ingeniería"}}</script><div class="rails" aria-hidden="true"></div><header id="site-header" class="site-header sticky top-0 z-40 w-full"><div class="wrap flex h-16 items-center justify-between gap-6"><a href="/" class="flex items-center gap-3" aria-label="Yav home"><img src="/public/favicon.svg" class="w-6 h-6" alt="" /><span class="text-[16px] font-semibold tracking-[-0.03em] text-paper">yav<span class="text-dim font-normal">.rs</span></span></a><nav class="hidden lg:flex items-center" aria-label="Primary"><a href="/" data-nav="" class="nav-link"><span class="idx">01</span><span data-i18n="nav.overview">Overview</span></a><a href="/about" data-nav="" class="nav-link"><span class="idx">02</span><span data-i18n="nav.architecture">Architecture</span></a><a href="/docs" data-nav="" class="nav-link"><span class="idx">03</span><span data-i18n="nav.docs">Docs</span></a><a href="/benchmarks" data-nav="" class="nav-link"><span class="idx">04</span><span data-i18n="nav.benchmarks">Benchmarks</span></a><a href="/components" data-nav="" class="nav-link"><span class="idx">05</span><span data-i18n="nav.components">Components</span></a></nav><div class="self-stretch flex items-center gap-2"><div class="relative self-stretch flex items-center" id="header-search-container"><button id="header-search-btn" onclick="window.toggleCmdPalette()" class="flex items-center gap-2.5 h-[34px] px-2.5 md:pl-3 md:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2" title="Search documentation (Ctrl+K)" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg><span class="hidden md:inline" data-i18n="nav.search">Search</span><kbd class="kbd hidden md:inline-flex text-[10px]">Ctrl K</kbd></button><div id="cmd-palette-popover" class="popover-dropdown search-popover-mobile search-popover-desktop plate bg-ink-2 shadow-[0_24px_70px_rgba(0,0,0,0.95)] border border-rule overflow-hidden" onclick="event.stopPropagation()"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="flex items-center px-3.5 border-b border-rule bg-sunk"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide mr-2.5 shrink-0"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg><input id="cmd-palette-input" type="text" placeholder="Search documentation, routes, commands..." class="w-full h-11 bg-transparent text-sm text-paper placeholder-dim focus:outline-none font-sans" oninput="filterCommands(this.value)" autocomplete="off" /><button onclick="window.closeCmdPalette()" class="text-dim hover:text-paper ml-2 text-xs font-mono p-1 cursor-pointer" title="Close (ESC)"><kbd class="kbd text-[10px]">ESC</kbd></button></div><div class="p-1.5 max-h-[340px] overflow-y-auto space-y-0.5 text-xs font-sans" id="cmd-palette-list"><div class="px-2.5 pt-2 pb-1 label text-[10px] text-dim font-mono">01 Index Navigation</div><a href="/" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">01</span><span class="font-medium">Overview / Homepage</span></div><span class="font-mono text-[11px] text-dim">/</span></a><a href="/about" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">02</span><span class="font-medium">Architecture &amp; Tokio Engine</span></div><span class="font-mono text-[11px] text-dim">/about</span></a><a href="/docs" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">03</span><span class="font-medium">Documentation &amp; Quickstart</span></div><span class="font-mono text-[11px] text-dim">/docs</span></a><a href="/benchmarks" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">04</span><span class="font-medium">Verified Benchmarks</span></div><span class="font-mono text-[11px] text-dim">/benchmarks</span></a><a href="/components" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">05</span><span class="font-medium">UI Components &amp; Icons</span></div><span class="font-mono text-[11px] text-dim">/components</span></a><a href="/showcase" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">06</span><span class="font-medium">Production Showcase</span></div><span class="font-mono text-[11px] text-dim">/showcase</span></a><a href="/faq" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">07</span><span class="font-medium">Why Yav? / FAQ</span></div><span class="font-mono text-[11px] text-dim">/faq</span></a><a href="/releases" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">08</span><span class="font-medium">Releases &amp; Changelog</span></div><span class="font-mono text-[11px] text-dim">/releases</span></a><a href="/privacy" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">09</span><span class="font-medium">Privacy &amp; Security Model</span></div><span class="font-mono text-[11px] text-dim">/privacy</span></a><div class="px-2.5 pt-3 pb-1 label text-[10px] text-dim font-mono">02 Enterprise Architecture &amp; Protocols</div><a href="/docs#ai-mcp" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-oxide font-mono text-[11px]">✦</span><span class="font-medium">AI SDK &amp; Model Context Protocol (MCP)</span></div><span class="font-mono text-[11px] text-dim">/docs#ai-mcp</span></a><a href="/docs#passkeys-rebac" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-oxide font-mono text-[11px]">✦</span><span class="font-medium">WebAuthn Passkeys &amp; ReBAC Zanzibar</span></div><span class="font-mono text-[11px] text-dim">/docs#passkeys-rebac</span></a><a href="/docs#resilience" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-oxide font-mono text-[11px]">✦</span><span class="font-medium">Resilience: Circuit Breaker &amp; XFetch</span></div><span class="font-mono text-[11px] text-dim">/docs#resilience</span></a><a href="/docs#modern-protocols" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-oxide font-mono text-[11px]">✦</span><span class="font-medium">GraphQL, TurboStream &amp; Tus Resumable</span></div><span class="font-mono text-[11px] text-dim">/docs#modern-protocols</span></a><a href="/components#charts" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-ok font-mono text-[11px]">⬡</span><span class="font-medium">Enterprise SVG Charts &amp; Heatmaps</span></div><span class="font-mono text-[11px] text-dim">/components#charts</span></a><a href="/components#enterprise" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-ok font-mono text-[11px]">⬡</span><span class="font-medium">DataGrid, Kanban (LexoRank) &amp; FlowCanvas</span></div><span class="font-mono text-[11px] text-dim">/components#enterprise</span></a><a href="/components#visual-widgets" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-ok font-mono text-[11px]">⬡</span><span class="font-medium">3D Mesh Viewer &amp; Reactive Spreadsheet</span></div><span class="font-mono text-[11px] text-dim">/components#visual-widgets</span></a><div class="px-2.5 pt-3 pb-1 label text-[10px] text-dim font-mono">03 Developer Actions</div><button onclick="navigator.clipboard.writeText(&#x27;cargo install yav-cli&#x27;); alertNotification(&#x27;Copied: cargo install yav-cli&#x27;); window.closeCmdPalette();" class="cmd-item w-full flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono rounded"><div class="flex items-center gap-2.5"><span class="text-oxide">$</span><span class="text-[12px] text-paper">cargo install yav-cli</span></div><span class="text-[10px] text-oxide font-medium">copy</span></button><button onclick="navigator.clipboard.writeText(&#x27;yav new my-app&#x27;); alertNotification(&#x27;Copied: yav new my-app&#x27;); window.closeCmdPalette();" class="cmd-item w-full flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono rounded"><div class="flex items-center gap-2.5"><span class="text-oxide">$</span><span class="text-[12px] text-paper">yav new my-app</span></div><span class="text-[10px] text-dim">scaffold</span></button><a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors rounded"><div class="flex items-center gap-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim"><path d="M3.5 15.668q.675.081 1 .618c.326.537 1.537 2.526 2.913 2.526H9.5m5.672-3.513q.823 1.078.823 1.936V21m-5.625-5.609q-.87.954-.869 1.813V21"/><path d="M15.172 15.299c1.202-.25 2.293-.682 3.14-1.316 1.448-1.084 2.188-2.758 2.188-4.411 0-1.16-.44-2.243-1.204-3.16-.425-.511.819-3.872-.286-3.359-1.105.514-2.725 1.198-3.574.947-.909-.268-1.9-.416-2.936-.416-.9 0-1.766.111-2.574.317-1.174.298-2.296-.363-3.426-.848-1.13-.484-.513 3.008-.849 3.422C4.921 7.38 4.5 8.44 4.5 9.572c0 1.653.895 3.327 2.343 4.41.965.722 2.174 1.183 3.527 1.41"/></svg><span class="font-medium">GitHub Repository</span></div><span class="font-mono text-[11px] text-dim">↗</span></a><div id="cmd-no-results" class="hidden p-6 text-center text-dim font-mono text-xs">No matching routes or commands found.</div></div><div class="px-3.5 py-1.5 bg-sunk border-t border-rule flex items-center justify-between text-[11px] text-dim font-mono"><span class="flex items-center gap-1.5"><span class="text-oxide">✦</span><span class="text-mute text-[10px]">Editorial Command Bar</span></span><span class="text-mute text-[10px]">ESC to close</span></div></div><div id="cmd-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-12 opacity-0 transition-all duration-300 pointer-events-none"><div class="px-4 py-2.5 plate bg-sunk text-paper text-xs font-mono flex items-center gap-2.5 border border-rule shadow-xl"><span class="dot dot-ok"></span><span id="cmd-notification-text">Action complete</span></div></div><script>
+                function alertNotification(msg) {
+                    var toast = document.getElementById('cmd-notification');
+                    var text = document.getElementById('cmd-notification-text');
+                    if (!toast || !text) return;
+                    text.innerText = msg;
+                    toast.classList.remove('translate-y-12', 'opacity-0');
+                    toast.classList.add('translate-y-0', 'opacity-100');
+                    setTimeout(function() {
+                        toast.classList.remove('translate-y-0', 'opacity-100');
+                        toast.classList.add('translate-y-12', 'opacity-0');
+                    }, 2000);
+                }
+
+                function filterCommands(query) {
+                    var q = (query || '').toLowerCase().trim();
+                    var items = document.querySelectorAll('#cmd-palette-list .cmd-item');
+                    var visible = 0;
+                    items.forEach(function(el) {
+                        var text = (el.innerText || '').toLowerCase();
+                        if (!q || text.indexOf(q) !== -1) {
+                            el.style.display = 'flex';
+                            visible++;
+                        } else {
+                            el.style.display = 'none';
+                        }
+                    });
+                    var empty = document.getElementById('cmd-no-results');
+                    if (empty) {
+                        if (visible === 0) {
+                            empty.classList.remove('hidden');
+                        } else {
+                            empty.classList.add('hidden');
+                        }
+                    }
+                }
+                </script></div><div class="relative self-stretch flex items-center text-left" id="lang-switcher-container"><button id="lang-btn" onclick="window.toggleLangMenu()" class="inline-flex items-center gap-1.5 h-[34px] px-2.5 border border-rule hover:border-oxide/50 text-[12px] font-mono text-paper-2 hover:text-paper transition-colors cursor-pointer bg-ink-2" title="Select Language" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><circle cx="12" cy="12" r="10" /> <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /> <path d="M2 12h20" /></svg><span id="lang-current-label" class="font-bold">EN</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3 h-3 text-dim"><path d="m6 9 6 6 6-6" /></svg></button><div id="lang-menu" class="popover-dropdown lang-popover plate bg-ink-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] border border-rule overflow-hidden" onclick="event.stopPropagation()"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="px-3 py-2 label text-[10px] border-b border-rule bg-sunk flex items-center justify-between"><span>Select Locale</span><span class="font-mono text-[9px] text-oxide">i18n</span></div><div class="p-1 space-y-0.5"><button onclick="setLanguage(&#x27;en&#x27;)" class="lang-option w-full flex items-center justify-between px-3 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono text-xs rounded" data-locale="en"><span class="flex items-center gap-2.5"><span class="text-xs font-semibold text-paper">US</span><span>English</span></span><span class="text-[10px] font-mono text-oxide font-bold">DEFAULT</span></button><button onclick="setLanguage(&#x27;fr&#x27;)" class="lang-option w-full flex items-center justify-between px-3 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono text-xs rounded" data-locale="fr"><span class="flex items-center gap-2.5"><span class="text-xs font-semibold text-paper">FR</span><span>Français</span></span><span class="text-[10px] font-mono text-dim">fr</span></button><button onclick="setLanguage(&#x27;es&#x27;)" class="lang-option w-full flex items-center justify-between px-3 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono text-xs rounded" data-locale="es"><span class="flex items-center gap-2.5"><span class="text-xs font-semibold text-paper">ES</span><span>Español</span></span><span class="text-[10px] font-mono text-dim">es</span></button><button onclick="setLanguage(&#x27;de&#x27;)" class="lang-option w-full flex items-center justify-between px-3 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono text-xs rounded" data-locale="de"><span class="flex items-center gap-2.5"><span class="text-xs font-semibold text-paper">DE</span><span>Deutsch</span></span><span class="text-[10px] font-mono text-dim">de</span></button></div></div><script>
+                function setLanguage(lang) {
+                    localStorage.setItem('yav_lang', lang);
+                    document.cookie = 'yav_lang=' + lang + '; path=/; max-age=31536000';
+                    applyLanguage(lang);
+                    if (window.closeLangMenu) window.closeLangMenu();
+                }
+
+                function applyLanguage(lang) {
+                    var currentLabel = document.getElementById('lang-current-label');
+                    if (currentLabel) {
+                        currentLabel.innerText = lang.toUpperCase();
+                    }
+                    document.documentElement.lang = lang;
+
+                    var i18nScript = document.getElementById('yav-i18n-payload');
+                    if (!i18nScript) return;
+
+                    try {
+                        var dict = JSON.parse(i18nScript.textContent);
+                        var translations = dict[lang] || dict['en'];
+                        if (!translations) return;
+
+                        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                            var key = el.getAttribute('data-i18n');
+                            if (translations[key]) {
+                                el.innerText = translations[key];
+                            }
+                        });
+
+                        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+                            var key = el.getAttribute('data-i18n-placeholder');
+                            if (translations[key]) {
+                                el.placeholder = translations[key];
+                            }
+                        });
+                    } catch(e) {
+                        console.error('Failed to parse i18n payload', e);
+                    }
+                }
+
+                (function() {
+                    function init() {
+                        var savedLang = localStorage.getItem('yav_lang') || 'en';
+                        applyLanguage(savedLang);
+                    }
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', init);
+                    } else {
+                        init();
+                    }
+                })();
+                </script></div><a id="header-github-link" href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M3.5 15.668q.675.081 1 .618c.326.537 1.537 2.526 2.913 2.526H9.5m5.672-3.513q.823 1.078.823 1.936V21m-5.625-5.609q-.87.954-.869 1.813V21"/><path d="M15.172 15.299c1.202-.25 2.293-.682 3.14-1.316 1.448-1.084 2.188-2.758 2.188-4.411 0-1.16-.44-2.243-1.204-3.16-.425-.511.819-3.872-.286-3.359-1.105.514-2.725 1.198-3.574.947-.909-.268-1.9-.416-2.936-.416-.9 0-1.766.111-2.574.317-1.174.298-2.296-.363-3.426-.848-1.13-.484-.513 3.008-.849 3.422C4.921 7.38 4.5 8.44 4.5 9.572c0 1.653.895 3.327 2.343 4.41.965.722 2.174 1.183 3.527 1.41"/></svg></a><a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden sm:inline-flex">Get started<span class="arr">→</span></a><button id="mobile-menu-btn" class="lg:hidden inline-flex items-center justify-center w-[34px] h-[34px] text-paper border border-[rgba(236,233,227,0.14)] bg-ink-2 hover:border-oxide/50 transition-colors cursor-pointer" aria-label="Toggle navigation menu" aria-expanded="false"><span id="menu-icon-open"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M4 5h16" /> <path d="M4 12h16" /> <path d="M4 19h16" /></svg></span><span id="menu-icon-close" class="hidden"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></svg></span></button></div></div><nav id="mobile-nav" class="hidden lg:hidden border-t border-rule bg-ink/95 backdrop-blur-xl shadow-2xl transition-all duration-200 opacity-0 -translate-y-2" aria-label="Mobile Navigation"><div class="wrap py-6 space-y-6 max-h-[calc(100vh-4.5rem)] overflow-y-auto"><button onclick="closeMobileNav(); openCmdPalette();" class="w-full flex items-center justify-between h-11 px-3.5 bg-ink-2 border border-rule text-dim text-xs font-mono cursor-pointer hover:border-oxide/50 transition-colors"><span class="flex items-center gap-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg><span class="text-mute">Search documentation &amp; symbols...</span></span><kbd class="kbd text-[10px]">Ctrl K</kbd></button><div class="space-y-2"><div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2">01 · Framework Architecture</div><div class="grid gap-1.5"><a href="/" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">01</span><span class="font-medium">Overview</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a><a href="/about" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">02</span><span class="font-medium">Architecture &amp; Tokio Engine</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a><a href="/docs" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">03</span><span class="font-medium">Engineering Documentation</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a><a href="/benchmarks" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">04</span><span class="font-medium">Verified Benchmarks (124k req/s)</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a><a href="/components" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">05</span><span class="font-medium">UI Components &amp; Icons</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a></div></div><div class="space-y-2"><div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2">02 · Ecosystem &amp; Resources</div><div class="grid grid-cols-2 gap-2 text-xs"><a href="/showcase" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group"><div class="flex items-center gap-2 text-paper font-semibold group-hover:text-oxide transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" /> <circle cx="12" cy="8" r="6" /></svg><span>Showcase</span></div><p class="text-[11px] text-mute">Production systems</p></a><a href="/faq" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group"><div class="flex items-center gap-2 text-paper font-semibold group-hover:text-oxide transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /></svg><span>Why Yav?</span></div><p class="text-[11px] text-mute">Matrix &amp; FAQs</p></a><a href="/releases" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group"><div class="flex items-center gap-2 text-paper font-semibold group-hover:text-ok transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-ok"><path d="M15 6a9 9 0 0 0-9 9V3" /> <circle cx="18" cy="6" r="3" /> <circle cx="6" cy="18" r="3" /></svg><span>Changelog</span></div><p class="text-[11px] text-mute">v0.1.4 stable</p></a><a href="/privacy" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group"><div class="flex items-center gap-2 text-paper font-semibold group-hover:text-paper transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-dim"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></svg><span>Security</span></div><p class="text-[11px] text-mute">Zero tracking</p></a></div></div><div class="p-3.5 plate bg-ink-2 flex items-center justify-between text-xs font-mono"><div class="flex items-center gap-2"><span class="text-oxide font-bold">$</span><span class="text-paper">cargo install yav-cli</span></div><button onclick="copyText(this, &#x27;cargo install yav-cli&#x27;)" class="px-2.5 py-1 text-[11px] text-oxide hover:text-oxide-hi bg-sunk border border-rule hover:border-oxide/40 rounded cursor-pointer transition-colors"><span data-copy-label="" class="text-oxide font-medium">copy</span></button></div><div class="pt-2 border-t border-rule/50 flex items-center justify-between text-xs font-mono text-dim"><a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="flex items-center gap-1.5 hover:text-paper transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5"><path d="M3.5 15.668q.675.081 1 .618c.326.537 1.537 2.526 2.913 2.526H9.5m5.672-3.513q.823 1.078.823 1.936V21m-5.625-5.609q-.87.954-.869 1.813V21"/><path d="M15.172 15.299c1.202-.25 2.293-.682 3.14-1.316 1.448-1.084 2.188-2.758 2.188-4.411 0-1.16-.44-2.243-1.204-3.16-.425-.511.819-3.872-.286-3.359-1.105.514-2.725 1.198-3.574.947-.909-.268-1.9-.416-2.936-.416-.9 0-1.766.111-2.574.317-1.174.298-2.296-.363-3.426-.848-1.13-.484-.513 3.008-.849 3.422C4.921 7.38 4.5 8.44 4.5 9.572c0 1.653.895 3.327 2.343 4.41.965.722 2.174 1.183 3.527 1.41"/></svg><span>GitHub</span></a><a href="https://crates.io/crates/yav" target="_blank" rel="noreferrer" class="hover:text-paper transition-colors">crates.io</a><span class="flex items-center gap-1.5 text-ok"><span class="dot dot-ok"></span><span>All systems operational</span></span></div></div></nav><div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div></header><main id="main-content" class="flex-grow w-full"><section class="relative overflow-hidden"><div class="absolute inset-0 bp-grid opacity-60 [mask-image:linear-gradient(180deg,#000_0%,transparent_85%)]" aria-hidden="true"></div><div class="wrap relative pt-8 sm:pt-12 pb-10"><div class="fade flex flex-wrap items-center justify-between gap-4 pb-6 sm:pb-8" style="--d:0ms"><div class="flex items-center gap-6 label"><span class="label-oxide">Fig. 00</span><span>A web framework for Rust</span></div><a href="/docs" class="chip hover:border-[rgba(236,233,227,0.24)] transition-colors"><span class="dot pulse-dot text-[#e0592f]"></span><span data-i18n="hero.pill.engine">v0.1.4 — Axum 0.8 · 60+ UI Primitives · AI SDK &amp; MCP</span></a></div><div class="relative"><div class="hero-glow" aria-hidden="true"></div><h1 class="display"><span class="line-mask block"><span style="--d:100ms" class="hero-title-main" data-i18n="hero.title.line1">Fast by nature.</span></span><span class="line-mask block mt-1 sm:mt-2"><span style="--d:220ms" class="serif hero-title-accent" data-i18n="hero.title.line2">Safe by design.</span></span></h1></div><div class="grid lg:grid-cols-12 gap-10 pt-8 sm:pt-12 items-start"><div class="lg:col-span-5 space-y-8 fade" style="--d:450ms"><p class="lede" data-i18n="hero.subtitle"><strong>Compiled RSX templates, 60+ UI primitives, AI SDK &amp; MCP, and Tailwind — in one native binary.</strong> No Node. No npm. No hydration tax. Just Axum 0.8, Tokio and the Rust compiler doing what they do best.</p><div class="flex flex-wrap items-center gap-3"><a id="hero-cta-start" href="/docs" class="btn btn-oxide"><span data-i18n="hero.cta.start">Start building</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 ml-1"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg></a><button id="hero-copy-install" onclick="copyText(this, &#x27;cargo install yav-cli&#x27;)" class="btn btn-line font-mono !text-[13px]"><span class="text-oxide">$</span><span>cargo install yav-cli</span><span data-copy-label="" class="text-oxide font-medium text-[11px] pl-3 border-l border-[rgba(236,233,227,0.14)]">copy</span></button></div></div><figure class="lg:col-span-7 fade" style="--d:600ms"><div class="plate bg-sunk"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="plate-head"><span>FIG. 01 — REQUEST LIFECYCLE</span><span class="text-oxide font-mono">t = 0.28 ms p50</span></div><div class="p-4 sm:p-6 overflow-hidden"><svg viewBox="0 0 640 250" class="w-full h-auto block" fill="none" aria-label="Request lifecycle schematic diagram"><g stroke="rgba(236,233,227,0.12)" stroke-width="1"><rect x="20" y="80" width="124" height="72" fill="rgba(236,233,227,0.03)" rx="3" stroke="rgba(236,233,227,0.24)"></rect><rect x="180" y="80" width="124" height="72" fill="rgba(236,233,227,0.03)" rx="3" stroke="rgba(236,233,227,0.24)"></rect><rect x="340" y="80" width="124" height="72" fill="rgba(236,233,227,0.03)" rx="3" stroke="rgba(236,233,227,0.24)"></rect><rect x="500" y="80" width="120" height="72" fill="rgba(236,233,227,0.03)" rx="3" stroke="rgba(236,233,227,0.24)"></rect><line x1="144" y1="116" x2="180" y2="116" stroke="rgba(236,233,227,0.4)"></line><polygon points="176,113 182,116 176,119" fill="rgba(236,233,227,0.4)"></polygon><line x1="304" y1="116" x2="340" y2="116" stroke="rgba(236,233,227,0.4)"></line><polygon points="336,113 342,116 336,119" fill="rgba(236,233,227,0.4)"></polygon><line x1="464" y1="116" x2="500" y2="116" stroke="rgba(236,233,227,0.4)"></line><polygon points="496,113 502,116 496,119" fill="rgba(236,233,227,0.4)"></polygon><line x1="20" y1="200" x2="620" y2="200" stroke-dasharray="3 4" stroke="rgba(236,233,227,0.2)"></line><line x1="20" y1="194" x2="20" y2="206" stroke="rgba(236,233,227,0.4)"></line><line x1="180" y1="196" x2="180" y2="204" stroke="rgba(236,233,227,0.3)"></line><line x1="340" y1="196" x2="340" y2="204" stroke="rgba(236,233,227,0.3)"></line><line x1="620" y1="194" x2="620" y2="206" stroke="#e0592f" stroke-width="1.5"></line><path d="M242 80 L242 45 L402 45 L402 80" stroke="#e0592f" stroke-width="1.2" stroke-dasharray="4 3"></path><circle cx="242" cy="45" r="3" fill="#e0592f"></circle></g><g font-family="&#x27;Geist Mono&#x27;, monospace" font-size="11" fill="rgba(236,233,227,0.6)"><text x="82" y="108" text-anchor="middle" fill="#ece9e3" font-weight="500">hyper 1.0</text><text x="82" y="128" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.45)">tcp :3000</text><text x="242" y="108" text-anchor="middle" fill="#ece9e3" font-weight="500">matchit</text><text x="242" y="128" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.45)">radix O(k)</text><text x="402" y="108" text-anchor="middle" fill="#ece9e3" font-weight="500">rsx! -&gt; buf</text><text x="402" y="128" text-anchor="middle" font-size="10" fill="#e0592f">0 alloc · 0 vdom</text><text x="560" y="108" text-anchor="middle" fill="#ece9e3" font-weight="500">HTTP 200</text><text x="560" y="128" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.45)">chunked wire</text><text x="20" y="222" text-anchor="start" font-size="10" fill="rgba(236,233,227,0.4)">0.00 ms (ingress)</text><text x="242" y="222" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.4)">0.04 ms (routed)</text><text x="402" y="222" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.4)">0.18 ms (rendered)</text><text x="620" y="222" text-anchor="end" font-size="10" fill="#e0592f" font-weight="500">0.28 ms p50 TTFB</text><text x="322" y="38" text-anchor="middle" font-size="9.5" fill="#e0592f" letter-spacing="0.5">COMPILED DISPATCH — ZERO RUNTIME TAX</text></g><circle cx="20" cy="116" r="3.5" fill="#e0592f"><animate attributeName="cx" values="20;144;180;304;340;464;500;620" dur="2.8s" repeatCount="indefinite"></animate><animate attributeName="opacity" values="0;1;1;1;1;1;1;0" dur="2.8s" repeatCount="indefinite"></animate></circle></svg></div></div></figure></div></div><div id="hero-spec-strip" class="border-y border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.015)] select-none hover:bg-[rgba(236,233,227,0.03)] transition-colors cursor-pointer" title="Click to replay spec metrics animation"><div class="wrap grid grid-cols-2 md:grid-cols-4"><div class="py-8 pr-6 md:border-r border-[rgba(236,233,227,0.08)] group"><div class="label pb-3" data-i18n="metrics.throughput">Throughput</div><div class="text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-throughput">0</span></div><div class="text-[13px] text-dim pt-1" data-i18n="metrics.throughput.desc">req/s · 8 cores</div></div><div class="py-8 md:px-6 md:border-r border-[rgba(236,233,227,0.08)] group"><div class="label pb-3" data-i18n="metrics.latency">Median TTFB</div><div class="text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-ttfb">0.00</span><span class="text-dim text-[18px]"> ms</span></div><div class="text-[13px] text-dim pt-1" data-i18n="metrics.latency.desc">p99 1.12 ms</div></div><div class="py-8 pr-6 md:px-6 md:border-r border-[rgba(236,233,227,0.08)] group"><div class="label pb-3" data-i18n="metrics.hydration">Client JS</div><div class="text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-js" class="text-oxide font-semibold">0</span><span class="text-dim text-[18px]"> KB</span></div><div class="text-[13px] text-dim pt-1" data-i18n="metrics.hydration.desc">no hydration overhead</div></div><div class="py-8 md:pl-6 group"><div class="label pb-3" data-i18n="metrics.memory">Idle memory</div><div class="text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-memory">0.0</span><span class="text-dim text-[18px]"> MB</span></div><div class="text-[13px] text-dim pt-1" data-i18n="metrics.memory.desc">resident memory RSS</div></div></div></div><script>
+window.runHeroSpecAnimation = function() {
+    if (window._heroSpecAnimFrame) {
+        cancelAnimationFrame(window._heroSpecAnimFrame);
+        window._heroSpecAnimFrame = null;
+    }
+
+    var elThroughput = document.getElementById('hero-stat-throughput');
+    var elTtfb       = document.getElementById('hero-stat-ttfb');
+    var elMemory     = document.getElementById('hero-stat-memory');
+
+    if (!elThroughput || !elTtfb || !elMemory) return;
+
+    var targetThroughput = 124500;
+    var targetTtfb       = 0.28;
+    var targetMemory     = 8.2;
+
+    elThroughput.textContent = '0';
+    elTtfb.textContent = '0.00';
+    elMemory.textContent = '0.0';
+
+    var startTime = performance.now();
+    var duration = 1400; // 1.4s smooth easeOutCubic
+
+    function tick(now) {
+        var elapsed = now - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        var ease = 1 - Math.pow(1 - progress, 3);
+
+        var curThroughput = Math.round(targetThroughput * ease);
+        elThroughput.textContent = curThroughput.toLocaleString('en-US');
+
+        var curTtfb = (targetTtfb * ease).toFixed(2);
+        elTtfb.textContent = curTtfb;
+
+        var curMemory = (targetMemory * ease).toFixed(1);
+        elMemory.textContent = curMemory;
+
+        if (progress < 1) {
+            window._heroSpecAnimFrame = requestAnimationFrame(tick);
+        } else {
+            elThroughput.textContent = targetThroughput.toLocaleString('en-US');
+            elTtfb.textContent = targetTtfb.toFixed(2);
+            elMemory.textContent = targetMemory.toFixed(1);
+            window._heroSpecAnimFrame = null;
+        }
+    }
+
+    window._heroSpecAnimFrame = requestAnimationFrame(tick);
+};
+
+(function initHeroSpecObserver() {
+    function setup() {
+        var strip = document.getElementById('hero-spec-strip');
+        if (!strip) return;
+
+        var elThroughput = document.getElementById('hero-stat-throughput');
+        var elTtfb       = document.getElementById('hero-stat-ttfb');
+        var elMemory     = document.getElementById('hero-stat-memory');
+        if (elThroughput) elThroughput.textContent = '0';
+        if (elTtfb) elTtfb.textContent = '0.00';
+        if (elMemory) elMemory.textContent = '0.0';
+
+        var triggered = false;
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting && !triggered) {
+                        triggered = true;
+                        window.runHeroSpecAnimation();
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.15 });
+            observer.observe(strip);
+        } else {
+            window.runHeroSpecAnimation();
+        }
+
+        strip.addEventListener('click', function() {
+            window.runHeroSpecAnimation();
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup);
+    } else {
+        setup();
+    }
+})();
+</script></section><section class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">01</span><span class="t">The code</span><span class="sec-rule"></span><span class="r">src/routes/</span></div><div class="grid lg:grid-cols-12 gap-10 pt-6"><div class="lg:col-span-4 space-y-6 reveal"><h2 class="h-section text-paper">Markup the compiler <span class="serif text-oxide">understands.</span></h2><p class="lede">RSX is expanded and checked by rustc. Unclosed tags, wrong prop types and unescaped inputs fail during compilation — never in production.</p><ul class="space-y-3 pt-2 font-mono text-[13px] text-mute"><li class="flex gap-3"><span class="text-oxide">→</span>One file, one route</li><li class="flex gap-3"><span class="text-oxide">→</span>HTML escaped by default (zero XSS)</li><li class="flex gap-3"><span class="text-oxide">→</span>Zero runtime template parsing</li><li class="flex gap-3"><span class="text-oxide">→</span>Direct memory buffer appends</li></ul></div><div class="lg:col-span-8 reveal" style="--d:120ms"><div class="plate"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="flex items-stretch border-b border-[rgba(236,233,227,0.08)] overflow-x-auto bg-[#101012]"><button id="btn-file-rsx" onclick="window.switchHeroTab(&#x27;rsx&#x27;)" class="tab-btn active"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><path d="m16 18 6-6-6-6" /> <path d="m8 6-6 6 6 6" /></svg><span>index.rs</span></button><button id="btn-file-api" onclick="window.switchHeroTab(&#x27;api&#x27;)" class="tab-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><rect width="20" height="8" x="2" y="2" rx="2" ry="2" /> <rect width="20" height="8" x="2" y="14" rx="2" ry="2" /> <line x1="6" x2="6.01" y1="6" y2="6" /> <line x1="6" x2="6.01" y1="18" y2="18" /></svg><span>api/users.rs</span></button><button id="btn-file-yavml" onclick="window.switchHeroTab(&#x27;yavml&#x27;)" class="tab-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" /> <circle cx="12" cy="12" r="3" /></svg><span>package.yavml</span></button><button id="btn-file-term" onclick="window.switchHeroTab(&#x27;term&#x27;)" class="tab-btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><path d="M12 19h8" /> <path d="m4 17 6-6-6-6" /></svg><span>terminal</span></button><span class="flex-1"></span><button id="btn-replay-code" onclick="window.replayCurrentTab()" class="hidden sm:flex items-center gap-1.5 px-3 font-mono text-[11px] text-dim hover:text-oxide transition-colors cursor-pointer" title="Rejouer l&#x27;animation d&#x27;écriture"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3 h-3 text-oxide"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></svg><span>Replay</span></button><span class="hidden sm:flex items-center gap-2 px-4 font-mono text-[11px] text-dim border-l border-[rgba(236,233,227,0.08)]"><span class="dot dot-ok"></span>127.0.0.1:3000</span></div><div class="grid md:grid-cols-12"><div class="md:col-span-8 bg-sunk p-6 overflow-x-auto code min-h-[380px] cursor-pointer" onclick="window.skipTyping()" title="Cliquer pour afficher tout le code immédiatement"><div id="hero-code-rsx"><div><span class="ln">1</span><span class="token-keyword">use</span> yav::prelude::*;</div><div><span class="ln">2</span></div><div><span class="ln">3</span><span class="token-comment">// Discovered by auto_routes!() at compile time</span></div><div><span class="ln">4</span><span class="token-keyword">pub async fn </span><span class="token-fn">index</span>(_req: Request) -&gt; HtmlPage {</div><div><span class="ln">5</span>    <span class="token-macro">rsx!</span> {</div><div><span class="ln">6</span>        <span class="token-tag">&lt;AppLayout&gt;</span></div><div><span class="ln">7</span>            <span class="token-tag">&lt;h1 </span><span class="token-attr">class=</span><span class="token-string">&quot;text-4xl&quot;</span><span class="token-tag">&gt;</span></div><div><span class="ln">8</span>                <span class="token-string">&quot;Hello, metal.&quot;</span></div><div><span class="ln">9</span>            <span class="token-tag">&lt;/h1&gt;</span></div><div><span class="ln">10</span>            <span class="token-tag">&lt;Counter </span><span class="token-attr">initial=</span><span class="token-val">{42}</span><span class="token-tag"> /&gt;</span></div><div><span class="ln">11</span>        <span class="token-tag">&lt;/AppLayout&gt;</span></div><div><span class="ln">12</span>    }</div><div><span class="ln">13</span>}</div></div><div id="hero-code-api" class="hidden"><div><span class="ln">1</span><span class="token-keyword">use</span> axum::extract::Path;</div><div><span class="ln">2</span><span class="token-keyword">use</span> axum::Json;</div><div><span class="ln">3</span><span class="token-keyword">use</span> serde::Serialize;</div><div><span class="ln">4</span></div><div><span class="ln">5</span><span class="token-keyword">#[derive(Serialize)]</span></div><div><span class="ln">6</span><span class="token-keyword">pub struct </span><span class="token-type">User</span> { id: <span class="token-type">u64</span>, name: <span class="token-type">String</span>, role: <span class="token-type">String</span> }</div><div><span class="ln">7</span></div><div><span class="ln">8</span><span class="token-keyword">pub async fn </span><span class="token-fn">get</span>(Path(id): Path&lt;u64&gt;) -&gt; Json&lt;User&gt; {</div><div><span class="ln">9</span>    Json(User {</div><div><span class="ln">10</span>        id,</div><div><span class="ln">11</span>        name: <span class="token-string">&quot;Isaac Yav&quot;</span>.into(),</div><div><span class="ln">12</span>        role: <span class="token-string">&quot;admin&quot;</span>.into(),</div><div><span class="ln">13</span>    })</div><div><span class="ln">14</span>}</div></div><div id="hero-code-yavml" class="hidden"><div><span class="ln">1</span><span class="token-keyword">[server]</span></div><div><span class="ln">2</span>port = <span class="token-val">3000</span></div><div><span class="ln">3</span>host = <span class="token-string">&quot;127.0.0.1&quot;</span></div><div><span class="ln">4</span></div><div><span class="ln">5</span><span class="token-keyword">[tailwind]</span></div><div><span class="ln">6</span>enabled = <span class="token-val">true</span></div><div><span class="ln">7</span>version = <span class="token-string">&quot;3.4.17&quot;</span></div><div><span class="ln">8</span></div><div><span class="ln">9</span><span class="token-keyword">[build]</span></div><div><span class="ln">10</span>minify = <span class="token-val">true</span></div><div><span class="ln">11</span>fingerprint = <span class="token-val">true</span></div><div><span class="ln">12</span>pre_compress = <span class="token-val">[&quot;br&quot;, &quot;gzip&quot;]</span></div></div><div id="hero-code-term" class="hidden"><div class="text-dim">$ yav dev</div><div class="pt-2">  yav dev server  v0.1.4</div><div class="text-dim">  ─────────────────────────────</div><div>  tailwind   <span class="token-string">compiled</span><span class="text-dim">  48ms</span></div><div>  rustc      <span class="token-string">ok</span><span class="text-dim">        1.9s</span></div><div>  reload     <span class="token-string">listening</span><span class="text-dim"> :35729</span></div><div class="pt-2">  ready on <span class="text-oxide font-bold">http://127.0.0.1:3000</span></div><div class="pt-2 blink text-dim">  watching src/ public/ package.yavml</div></div></div><div class="md:col-span-4 border-t md:border-t-0 md:border-l border-[rgba(236,233,227,0.08)] p-6 flex flex-col justify-between gap-6"><div id="hero-output-rsx" class="space-y-6"><div class="label flex items-center justify-between"><span>Output</span><span class="text-oxide">RSX Island</span></div><div><div class="text-[26px] tracking-[-0.03em] text-paper leading-tight">Hello, metal.</div><div class="flex items-center gap-2 pt-5"><button id="demo-dec" onclick="var el=document.getElementById(&#x27;demo-count&#x27;); if(el) el.innerText=Math.max(0, parseInt(el.innerText)-1);" class="w-10 h-10 border border-[rgba(236,233,227,0.14)] hover:border-[rgba(236,233,227,0.3)] font-mono text-paper transition-colors cursor-pointer select-none">−</button><span id="demo-count" class="flex-1 h-10 flex items-center justify-center font-mono text-[20px] text-paper border border-[rgba(236,233,227,0.08)] bg-sunk">42</span><button id="demo-inc" onclick="var el=document.getElementById(&#x27;demo-count&#x27;); if(el) el.innerText=parseInt(el.innerText)+1;" class="w-10 h-10 bg-[#ece9e3] text-[#0b0b0c] font-mono hover:bg-white transition-colors cursor-pointer select-none">+</button></div></div><div class="space-y-2 font-mono text-[11.5px] border-t border-[rgba(236,233,227,0.08)] pt-4"><div class="flex justify-between"><span class="text-dim">escaping</span><span class="text-paper">auto on (zero XSS)</span></div><div class="flex justify-between"><span class="text-dim">node_modules</span><span class="text-paper">0 B</span></div><div class="flex justify-between"><span class="text-dim">hydration JS</span><span class="text-paper">0 KB</span></div></div></div><div id="hero-output-api" class="hidden space-y-6"><div class="label flex items-center justify-between"><span>Response</span><span class="text-ok">HTTP 200 OK</span></div><div class="bg-sunk p-4 border border-[rgba(236,233,227,0.08)] font-mono text-[12px] text-paper space-y-1"><div class="text-dim font-bold">// application/json</div><div>{</div><div>  <span class="text-oxide">&quot;id&quot;</span>: 42,</div><div>  <span class="text-oxide">&quot;name&quot;</span>: <span class="token-string">&quot;Isaac Yav&quot;</span>,</div><div>  <span class="text-oxide">&quot;role&quot;</span>: <span class="token-string">&quot;admin&quot;</span></div><div>}</div></div><div class="space-y-2 font-mono text-[11.5px] border-t border-[rgba(236,233,227,0.08)] pt-4"><div class="flex justify-between"><span class="text-dim">extractor</span><span class="text-paper">Path&lt;u64&gt;</span></div><div class="flex justify-between"><span class="text-dim">latency</span><span class="text-paper">18 ns (zero-copy)</span></div><div class="flex justify-between"><span class="text-dim">format</span><span class="text-paper">serde_json</span></div></div></div><div id="hero-output-yavml" class="hidden space-y-6"><div class="label flex items-center justify-between"><span>Pipeline</span><span class="text-paper">package.yavml</span></div><div class="space-y-3 font-mono text-[12px]"><div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] flex justify-between items-center"><span class="text-dim">Tailwind CLI</span><span class="chip font-bold text-oxide">Standalone</span></div><div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] flex justify-between items-center"><span class="text-dim">Compression</span><span class="text-paper">Brotli + Gzip</span></div><div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] flex justify-between items-center"><span class="text-dim">ETags Cache</span><span class="text-paper">304 Conditional</span></div></div><div class="space-y-2 font-mono text-[11.5px] border-t border-[rgba(236,233,227,0.08)] pt-4"><div class="flex justify-between"><span class="text-dim">fingerprint</span><span class="text-paper">blake3 hash</span></div><div class="flex justify-between"><span class="text-dim">node required</span><span class="text-paper">Never</span></div></div></div><div id="hero-output-term" class="hidden space-y-6"><div class="label flex items-center justify-between"><span>Dev Server</span><span class="dot dot-ok"></span></div><div class="space-y-3 font-mono text-[12px]"><div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] space-y-1"><div class="text-dim text-[11px]">LIVE RELOAD LISTENER</div><div class="text-paper">ws://127.0.0.1:35729</div></div><div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] flex justify-between items-center"><span class="text-dim">Error Overlay</span><span class="text-ok">Dark modal on</span></div></div><div class="space-y-2 font-mono text-[11.5px] border-t border-[rgba(236,233,227,0.08)] pt-4"><div class="flex justify-between"><span class="text-dim">rebuild time</span><span class="text-paper">48 ms</span></div><div class="flex justify-between"><span class="text-dim">file watcher</span><span class="text-paper">kqueue / inotify</span></div></div></div></div></div></div></div></div><script>
+window.originalCodeHtml = {};
+window.activeTab = 'rsx';
+window.typingTimeout = null;
+window.isTyping = false;
+
+window.skipTyping = function() {
+    if (window.typingTimeout) {
+        clearTimeout(window.typingTimeout);
+        window.typingTimeout = null;
+    }
+    window.isTyping = false;
+    var container = document.getElementById('hero-code-' + window.activeTab);
+    if (container && window.originalCodeHtml[window.activeTab]) {
+        container.innerHTML = window.originalCodeHtml[window.activeTab];
+        var cur = document.createElement('span');
+        cur.className = 'code-cursor';
+        cur.textContent = '▋';
+        if (container.lastElementChild) {
+            container.lastElementChild.appendChild(cur);
+        }
+    }
+};
+
+window.replayCurrentTab = function() {
+    window.typewriteTab(window.activeTab);
+};
+
+window.typewriteTab = function(tab) {
+    if (window.typingTimeout) {
+        clearTimeout(window.typingTimeout);
+        window.typingTimeout = null;
+    }
+    window.activeTab = tab;
+    var container = document.getElementById('hero-code-' + tab);
+    if (!container) return;
+
+    // Cache original HTML once
+    if (!window.originalCodeHtml[tab]) {
+        window.originalCodeHtml[tab] = container.innerHTML;
+    }
+    var fullHtml = window.originalCodeHtml[tab];
+
+    var temp = document.createElement('div');
+    temp.innerHTML = fullHtml;
+    var originalLines = Array.from(temp.children);
+    if (originalLines.length === 0) return;
+
+    container.innerHTML = '';
+    window.isTyping = true;
+
+    var cursor = document.createElement('span');
+    cursor.className = 'code-cursor';
+    cursor.textContent = '▋';
+
+    var lineIndex = 0;
+
+    function processLine() {
+        if (!window.isTyping) return;
+        if (lineIndex >= originalLines.length) {
+            window.isTyping = false;
+            if (container.lastElementChild) {
+                container.lastElementChild.appendChild(cursor);
+            }
+            return;
+        }
+
+        var sourceLine = originalLines[lineIndex];
+        var currentLineElem = document.createElement('div');
+        container.appendChild(currentLineElem);
+
+        // Preserve line number span if present
+        var lnSpan = sourceLine.querySelector('.ln');
+        if (lnSpan) {
+            currentLineElem.appendChild(lnSpan.cloneNode(true));
+        }
+
+        currentLineElem.appendChild(cursor);
+
+        // Collect characters excluding .ln span
+        var chars = [];
+        Array.from(sourceLine.childNodes).forEach(function(node) {
+            if (node.nodeType === 1 && node.classList.contains('ln')) return;
+            if (node.nodeType === 3) {
+                var txt = node.textContent;
+                for (var i = 0; i < txt.length; i++) {
+                    chars.push({ char: txt[i], className: null });
+                }
+            } else if (node.nodeType === 1) {
+                var txt = node.textContent;
+                var cls = node.className;
+                for (var j = 0; j < txt.length; j++) {
+                    chars.push({ char: txt[j], className: cls });
+                }
+            }
+        });
+
+        if (chars.length === 0) {
+            lineIndex++;
+            window.typingTimeout = setTimeout(processLine, 35);
+            return;
+        }
+
+        var charIndex = 0;
+        var currentSpan = null;
+
+        function typeChar() {
+            if (!window.isTyping) return;
+            if (charIndex >= chars.length) {
+                lineIndex++;
+                window.typingTimeout = setTimeout(processLine, 45);
+                return;
+            }
+
+            var c = chars[charIndex];
+            if (c.className) {
+                if (currentSpan && currentSpan.className === c.className) {
+                    currentSpan.textContent += c.char;
+                } else {
+                    currentSpan = document.createElement('span');
+                    currentSpan.className = c.className;
+                    currentSpan.textContent = c.char;
+                    currentLineElem.insertBefore(currentSpan, cursor);
+                }
+            } else {
+                currentSpan = null;
+                currentLineElem.insertBefore(document.createTextNode(c.char), cursor);
+            }
+
+            charIndex++;
+            var speed = c.char === ' ' ? 6 : 14;
+            window.typingTimeout = setTimeout(typeChar, speed);
+        }
+
+        typeChar();
+    }
+
+    processLine();
+};
+
+window.switchHeroTab = function(tab) {
+    var tabs = ['rsx', 'api', 'yavml', 'term'];
+    for (var i = 0; i < tabs.length; i++) {
+        var t = tabs[i];
+        var code = document.getElementById('hero-code-' + t);
+        var btn = document.getElementById('btn-file-' + t);
+        var output = document.getElementById('hero-output-' + t);
+        if (code) {
+            if (t === tab) {
+                code.classList.remove('hidden');
+            } else {
+                code.classList.add('hidden');
+            }
+        }
+        if (output) {
+            if (t === tab) {
+                output.classList.remove('hidden');
+            } else {
+                output.classList.add('hidden');
+            }
+        }
+        if (btn) {
+            if (t === tab) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        }
+    }
+
+    // Trigger typewriter animation for the newly activated tab
+    window.typewriteTab(tab);
+};
+
+(function initStudio() {
+    function start() {
+        ['rsx', 'api', 'yavml', 'term'].forEach(function(t) {
+            var el = document.getElementById('hero-code-' + t);
+            if (el) window.originalCodeHtml[t] = el.innerHTML;
+        });
+
+        var hasAnimated = false;
+        var rsxBlock = document.getElementById('hero-code-rsx');
+        if (rsxBlock && 'IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting && !hasAnimated) {
+                        hasAnimated = true;
+                        window.typewriteTab('rsx');
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.25 });
+            observer.observe(rsxBlock);
+        } else {
+            setTimeout(function() { window.typewriteTab('rsx'); }, 200);
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', start);
+    } else {
+        start();
+    }
+})();
+</script></section><section class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">02</span><span class="t" data-i18n="bento.badge">Principles</span><span class="sec-rule"></span><span class="r">six decisions</span></div><div class="grid lg:grid-cols-12 gap-12 pt-6 pb-6"><h2 class="lg:col-span-8 h-section text-paper reveal" data-i18n="bento.title">Everything you need. <span class="text-dim">Nothing that ships to the browser by accident.</span></h2><p class="lg:col-span-4 text-mute text-[14.5px] leading-relaxed self-end reveal">Built from the ground up for teams who care about real latency, memory safety and eliminating frontend toolchain churn.</p></div><div class="cells grid-cols-1 md:grid-cols-2 lg:grid-cols-3"><article class="cell"><div class="cn pb-8">2.1</div><h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card1.title">Zero hydration</h3><p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card1.desc">HTML is written straight into a buffer and sent. Interactivity comes from tiny islands, not a 500 KB runtime.</p></article><article class="cell"><div class="cn pb-8">2.2</div><h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card2.title">Compile-time RSX</h3><p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card2.desc">JSX ergonomics, verified by rustc. Typed props, auto-escaping, no template engine at runtime.</p></article><article class="cell"><div class="cn pb-8">2.3</div><h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card4.title">File-system routes</h3><p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card4.desc">Drop [id].rs in src/routes. It compiles to an O(k) radix tree with instant matchit lookups.</p></article><article class="cell"><div class="cn pb-8">2.4</div><h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card3.title">Tailwind, managed</h3><p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card3.desc">The standalone compiler is downloaded, watched and fingerprinted for you. No Node toolchain in sight.</p></article><article class="cell"><div class="cn pb-8">2.5</div><h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card5.title">Plain Axum underneath</h3><p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card5.desc">Extractors, Tower layers, WebSockets, SSE. Yav never hides the stack — you can always reach it.</p></article><article class="cell"><div class="cn pb-8">2.6</div><h3 class="text-[22px] text-paper pb-3">Secure defaults</h3><p class="text-[14.5px] leading-relaxed text-mute">CSRF tokens, HMAC-signed sessions and automatic context-aware escaping are on before you write a single line.</p></article></div></section><section class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">03</span><span class="t">Ecosystem</span><span class="sec-rule"></span><span class="r">built into binary</span></div><div class="grid lg:grid-cols-12 gap-12 pt-6 pb-6"><h2 class="lg:col-span-8 h-section text-paper reveal">Batteries included. <span class="serif text-oxide">Zero external dependencies.</span></h2><p class="lg:col-span-4 text-mute text-[14.5px] leading-relaxed self-end reveal">Unlike JavaScript meta-frameworks requiring dozens of disjointed npm packages, Yav provides an integrated suite directly in Rust.</p></div><div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 pt-4"><div class="plate p-6 space-y-4 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="flex items-center justify-between"><span class="label text-oxide">yav-ui</span><span class="chip text-[11px]">60+ primitives</span></div><h3 class="text-[20px] text-paper">UI Primitives</h3><p class="text-[13.5px] text-mute leading-relaxed">Charts, DataGrid, Kanban with LexoRank, FlowCanvas, 8 Themes, 3D Wireframe Mesh, and KPI StatCards baked directly into the compiler.</p><a href="/components" class="ulink inline-block font-mono text-[12px]">Browse catalog →</a></div><div class="plate p-6 space-y-4 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="flex items-center justify-between"><span class="label text-oxide">yav-icons</span><span class="chip text-[11px]">13,000+ icons</span></div><h3 class="text-[20px] text-paper">Vector Icons</h3><p class="text-[13.5px] text-mute leading-relaxed">Complete Lucide, MynaUI and Phosphor icon sets embedded natively. Zero runtime network requests.</p><a href="/components#icons" class="ulink inline-block font-mono text-[12px]">Explore icon sets →</a></div><div class="plate p-6 space-y-4 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="flex items-center justify-between"><span class="label text-oxide">yav-motion</span><span class="chip text-[11px]">&lt; 2 KB WAAPI</span></div><h3 class="text-[20px] text-paper">Spring Physics</h3><p class="text-[13.5px] text-mute leading-relaxed">Framer-inspired spring dynamics, while_tap &amp; while_hover gestures, and scroll progress bars with zero JS bloat.</p><a href="/components#motion" class="ulink inline-block font-mono text-[12px]">Test springs →</a></div><div class="plate p-6 space-y-4 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="flex items-center justify-between"><span class="label text-oxide">yav-build</span><span class="chip text-[11px]">Brotli + Gzip</span></div><h3 class="text-[20px] text-paper">Asset Pipeline</h3><p class="text-[13.5px] text-mute leading-relaxed">Transparent Brotli pre-compression, Blake3 ETags caching and conditional 304 handling out of the box.</p><a href="/docs#project-structure" class="ulink inline-block font-mono text-[12px]">Build pipeline →</a></div></div></section><section class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">04</span><span class="t" data-i18n="bench.badge">Measured</span><span class="sec-rule"></span><span class="r">wrk -t8 -c200 -d30s</span></div><div class="grid lg:grid-cols-12 gap-12 pt-6"><div class="lg:col-span-4 space-y-6 reveal"><h2 class="h-section text-paper" data-i18n="bench.title">97% of raw metal, <span class="serif text-oxide">with a framework on top.</span></h2><p class="text-[14.5px] text-mute leading-relaxed" data-i18n="bench.subtitle">Tested on identical 8 vCPU instances running wrk across 200 concurrent connections rendering dynamic templates with session validation.</p><div class="pt-2 flex flex-col gap-3 font-mono text-[13px]"><a href="/benchmarks" class="ulink inline-block">Full methodology &amp; reproducible steps →</a><button id="btn-replay-bench" onclick="window.runBenchmarkAnimation()" class="inline-flex items-center gap-2 text-dim hover:text-oxide transition-colors cursor-pointer w-fit" title="Rejouer la simulation des benchmarks"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /> <path d="M21 3v5h-5" /> <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /> <path d="M8 16H3v5" /></svg><span>Rerun benchmark simulation</span></button></div></div><div class="lg:col-span-8 space-y-6 reveal" style="--d:120ms" id="benchmarks-bars-container"><div class="dim-line pb-1"><span>DELTA RATIO</span><div class="bar"></div><span class="text-oxide font-mono text-[12px] font-semibold">only 2.7% overhead vs raw metal</span></div><div class="space-y-2"><div class="flex justify-between font-mono text-[13px]"><span class="text-dim">actix-web — raw metal, no HTML</span><span class="text-mute"><span id="bench-val-actix" data-val="128000">128,000</span> req/s</span></div><div class="hbar" style="--w:100%"><i id="bench-bar-actix" style="display:block;width:0%"></i></div><div class="bench-line" style="width:0%"></div></div><div class="space-y-2"><div class="flex justify-between font-mono text-[13px]"><span class="text-paper font-semibold flex items-center gap-2"><span class="dot dot-ok pulse-dot"></span>yav.rs — compiled RSX + HMAC sessions</span><span class="text-oxide font-bold"><span id="bench-val-yav" data-val="124500">124,500</span> req/s<span id="bench-pct-yav" class="text-[#f07448] font-mono text-[11.5px] ml-1.5 font-normal">(97.3%)</span></span></div><div class="hbar us" style="--w:97.3%"><i id="bench-bar-yav" style="display:block;width:0%"></i></div><div class="bench-line" style="width:0%"></div></div><div class="space-y-2"><div class="flex justify-between font-mono text-[13px]"><span class="text-dim">go gin — SSR templates</span><span class="text-mute"><span id="bench-val-gin" data-val="76200">76,200</span> req/s</span></div><div class="hbar" style="--w:59.5%"><i id="bench-bar-gin" style="display:block;width:0%"></i></div><div class="bench-line" style="width:0%"></div></div><div class="space-y-2"><div class="flex justify-between font-mono text-[13px]"><span class="text-dim">fastify — node 20</span><span class="text-mute"><span id="bench-val-fastify" data-val="34100">34,100</span> req/s</span></div><div class="hbar" style="--w:26.6%"><i id="bench-bar-fastify" style="display:block;width:0%"></i></div><div class="bench-line" style="width:0%"></div></div><div class="space-y-2"><div class="flex justify-between font-mono text-[13px]"><span class="text-dim">next.js 15 — node SSR</span><span class="text-mute"><span id="bench-val-next" data-val="8900">8,900</span> req/s</span></div><div class="hbar" style="--w:7%"><i id="bench-bar-next" style="display:block;width:0%"></i></div></div><div class="pt-2"><div class="ruler opacity-80" style="width:0%"></div><div class="flex justify-between font-mono text-[10.5px] text-dim pt-2 select-none"><span>0 req/s</span><span class="hidden sm:inline">32k</span><span>64k</span><span class="hidden sm:inline">96k</span><span class="text-oxide font-semibold">124.5k (Yav)</span><span>128k (Max)</span></div></div></div></div></section><section class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">05</span><span class="t">Compared</span><span class="sec-rule"></span><span class="r">same hardware</span></div><div class="pt-6 overflow-x-auto reveal"><table class="dtable min-w-[760px]"><thead><tr><th>Metric / Capability</th><th class="col-us">yav.rs</th><th>next.js 15</th><th>leptos</th><th>bare axum</th></tr></thead><tbody><tr><td class="text-paper">Throughput (req / s)</td><td class="col-us">124,500</td><td>8,900</td><td>45,000</td><td>130,000*</td></tr><tr><td class="text-paper">Client JS runtime</td><td class="col-us">0 KB</td><td>350–800 KB</td><td>250–500 KB wasm</td><td>0 KB</td></tr><tr><td class="text-paper">Median TTFB (p50)</td><td class="col-us">0.28 ms</td><td>8.40 ms</td><td>1.20 ms</td><td>0.24 ms</td></tr><tr><td class="text-paper">Idle memory (RSS)</td><td class="col-us">8.2 MB</td><td>180–320 MB</td><td>24 MB</td><td>6.5 MB</td></tr><tr><td class="text-paper">Node.js required</td><td class="col-us">Never</td><td>Yes</td><td>Optional</td><td>No</td></tr><tr><td class="text-paper">Template engine</td><td class="col-us">rsx! (checked)</td><td>JSX</td><td>view!</td><td>format!()</td></tr><tr><td class="text-paper">Built-in icons</td><td class="col-us">13,000+ native</td><td>npm package</td><td>crate</td><td>none</td></tr><tr><td class="text-paper">Asset pre-compression</td><td class="col-us">Brotli + Gzip</td><td>plugin / CDN</td><td>manual</td><td>Tower layer</td></tr></tbody></table><p class="font-mono text-[11px] text-dim pt-4">* Bare Axum measured without template HTML rendering (JSON only).</p></div></section><script>
+window.runBenchmarkAnimation = function() {
+    if (window._benchAnimFrame) {
+        cancelAnimationFrame(window._benchAnimFrame);
+        window._benchAnimFrame = null;
+    }
+
+    var items = [
+        { numId: 'bench-val-actix',   barId: 'bench-bar-actix',   targetVal: 128000, targetPct: 100.0 },
+        { numId: 'bench-val-yav',     barId: 'bench-bar-yav',     targetVal: 124500, targetPct: 97.27, pctId: 'bench-pct-yav', targetRatio: 97.3 },
+        { numId: 'bench-val-gin',     barId: 'bench-bar-gin',     targetVal: 76200,  targetPct: 59.53 },
+        { numId: 'bench-val-fastify', barId: 'bench-bar-fastify', targetVal: 34100,  targetPct: 26.64 },
+        { numId: 'bench-val-next',    barId: 'bench-bar-next',    targetVal: 8900,   targetPct: 6.95 }
+    ];
+
+    var container = document.getElementById('benchmarks-bars-container');
+    if (!container) return;
+
+    var lines = container.querySelectorAll('.bench-line');
+    var ruler = container.querySelector('.ruler');
+    var dimBar = container.querySelector('.dim-line .bar');
+    var secRule = document.querySelector('.sec-head .sec-rule');
+
+    // Immediate visual reset to 0
+    items.forEach(function(item) {
+        var bar = document.getElementById(item.barId);
+        if (bar) bar.style.width = '0%';
+        var num = document.getElementById(item.numId);
+        if (num) num.textContent = '0';
+        if (item.pctId) {
+            var pct = document.getElementById(item.pctId);
+            if (pct) pct.textContent = '(0.0%)';
+        }
+    });
+    lines.forEach(function(l) { l.style.width = '0%'; });
+    if (ruler) ruler.style.width = '0%';
+    if (dimBar) dimBar.style.transform = 'scaleX(0)';
+    if (secRule) secRule.style.transform = 'scaleX(0)';
+
+    var startTime = performance.now();
+    var duration = 1400; // 1.4s smooth easeOutCubic
+
+    function step(now) {
+        var elapsed = now - startTime;
+        var progress = Math.min(elapsed / duration, 1);
+        var ease = 1 - Math.pow(1 - progress, 3); // cubic ease-out
+
+        // Frame-by-frame lockstep update of bars & numbers
+        items.forEach(function(item) {
+            var bar = document.getElementById(item.barId);
+            if (bar) {
+                bar.style.width = (item.targetPct * ease).toFixed(2) + '%';
+            }
+            var num = document.getElementById(item.numId);
+            if (num) {
+                var currentVal = Math.round(item.targetVal * ease);
+                num.textContent = currentVal.toLocaleString('en-US');
+            }
+            if (item.pctId) {
+                var pct = document.getElementById(item.pctId);
+                if (pct) {
+                    var currentRatio = (item.targetRatio * ease).toFixed(1);
+                    pct.textContent = '(' + currentRatio + '%)';
+                }
+            }
+        });
+
+        // Frame-by-frame animation of divider lines & ruler scale
+        var linePct = (100 * ease).toFixed(1) + '%';
+        lines.forEach(function(l) { l.style.width = linePct; });
+        if (ruler) ruler.style.width = linePct;
+        if (dimBar) dimBar.style.transform = 'scaleX(' + ease.toFixed(3) + ')';
+        if (secRule) secRule.style.transform = 'scaleX(' + ease.toFixed(3) + ')';
+
+        if (progress < 1) {
+            window._benchAnimFrame = requestAnimationFrame(step);
+        } else {
+            // Guarantee final target values
+            items.forEach(function(item) {
+                var bar = document.getElementById(item.barId);
+                if (bar) bar.style.width = item.targetPct + '%';
+                var num = document.getElementById(item.numId);
+                if (num) num.textContent = item.targetVal.toLocaleString('en-US');
+                if (item.pctId) {
+                    var pct = document.getElementById(item.pctId);
+                    if (pct) pct.textContent = '(' + item.targetRatio + '%)';
+                }
+            });
+            lines.forEach(function(l) { l.style.width = '100%'; });
+            if (ruler) ruler.style.width = '100%';
+            if (dimBar) dimBar.style.transform = 'scaleX(1)';
+            if (secRule) secRule.style.transform = 'scaleX(1)';
+            window._benchAnimFrame = null;
+        }
+    }
+
+    window._benchAnimFrame = requestAnimationFrame(step);
+};
+
+(function initBenchmarkObserver() {
+    function setup() {
+        var container = document.getElementById('benchmarks-bars-container');
+        if (!container) return;
+
+        // Initialize elements to 0% so they do not flash before animation starts
+        var bars = container.querySelectorAll('.hbar > i');
+        bars.forEach(function(b) {
+            b.style.display = 'block';
+            b.style.width = '0%';
+        });
+        var lines = container.querySelectorAll('.bench-line');
+        lines.forEach(function(l) { l.style.width = '0%'; });
+        var ruler = container.querySelector('.ruler');
+        if (ruler) ruler.style.width = '0%';
+
+        var triggered = false;
+        if ('IntersectionObserver' in window) {
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting && !triggered) {
+                        triggered = true;
+                        window.runBenchmarkAnimation();
+                        observer.disconnect();
+                    }
+                });
+            }, { threshold: 0.1 });
+            observer.observe(container);
+        } else {
+            window.runBenchmarkAnimation();
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup);
+    } else {
+        setup();
+    }
+})();
+</script><section class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">06</span><span class="t" data-i18n="steps.badge">Start</span><span class="sec-rule"></span><span class="r">≈ 60 seconds</span></div><ol class="pt-2"><li class="group grid grid-cols-12 gap-6 items-center py-5 border-b border-[rgba(236,233,227,0.08)]"><span class="col-span-2 md:col-span-1 font-mono text-[13px] text-dim group-hover:text-oxide transition-colors">6.1</span><div class="col-span-10 md:col-span-4"><span class="text-[20px] tracking-[-0.03em] text-paper block" data-i18n="steps.step1.title">Install the CLI</span><span class="text-[12px] text-dim block pt-0.5" data-i18n="steps.step1.desc">Installs the standalone yav development toolchain.</span></div><button id="step-copy-1" onclick="copyText(this, &#x27;cargo install yav-cli&#x27;)" class="col-span-12 md:col-span-7 flex items-center justify-between gap-4 h-11 px-4 bg-sunk border border-[rgba(236,233,227,0.08)] hover:border-[rgba(236,233,227,0.2)] font-mono text-[13px] text-paper text-left transition-colors cursor-pointer"><span><span class="text-oxide">$ </span>cargo install yav-cli</span><span data-copy-label="" class="text-oxide font-medium text-[11px]">copy</span></button></li><li class="group grid grid-cols-12 gap-6 items-center py-5 border-b border-[rgba(236,233,227,0.08)]"><span class="col-span-2 md:col-span-1 font-mono text-[13px] text-dim group-hover:text-oxide transition-colors">6.2</span><div class="col-span-10 md:col-span-4"><span class="text-[20px] tracking-[-0.03em] text-paper block" data-i18n="steps.step2.title">Scaffold a project</span><span class="text-[12px] text-dim block pt-0.5" data-i18n="steps.step2.desc">Generates all layouts, routes, styles, and manifest.</span></div><button id="step-copy-2" onclick="copyText(this, &#x27;yav new my-app&#x27;)" class="col-span-12 md:col-span-7 flex items-center justify-between gap-4 h-11 px-4 bg-sunk border border-[rgba(236,233,227,0.08)] hover:border-[rgba(236,233,227,0.2)] font-mono text-[13px] text-paper text-left transition-colors cursor-pointer"><span><span class="text-oxide">$ </span>yav new my-app</span><span data-copy-label="" class="text-oxide font-medium text-[11px]">copy</span></button></li><li class="group grid grid-cols-12 gap-6 items-center py-5 border-b border-[rgba(236,233,227,0.08)]"><span class="col-span-2 md:col-span-1 font-mono text-[13px] text-dim group-hover:text-oxide transition-colors">6.3</span><div class="col-span-10 md:col-span-4"><span class="text-[20px] tracking-[-0.03em] text-paper block" data-i18n="steps.step3.title">Run dev server</span><span class="text-[12px] text-dim block pt-0.5" data-i18n="steps.step3.desc">Starts live reload and Tailwind CSS compiler.</span></div><button id="step-copy-3" onclick="copyText(this, &#x27;cd my-app &amp;&amp; yav dev&#x27;)" class="col-span-12 md:col-span-7 flex items-center justify-between gap-4 h-11 px-4 bg-sunk border border-[rgba(236,233,227,0.08)] hover:border-[rgba(236,233,227,0.2)] font-mono text-[13px] text-paper text-left transition-colors cursor-pointer"><span><span class="text-oxide">$ </span>cd my-app &amp;&amp; yav dev</span><span data-copy-label="" class="text-oxide font-medium text-[11px]">copy</span></button></li></ol></section><section class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">07</span><span class="t">Toolchain</span><span class="sec-rule"></span><span class="r">yav CLI</span></div><div class="grid lg:grid-cols-12 gap-12 pt-6 pb-6"><h2 class="lg:col-span-8 h-section text-paper reveal">One CLI for development, <span class="text-dim">production &amp; deployment.</span></h2><p class="lg:col-span-4 text-mute text-[14.5px] leading-relaxed self-end reveal">Built in Rust with zero runtime dependencies. Replaces npm, webpack, vite, and cargo-watch in a single binary.</p></div><div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 pt-4"><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav dev</div><div class="text-[16px] text-paper font-medium">Live Reload &amp; HMR</div><p class="text-[13px] text-mute leading-relaxed">Auto-reloads browser via WebSocket :35729, watches Tailwind CSS inputs, and displays live compile-error overlay.</p></div><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav doctor</div><div class="text-[16px] text-paper font-medium">System &amp; Toolchain Audit</div><p class="text-[13px] text-mute leading-relaxed">Diagnoses Rust toolchains, package.yavml health, standalone Tailwind cache, routes directory, and port bindings.</p></div><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav routes</div><div class="text-[16px] text-paper font-medium">Route Table Inspection</div><p class="text-[13px] text-mute leading-relaxed">Inspects file-based route endpoints, HTTP methods, dynamic slugs, and active layout hierarchy in a terminal table.</p></div><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav export</div><div class="text-[16px] text-paper font-medium">Static Site Generation (SSG)</div><p class="text-[13px] text-mute leading-relaxed">Pre-renders all static pages to HTML in dist/ with asset bundling and canonical tags for zero-server hosting.</p></div><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav build</div><div class="text-[16px] text-paper font-medium">Production Packaging</div><p class="text-[13px] text-mute leading-relaxed">Compiles release binary, tree-shakes styles, hashes asset filenames, and pre-compresses Brotli (.br) &amp; Gzip (.gz).</p></div><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav update</div><div class="text-[16px] text-paper font-medium">CLI &amp; Deps Upgrades</div><p class="text-[13px] text-mute leading-relaxed">Updates the yav CLI binary itself and upgrades project dependencies and cached Tailwind binaries seamlessly.</p></div><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav add &lt;component&gt;</div><div class="text-[16px] text-paper font-medium">Component Scaffolding</div><p class="text-[13px] text-mute leading-relaxed">Instantly scaffolds UI templates: drawers, command palettes, 8 design themes, 3D tilt plates, and KPI stat cards.</p></div><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav codegen</div><div class="text-[16px] text-paper font-medium">Types &amp; OpenAPI 3.1</div><p class="text-[13px] text-mute leading-relaxed">Exports TypeScript type definitions and OpenAPI 3.1 specifications directly from Rust serde structs.</p></div><div class="plate p-6 space-y-3 bg-ink-2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="font-mono text-oxide text-[13px] font-bold">yav deploy</div><div class="text-[16px] text-paper font-medium">Multi-Cloud Deploy</div><p class="text-[13px] text-mute leading-relaxed">Generates production deployment configurations for Shuttle.rs, Fly.io, Railway, Docker, and Systemd.</p></div></div></section><section class="wrap pt-12 sm:pt-16 pb-16"><div class="sec-head reveal"><span class="n">08</span><span class="t" data-i18n="cta.badge">Next steps</span><span class="sec-rule"></span><span class="r">production binary</span></div><div class="reveal grid lg:grid-cols-12 gap-10 items-end pt-6"><div class="lg:col-span-8 space-y-4"><h2 class="h-section text-paper"><span data-i18n="cta.title.line1">Ship the binary. </span><br class="hidden sm:inline" /><span class="serif text-oxide" data-i18n="cta.title.line2">Keep the weekend.</span></h2><p class="text-mute text-[15px] sm:text-[16px] max-w-xl leading-relaxed" data-i18n="cta.subtitle">Join the next generation of full-stack Rust developers. Type safe, memory safe, and blazingly fast.</p></div><div class="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 lg:items-stretch"><a id="cta-docs" href="/docs" class="btn btn-solid justify-between"><span data-i18n="cta.docs">Read the docs</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 ml-2"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg></a><a id="cta-github" href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="btn btn-line justify-between"><span class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M3.5 15.668q.675.081 1 .618c.326.537 1.537 2.526 2.913 2.526H9.5m5.672-3.513q.823 1.078.823 1.936V21m-5.625-5.609q-.87.954-.869 1.813V21"/><path d="M15.172 15.299c1.202-.25 2.293-.682 3.14-1.316 1.448-1.084 2.188-2.758 2.188-4.411 0-1.16-.44-2.243-1.204-3.16-.425-.511.819-3.872-.286-3.359-1.105.514-2.725 1.198-3.574.947-.909-.268-1.9-.416-2.936-.416-.9 0-1.766.111-2.574.317-1.174.298-2.296-.363-3.426-.848-1.13-.484-.513 3.008-.849 3.422C4.921 7.38 4.5 8.44 4.5 9.572c0 1.653.895 3.327 2.343 4.41.965.722 2.174 1.183 3.527 1.41"/></svg><span data-i18n="cta.github">Star on GitHub</span></span><span class="arr">↗</span></a></div></div></section></main><footer class="mt-12 border-t border-[rgba(236,233,227,0.08)] overflow-hidden"><div class="wrap"><div class="grid grid-cols-2 md:grid-cols-12 gap-8 py-8"><div class="col-span-2 md:col-span-5 space-y-6"><p class="text-[22px] leading-[1.3] tracking-[-0.025em] text-paper max-w-sm">A web framework for people who read the <span class="serif text-[1.1em]">assembly</span>.</p><button id="footer-copy-install" onclick="copyText(this, &#x27;cargo install yav-cli&#x27;)" class="group inline-flex items-center gap-4 h-11 px-4 border border-[rgba(236,233,227,0.14)] hover:border-[rgba(236,233,227,0.24)] font-mono text-[13px] text-paper transition-colors cursor-pointer"><span class="text-oxide">$</span><span>cargo install yav-cli</span><span data-copy-label="" class="text-oxide font-medium text-[11px] pl-3 border-l border-[rgba(236,233,227,0.14)]">copy</span></button></div><div class="md:col-span-2 md:col-start-7 space-y-4"><div class="label">Framework</div><ul class="space-y-2.5 text-[14px]"><li><a href="/" class="ulink" data-i18n="nav.overview">Overview</a></li><li><a href="/about" class="ulink" data-i18n="nav.architecture">Architecture</a></li><li><a href="/docs" class="ulink" data-i18n="nav.docs">Docs</a></li><li><a href="/benchmarks" class="ulink" data-i18n="nav.benchmarks">Benchmarks</a></li><li><a href="/components" class="ulink" data-i18n="nav.components">Components</a></li><li><a href="/showcase" class="ulink">Showcase</a></li><li><a href="/faq" class="ulink">Why Yav / FAQ</a></li><li><a href="/releases" class="ulink">Changelog</a></li></ul></div><div class="md:col-span-2 space-y-4"><div class="label">Crates</div><ul class="space-y-2.5 font-mono text-[13px]"><li><a href="https://crates.io/crates/yav" target="_blank" rel="noreferrer" class="ulink">yav</a></li><li><a href="https://crates.io/crates/yav-core" target="_blank" rel="noreferrer" class="ulink">yav-core</a></li><li><a href="https://crates.io/crates/yav-macros" target="_blank" rel="noreferrer" class="ulink">yav-macros</a></li><li><a href="https://crates.io/crates/yav-server" target="_blank" rel="noreferrer" class="ulink">yav-server</a></li><li><a href="https://crates.io/crates/yav-cli" target="_blank" rel="noreferrer" class="ulink">yav-cli</a></li></ul></div><div class="md:col-span-2 space-y-4"><div class="label">Elsewhere</div><ul class="space-y-2.5 text-[14px]"><li><a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="ulink">GitHub</a></li><li><a href="https://docs.rs/yav" target="_blank" rel="noreferrer" class="ulink">docs.rs</a></li><li><a href="https://github.com/isaacvay/yav.rs/issues" target="_blank" rel="noreferrer" class="ulink">Issues</a></li></ul></div></div></div><div class="wrap"><div class="wordmark" aria-hidden="true">yav.rs</div></div><div class="border-t border-[rgba(236,233,227,0.08)]"><div class="wrap h-14 flex items-center justify-between gap-4 font-mono text-[11.5px] text-dim"><span>© 2026 Isaac Yav &amp; contributors — <a href="/privacy" class="hover:text-paper transition-colors underline underline-offset-2">Privacy &amp; Security</a> — MIT / Apache-2.0</span><span class="hidden sm:flex items-center gap-2"><span class="dot dot-ok"></span><span data-i18n="footer.status">All systems operational</span></span></div></div></footer><script>(function() {
+  if (window.__YAV_MOTION_INSTALLED__) return;
+  window.__YAV_MOTION_INSTALLED__ = true;
+
+  const prefersReducedMotion = () =>
+    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function solveSpring(k, c, m) {
+    let pos = 0, v = 0, dt = 1 / 60, frames = [0];
+    for (let i = 0; i < 180; i++) {
+      const f = -k * (pos - 1) - c * v;
+      v += (f / (m || 1)) * dt;
+      pos += v * dt;
+      frames.push(pos);
+      if (i > 6 && Math.abs(pos - 1) < 0.0015 && Math.abs(v) < 0.0015) break;
+    }
+    frames.push(1);
+    return { frames, duration: Math.min(frames.length * 16.67, 1800) };
+  }
+
+  function buildTransform(initial, target, p) {
+    const init = initial || {};
+    const transforms = [];
+    if (target.x !== undefined || target.y !== undefined || init.x !== undefined || init.y !== undefined) {
+      const ix = init.x !== undefined ? init.x : 0;
+      const iy = init.y !== undefined ? init.y : 0;
+      const tx = target.x !== undefined ? target.x : ix;
+      const ty = target.y !== undefined ? target.y : iy;
+      transforms.push(`translate3d(${(ix + (tx - ix) * p).toFixed(2)}px, ${(iy + (ty - iy) * p).toFixed(2)}px, 0)`);
+    }
+    if (target.scale !== undefined || init.scale !== undefined) {
+      const is = init.scale !== undefined ? init.scale : 1;
+      const ts = target.scale !== undefined ? target.scale : is;
+      transforms.push(`scale(${(is + (ts - is) * p).toFixed(4)})`);
+    }
+    if (target.rotate !== undefined || init.rotate !== undefined) {
+      const ir = init.rotate !== undefined ? init.rotate : 0;
+      const tr = target.rotate !== undefined ? target.rotate : ir;
+      transforms.push(`rotate(${(ir + (tr - ir) * p).toFixed(2)}deg)`);
+    }
+    return transforms.join(' ');
+  }
+
+  function animateTo(el, target, transition) {
+    if (!target) return;
+    const trans = transition || {};
+    let initial = {};
+    try {
+      initial = JSON.parse(el.getAttribute('data-motion-initial') || '{}');
+    } catch (_) {}
+
+    if (prefersReducedMotion()) {
+      el.style.transition = 'none';
+      if (target.opacity !== undefined) el.style.opacity = target.opacity;
+      const tf = buildTransform(initial, target, 1);
+      if (tf) el.style.transform = tf;
+      return;
+    }
+    if (trans.is_spring && typeof el.animate === 'function') {
+      const sp = solveSpring(trans.stiffness || 260, trans.damping || 20, trans.mass || 1);
+      const keyframes = sp.frames.map(p => {
+        const kf = { transform: buildTransform(initial, target, p) || 'none' };
+        if (target.opacity !== undefined || initial.opacity !== undefined) {
+          const iop = initial.opacity !== undefined ? initial.opacity : 1;
+          const top = target.opacity !== undefined ? target.opacity : iop;
+          kf.opacity = (iop + (top - iop) * p).toFixed(3);
+        }
+        return kf;
+      });
+      el.animate(keyframes, { duration: sp.duration, fill: 'forwards', easing: 'linear' });
+      return;
+    }
+    const duration = trans.duration_ms || 400;
+    const ease = trans.is_spring
+      ? 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      : (trans.ease || 'cubic-bezier(0.16, 1, 0.3, 1)');
+
+    const tf = buildTransform(initial, target, 1);
+    el.style.transition = duration > 0 ? `all ${duration}ms ${ease}` : 'none';
+    if (target.opacity !== undefined) {
+      el.style.opacity = target.opacity;
+    }
+    if (tf) {
+      el.style.transform = tf;
+    }
+    if (target.blur !== undefined) {
+      el.style.filter = `blur(${target.blur}px)`;
+    }
+  }
+
+  let scrollBound = false;
+  function updateProgress() {
+    const progressBars = document.querySelectorAll('[data-scroll-progress], [yav\\:scroll-progress]');
+    if (progressBars.length === 0) return;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
+    progressBars.forEach(bar => {
+      bar.style.setProperty('--progress', progress);
+      bar.style.transform = `scaleX(${progress})`;
+    });
+  }
+
+  const observer = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const target = entry.target;
+
+      if (target.hasAttribute('data-motion-group')) {
+        const stagger = prefersReducedMotion() ? 0 : parseInt(target.getAttribute('data-stagger') || '60', 10);
+        const items = target.querySelectorAll('[data-motion]');
+        items.forEach((item, idx) => {
+          try {
+            const anim = JSON.parse(item.getAttribute('data-motion-animate') || '{}');
+            const trans = JSON.parse(item.getAttribute('data-motion-transition') || '{}');
+            setTimeout(() => animateTo(item, anim, trans), idx * stagger);
+          } catch (_) {}
+        });
+        observer.unobserve(target);
+      } else if (target.hasAttribute('data-motion')) {
+        try {
+          const anim = JSON.parse(target.getAttribute('data-motion-animate') || '{}');
+          const trans = JSON.parse(target.getAttribute('data-motion-transition') || '{}');
+          const delay = prefersReducedMotion() ? 0 : (trans.delay_ms || 0);
+          setTimeout(() => animateTo(target, anim, trans), delay);
+        } catch (_) {}
+
+        const once = target.getAttribute('data-motion-once') !== 'false';
+        if (once) observer.unobserve(target);
+      }
+    });
+  }, { threshold: 0.15 }) : null;
+
+  function initYavMotion() {
+    if (!scrollBound && document.querySelector('[data-scroll-progress], [yav\\:scroll-progress]')) {
+      scrollBound = true;
+      window.addEventListener('scroll', updateProgress, { passive: true });
+    }
+    updateProgress();
+
+    if (observer) {
+      document.querySelectorAll('[data-motion-inview="true"]').forEach(el => {
+        if (!el.__yav_inview_init) {
+          el.__yav_inview_init = true;
+          observer.observe(el);
+        }
+      });
+    }
+
+    document.querySelectorAll('[data-motion]:not([data-motion-inview="true"])').forEach(el => {
+      if (el.__yav_anim_init) return;
+      el.__yav_anim_init = true;
+      try {
+        const anim = JSON.parse(el.getAttribute('data-motion-animate') || '{}');
+        const trans = JSON.parse(el.getAttribute('data-motion-transition') || '{}');
+        const delay = prefersReducedMotion() ? 0 : (trans.delay_ms || 0);
+        setTimeout(() => animateTo(el, anim, trans), delay);
+      } catch (_) {}
+    });
+
+    document.querySelectorAll('[data-motion-hover], [data-motion-tap]').forEach(el => {
+      if (el.__yav_gesture_init) return;
+      el.__yav_gesture_init = true;
+      try {
+        const hoverState = el.getAttribute('data-motion-hover') ? JSON.parse(el.getAttribute('data-motion-hover')) : null;
+        const tapState = el.getAttribute('data-motion-tap') ? JSON.parse(el.getAttribute('data-motion-tap')) : null;
+        const animState = el.getAttribute('data-motion-animate') ? JSON.parse(el.getAttribute('data-motion-animate')) : null;
+        const trans = JSON.parse(el.getAttribute('data-motion-transition') || '{}');
+
+        if (hoverState) {
+          el.addEventListener('mouseenter', () => animateTo(el, hoverState, trans));
+          el.addEventListener('mouseleave', () => animateTo(el, animState || { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1 }, trans));
+        }
+        if (tapState) {
+          el.addEventListener('mousedown', () => animateTo(el, tapState, { duration_ms: 100 }));
+          el.addEventListener('mouseup', () => animateTo(el, hoverState || animState || { scale: 1, rotate: 0 }, trans));
+        }
+      } catch (_) {}
+    });
+  }
+
+  window.addEventListener('yav:navigate', initYavMotion);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initYavMotion);
+  } else {
+    initYavMotion();
+  }
+})();</script><script>
+(function () {
+  var path = location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('[data-nav]').forEach(function (a) {
+    if (a.getAttribute('href') === path) a.setAttribute('aria-current', 'page');
+  });
+
+  var header = document.getElementById('site-header');
+  var bar = document.getElementById('scroll-progress');
+  function onScroll() {
+    var y = window.scrollY || 0;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (header) {
+      if (y > 8) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    }
+    if (bar && max > 0) {
+      bar.style.setProperty('--progress', Math.min(y / max, 1));
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Scroll reveal observer
+  if ('IntersectionObserver' in window) {
+    var revObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      revObs.observe(el);
+    });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      el.classList.add('is-in');
+    });
+  }
+
+  // Mobile Nav & Dropdown Menu Controller
+  var mBtn = document.getElementById('mobile-menu-btn');
+  var mNav = document.getElementById('mobile-nav');
+  var mOpenIcon = document.getElementById('menu-icon-open');
+  var mCloseIcon = document.getElementById('menu-icon-close');
+
+  window.toggleMobileNav = function () {
+    if (!mNav) return;
+    var isHidden = mNav.classList.contains('hidden');
+    if (isHidden) {
+      mNav.classList.remove('hidden');
+      if (mBtn) mBtn.setAttribute('aria-expanded', 'true');
+      if (mOpenIcon) mOpenIcon.classList.add('hidden');
+      if (mCloseIcon) mCloseIcon.classList.remove('hidden');
+      setTimeout(function () {
+        mNav.classList.remove('opacity-0', '-translate-y-2');
+        mNav.classList.add('opacity-100', 'translate-y-0');
+      }, 10);
+    } else {
+      window.closeMobileNav();
+    }
+  };
+
+  window.closeMobileNav = function () {
+    if (!mNav || mNav.classList.contains('hidden')) return;
+    mNav.classList.remove('opacity-100', 'translate-y-0');
+    mNav.classList.add('opacity-0', '-translate-y-2');
+    if (mBtn) mBtn.setAttribute('aria-expanded', 'false');
+    if (mOpenIcon) mOpenIcon.classList.remove('hidden');
+    if (mCloseIcon) mCloseIcon.classList.add('hidden');
+    setTimeout(function () {
+      mNav.classList.add('hidden');
+    }, 180);
+  };
+
+  if (mBtn) {
+    mBtn.addEventListener('click', window.toggleMobileNav);
+  }
+
+  // Command Palette Popover
+  window.toggleCmdPalette = function () {
+    var p = document.getElementById('cmd-palette-popover');
+    if (!p) return;
+    if (p.style.display === 'block' || p.classList.contains('is-open')) {
+      window.closeCmdPalette();
+    } else {
+      window.openCmdPalette();
+    }
+  };
+
+  window.openCmdPalette = function () {
+    var p = document.getElementById('cmd-palette-popover');
+    var btn = document.getElementById('header-search-btn');
+    if (!p) return;
+    window.closeLangMenu();
+    p.classList.add('is-open');
+    p.style.display = 'block';
+    p.style.opacity = '1';
+    p.style.visibility = 'visible';
+    p.style.pointerEvents = 'auto';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    var input = document.getElementById('cmd-palette-input');
+    if (input) {
+      setTimeout(function () { input.focus(); input.select(); }, 40);
+    }
+  };
+
+  window.closeCmdPalette = function () {
+    var p = document.getElementById('cmd-palette-popover');
+    var btn = document.getElementById('header-search-btn');
+    if (!p) return;
+    p.classList.remove('is-open');
+    p.style.display = 'none';
+    p.style.opacity = '0';
+    p.style.visibility = 'hidden';
+    p.style.pointerEvents = 'none';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  };
+
+  // Language Menu Popover
+  window.toggleLangMenu = function () {
+    var m = document.getElementById('lang-menu');
+    if (!m) return;
+    if (m.style.display === 'block' || m.classList.contains('is-open')) {
+      window.closeLangMenu();
+    } else {
+      window.openLangMenu();
+    }
+  };
+
+  window.openLangMenu = function () {
+    var m = document.getElementById('lang-menu');
+    var btn = document.getElementById('lang-btn');
+    if (!m) return;
+    window.closeCmdPalette();
+    m.classList.add('is-open');
+    m.style.display = 'block';
+    m.style.opacity = '1';
+    m.style.visibility = 'visible';
+    m.style.pointerEvents = 'auto';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  };
+
+  window.closeLangMenu = function () {
+    var m = document.getElementById('lang-menu');
+    var btn = document.getElementById('lang-btn');
+    if (!m) return;
+    m.classList.remove('is-open');
+    m.style.display = 'none';
+    m.style.opacity = '0';
+    m.style.visibility = 'hidden';
+    m.style.pointerEvents = 'none';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  };
+
+  // Close menus on click-outside
+  document.addEventListener('click', function (e) {
+    var sBtn = document.getElementById('header-search-btn');
+    var sPop = document.getElementById('cmd-palette-popover');
+    if (sPop && (sPop.style.display === 'block' || sPop.classList.contains('is-open'))) {
+      var insideSearch = (sBtn && sBtn.contains(e.target)) || (sPop && sPop.contains(e.target));
+      if (!insideSearch) {
+        window.closeCmdPalette();
+      }
+    }
+
+    var lBtn = document.getElementById('lang-btn');
+    var lPop = document.getElementById('lang-menu');
+    if (lPop && (lPop.style.display === 'block' || lPop.classList.contains('is-open'))) {
+      var insideLang = (lBtn && lBtn.contains(e.target)) || (lPop && lPop.contains(e.target));
+      if (!insideLang) {
+        window.closeLangMenu();
+      }
+    }
+
+    if (mNav && mBtn && !mNav.contains(e.target) && !mBtn.contains(e.target)) {
+      window.closeMobileNav();
+    }
+  });
+
+  // Close menus on Escape key & Ctrl+K shortcut
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      window.closeCmdPalette();
+      window.closeLangMenu();
+      window.closeMobileNav();
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      window.toggleCmdPalette();
+    }
+  });
+
+  // Reset mobile menu on resize to desktop
+  window.addEventListener('resize', function () {
+    if (window.innerWidth >= 1024) {
+      window.closeMobileNav();
+    }
+  });
+
+  // Count-up numbers with IntersectionObserver
+  function runCountUp(el) {
+    if (el._counted) return;
+    el._counted = true;
+    var raw = el.dataset.count;
+    var to = parseFloat(raw);
+    if (isNaN(to)) return;
+    var parts = raw.split('.');
+    var dec = parts[1] ? parts[1].length : 0;
+    var t0 = performance.now();
+    var duration = 1400;
+    function step(t) {
+      var p = Math.min((t - t0) / duration, 1);
+      var k = 1 - Math.pow(1 - p, 3);
+      el.textContent = (to * k).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      if (p < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = to.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var countObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          runCountUp(e.target);
+          countObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      countObs.observe(el);
+    });
+  } else {
+    document.querySelectorAll('[data-count]').forEach(runCountUp);
+  }
+
+  // Scroll-spy for .toc
+  var toc = document.querySelector('.toc');
+  if (toc) {
+    var links = {};
+    toc.querySelectorAll("a[href^='#']").forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (href) links[href.slice(1)] = a;
+    });
+    if ('IntersectionObserver' in window) {
+      var sio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) {
+            Object.keys(links).forEach(function (k) {
+              links[k].classList.toggle('is-active', k === e.target.id);
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -60% 0px' });
+      Object.keys(links).forEach(function (id) {
+        var s = document.getElementById(id);
+        if (s) sio.observe(s);
+      });
+    }
+  }
+})();
+
+window.copyText = function (btn, text) {
+  var str = text;
+  if (!str || typeof str !== 'string') {
+    str = btn.getAttribute('data-copy');
+  }
+  if (!str) {
+    var win = btn.closest ? btn.closest('.ide-window, .term-window, .plate') : null;
+    if (win) {
+      var c = win.querySelector('.code');
+      if (c) str = c.innerText || c.textContent;
+    }
+  }
+  if (!str && btn.parentElement) {
+    var codeEl = btn.parentElement.querySelector('code');
+    if (codeEl) str = codeEl.innerText || codeEl.textContent;
+  }
+  if (!str) str = '';
+
+  function fallback(t) {
+    var ta = document.createElement('textarea');
+    ta.value = t;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(str).catch(function () { fallback(str); });
+    } else {
+      fallback(str);
+    }
+  } catch (err) {
+    fallback(str);
+  }
+
+  var el = btn.querySelector ? btn.querySelector('[data-copy-label]') : null;
+  if (!el) el = btn;
+  var svg = btn.querySelector ? btn.querySelector('svg') : null;
+  var prev = el.getAttribute('data-prev-text') || el.textContent;
+  el.setAttribute('data-prev-text', prev);
+
+  el.textContent = 'copied ✓';
+  el.classList.add('copied');
+  btn.classList.add('is-copied');
+  el.style.setProperty('color', '#22c55e', 'important');
+  el.style.fontWeight = '600';
+  btn.style.setProperty('border-color', 'rgba(34, 197, 94, 0.6)', 'important');
+  if (svg) {
+    svg.style.setProperty('color', '#22c55e', 'important');
+    svg.style.setProperty('stroke', '#22c55e', 'important');
+  }
+
+  clearTimeout(btn._copyTimer);
+  btn._copyTimer = setTimeout(function () { 
+    el.textContent = prev; 
+    el.classList.remove('copied');
+    btn.classList.remove('is-copied');
+    el.style.removeProperty('color');
+    el.style.fontWeight = '';
+    btn.style.removeProperty('border-color');
+    if (svg) {
+      svg.style.removeProperty('color');
+      svg.style.removeProperty('stroke');
+    }
+  }, 1600);
+};
+</script></div>
+<script id="yav-micro-actions">(function(){function g(e){var s=e.getAttribute('yav:toggle')||e.getAttribute('data-yav-toggle')||e.getAttribute('yav:show')||e.getAttribute('data-yav-show')||e.getAttribute('yav:hide')||e.getAttribute('data-yav-hide');return s?document.querySelector(s):null}function c(t,r){if(!t)return;t.classList.add('hidden');t.setAttribute('hidden','');t.removeAttribute('data-open');t.classList.remove('is-open');var trig=r;if(!trig&&t.id){trig=document.querySelector('[yav\\:toggle="#'+t.id+'"],[data-yav-toggle="#'+t.id+'"]')}if(trig){trig.setAttribute('aria-expanded','false');if(document.activeElement&&t.contains(document.activeElement)){trig.focus()}}}function o(t,r){if(!t)return;var grp=t.getAttribute('yav:group')||t.getAttribute('data-yav-group');if(grp){document.querySelectorAll('[yav\\:group="'+grp+'"],[data-yav-group="'+grp+'"]').forEach(function(other){if(other!==t)c(other)})}t.classList.remove('hidden');t.removeAttribute('hidden');t.setAttribute('data-open','true');t.classList.add('is-open');if(r)r.setAttribute('aria-expanded','true');var f=t.querySelector('[autofocus],input,button,a[href],[tabindex]:not([tabindex="-1"])');if(f)setTimeout(function(){f.focus()},10)}function sp(){var b=document.getElementById('yav-top-loader');if(!b){b=document.createElement('div');b.id='yav-top-loader';b.style.cssText='position:fixed;top:0;left:0;height:2.5px;width:0%;background:linear-gradient(90deg,#6366f1,#06b6d4);z-index:99999;transition:width .2s ease,opacity .3s ease;pointer-events:none';document.body.appendChild(b)}b.style.opacity='1';b.style.width='35%';setTimeout(function(){if(b.style.opacity==='1')b.style.width='78%'},100)}function hp(){var b=document.getElementById('yav-top-loader');if(b){b.style.width='100%';setTimeout(function(){b.style.opacity='0';b.style.width='0%'},220)}}function toast(msg){if(!msg)return;var t=document.getElementById('cmd-notification')||document.querySelector('[data-yav-toast]');if(!t){t=document.createElement('div');t.setAttribute('data-yav-toast','');t.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;padding:10px 16px;background:#111112;color:#ece9e3;border:1px solid rgba(236,233,227,0.16);font-family:monospace;font-size:12px;transition:all .25s ease;opacity:0;transform:translateY(12px);pointer-events:none';document.body.appendChild(t)}var tx=t.querySelector('#cmd-notification-text,[data-yav-toast-text]')||t;tx.textContent=msg;t.classList.remove('translate-y-12','opacity-0');t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(t.__yav_tm);t.__yav_tm=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(12px)';t.classList.add('translate-y-12','opacity-0')},2000)}function applyLang(lang){if(!lang)return;try{localStorage.setItem('yav_lang',lang);document.cookie='yav_lang='+lang+'; path=/; max-age=31536000'}catch(_){}var lbl=document.getElementById('lang-current-label')||document.querySelector('[data-yav-lang-label]');if(lbl)lbl.textContent=lang.toUpperCase();document.documentElement.lang=lang;var sc=document.getElementById('yav-i18n-payload');if(!sc)return;try{var d=JSON.parse(sc.textContent||'{}');var tr=d[lang]||d['en'];if(!tr)return;document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(tr[k])el.textContent=tr[k]});document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){var k=el.getAttribute('data-i18n-placeholder');if(tr[k])el.placeholder=tr[k]})}catch(_){}}function syncNav(){var p=location.pathname.replace(/\/$/,'')||'/';document.querySelectorAll('[yav\\:nav-active],[data-yav-nav-active],[data-nav]').forEach(function(a){var h=(a.getAttribute('href')||'').replace(/\/$/,'')||'/';var v=a.getAttribute('yav:nav-active')||a.getAttribute('data-yav-nav-active')||'page';if(h===p)a.setAttribute('aria-current',v);else a.removeAttribute('aria-current')})}function morphEl(from,to){if(!from||!to)return;if(from.nodeType===1&&(from.hasAttribute('yav:preserve')||from.hasAttribute('data-yav-preserve')))return;if(from.nodeType!==to.nodeType||from.nodeName!==to.nodeName){from.replaceWith(to.cloneNode(true));return}if(from.nodeType===3||from.nodeType===8){if(from.nodeValue!==to.nodeValue)from.nodeValue=to.nodeValue;return}if(from.nodeType===1){var isAct=document.activeElement===from&&(from.tagName==='INPUT'||from.tagName==='TEXTAREA'||from.tagName==='SELECT');var oldAttrs=from.attributes,newAttrs=to.attributes;for(var i=oldAttrs.length-1;i>=0;i--){var nm=oldAttrs[i].name;if(!to.hasAttribute(nm))from.removeAttribute(nm)}for(var j=0;j<newAttrs.length;j++){var a=newAttrs[j];if(isAct&&a.name==='value')continue;if(from.getAttribute(a.name)!==a.value)from.setAttribute(a.name,a.value)}if(!isAct&&'value' in to&&from.value!==to.value)from.value=to.value;var fc=Array.from(from.childNodes),tc=Array.from(to.childNodes),max=Math.max(fc.length,tc.length);for(var k=0;k<max;k++){if(k>=tc.length){if(fc[k]&&!(fc[k].nodeType===1&&(fc[k].hasAttribute('yav:preserve')||fc[k].hasAttribute('data-yav-preserve'))))fc[k].remove()}else if(k>=fc.length){from.appendChild(tc[k].cloneNode(true))}else{morphEl(fc[k],tc[k])}}}}window.__yavMorph=morphEl;function sw(el,html,mode){if(!el)return;if(mode==='outerHTML')el.outerHTML=html;else if(mode==='beforeend')el.insertAdjacentHTML('beforeend',html);else if(mode==='afterbegin')el.insertAdjacentHTML('afterbegin',html);else if(mode==='delete')el.remove();else if(mode==='morph'){var tmp=document.createElement(el.tagName||'div');tmp.innerHTML=html;morphEl(el,tmp)}else el.innerHTML=html;window.dispatchEvent(new CustomEvent('yav:navigate'))}function ax(el,m,url,body){var ts=el.getAttribute('yav:target')||el.getAttribute('data-yav-target');var tg=ts?document.querySelector(ts):el;var sm=el.getAttribute('yav:swap')||el.getAttribute('data-yav-swap')||'innerHTML';var optTog=el.getAttribute('yav:optimistic-toggle')||el.getAttribute('data-yav-optimistic-toggle');var optInc=el.getAttribute('yav:optimistic-inc')||el.getAttribute('data-yav-optimistic-inc');var optSet=el.getAttribute('yav:optimistic-set')||el.getAttribute('data-yav-optimistic-set');var rbMsg=el.getAttribute('yav:rollback-toast')||el.getAttribute('data-yav-rollback-toast');var prevTog=optTog?el.classList.contains(optTog):null;var incEl=optInc?document.querySelector(optInc):null;var prevInc=incEl?incEl.textContent:null;var setEl=null,prevSet=null;if(optSet){var sp=optSet.split(':');setEl=document.querySelector(sp[0]);if(setEl){prevSet=setEl.textContent;setEl.textContent=sp.slice(1).join(':')}}if(optTog)el.classList.toggle(optTog);if(incEl){var iv=parseInt(incEl.textContent||'0',10);incEl.textContent=isNaN(iv)?'1':(iv+1)}fetch(url,{method:m,body:body,headers:{'X-Yav-Request':'true','HX-Request':'true'}}).then(function(r){if(!r.ok)throw new Error(r.statusText);return r.text()}).then(function(h){sw(tg,h,sm)}).catch(function(){if(optTog!==null){if(prevTog)el.classList.add(optTog);else el.classList.remove(optTog)}if(incEl&&prevInc!==null)incEl.textContent=prevInc;if(setEl&&prevSet!==null)setEl.textContent=prevSet;if(rbMsg)toast(rbMsg)})}var j=null;document.addEventListener('click',function(e){var cp=e.target.closest('[yav\\:copy],[data-yav-copy]');if(cp){var txt=cp.getAttribute('yav:copy')||cp.getAttribute('data-yav-copy');if(txt&&navigator.clipboard){navigator.clipboard.writeText(txt);var lb=cp.querySelector('[data-copy-label]')||cp;var fb=cp.getAttribute('yav:copy-label')||cp.getAttribute('data-yav-copy-label')||'copied';var prev=lb.getAttribute('data-prev-text')||lb.textContent;lb.setAttribute('data-prev-text',prev);lb.textContent=fb;setTimeout(function(){lb.textContent=prev},1400);var tm=cp.getAttribute('yav:toast')||cp.getAttribute('data-yav-toast');if(tm)toast(tm)}}var lg=e.target.closest('[yav\\:set-lang],[data-yav-set-lang]');if(lg){var l=lg.getAttribute('yav:set-lang')||lg.getAttribute('data-yav-set-lang');applyLang(l);var pop=lg.closest('[data-open="true"]');if(pop)c(pop);return}var tb=e.target.closest('[yav\\:tab],[data-yav-tab]');if(tb){var grp=tb.getAttribute('yav:tab-group')||tb.getAttribute('data-yav-tab-group')||'default';var val=tb.getAttribute('yav:tab')||tb.getAttribute('data-yav-tab');document.querySelectorAll('[yav\\:tab-group="'+grp+'"],[data-yav-tab-group="'+grp+'"]').forEach(function(b){var act=(b.getAttribute('yav:tab')||b.getAttribute('data-yav-tab'))===val;b.classList.toggle('active',act);b.setAttribute('aria-selected',act?'true':'false')});document.querySelectorAll('[yav\\:tab-panel^="'+grp+':"],[data-yav-tab-panel^="'+grp+':"]').forEach(function(p){var pv=p.getAttribute('yav:tab-panel')||p.getAttribute('data-yav-tab-panel');var match=pv===(grp+':'+val);p.classList.toggle('hidden',!match);if(match)window.dispatchEvent(new CustomEvent('yav:tab-change',{detail:{group:grp,tab:val,panel:p}}))});return}var fc=e.target.closest('[yav\\:filter-value],[data-yav-filter-value]');if(fc){var ft=fc.getAttribute('yav:filter-target')||fc.getAttribute('data-yav-filter-target');var fa=fc.getAttribute('yav:filter-attr')||fc.getAttribute('data-yav-filter-attr')||'data-cat';var fv=fc.getAttribute('yav:filter-value')||fc.getAttribute('data-yav-filter-value')||'all';if(ft){document.querySelectorAll(ft).forEach(function(it){var iv=it.getAttribute(fa)||'';it.style.display=(fv==='all'||iv===fv)?'':'none'})}return}var t=e.target.closest('[yav\\:toggle],[data-yav-toggle],[yav\\:show],[data-yav-show],[yav\\:hide],[data-yav-hide]');if(t){var tg=g(t);if(tg){document.querySelectorAll('[yav\\:click-outside="close"],[data-yav-click-outside="close"]').forEach(function(el){if(el!==tg&&!el.contains(t)&&!el.contains(tg)){var open=el.getAttribute('data-open')==='true'||(!el.classList.contains('hidden')&&!el.hasAttribute('hidden'));if(open)c(el)}});if(t.hasAttribute('yav:show')||t.hasAttribute('data-yav-show'))o(tg,t);else if(t.hasAttribute('yav:hide')||t.hasAttribute('data-yav-hide'))c(tg,t);else{(tg.getAttribute('data-open')==='true'||(!tg.classList.contains('hidden')&&!tg.hasAttribute('hidden')))?c(tg,t):o(tg,t)}j=tg;return}}var xm=e.target.closest('[yav\\:get],[data-yav-get],[yav\\:post],[data-yav-post],[yav\\:put],[data-yav-put],[yav\\:delete],[data-yav-delete]');if(xm&&xm.tagName!=='FORM'){e.preventDefault();var m='GET',u=xm.getAttribute('yav:get')||xm.getAttribute('data-yav-get');if(!u){m='POST';u=xm.getAttribute('yav:post')||xm.getAttribute('data-yav-post')}if(!u){m='PUT';u=xm.getAttribute('yav:put')||xm.getAttribute('data-yav-put')}if(!u){m='DELETE';u=xm.getAttribute('yav:delete')||xm.getAttribute('data-yav-delete')}if(u)ax(xm,m,u,null);return}var a=e.target.closest('a[href]');if(a&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&a.target!=='_blank'){var href=a.getAttribute('href');if(href&&href.charAt(0)==='/'&&(a.hasAttribute('yav:boost')||a.closest('[yav\\:boost],[data-yav-boost]'))){e.preventDefault();sp();fetch(href,{headers:{'X-Yav-Boost':'true'}}).then(function(r){return r.text()}).then(function(html){hp();var apply=function(){var doc=new DOMParser().parseFromString(html,'text/html');if(doc.title)document.title=doc.title;if(doc.body)morphEl(document.body,doc.body);history.pushState({},'',href);window.scrollTo(0,0);syncNav();window.dispatchEvent(new CustomEvent('yav:navigate'))};if(document.startViewTransition)document.startViewTransition(apply);else apply()}).catch(function(){hp();window.location.href=href});return}}document.querySelectorAll('[yav\\:click-outside="close"],[data-yav-click-outside="close"]').forEach(function(el){if(el===j)return;var open=el.getAttribute('data-open')==='true'||(!el.classList.contains('hidden')&&!el.hasAttribute('hidden'));if(open&&!el.contains(e.target))c(el)});j=null});document.addEventListener('input',function(e){var fi=e.target.closest('[yav\\:filter],[data-yav-filter]');if(fi){var sel=fi.getAttribute('yav:filter')||fi.getAttribute('data-yav-filter');var emp=fi.getAttribute('yav:filter-empty')||fi.getAttribute('data-yav-filter-empty');var q=(fi.value||'').toLowerCase().trim();var vis=0;if(sel){document.querySelectorAll(sel).forEach(function(it){var tx=((it.textContent||'')+' '+(it.getAttribute('data-name')||'')).toLowerCase();var ok=!q||tx.indexOf(q)!==-1;it.style.display=ok?'':'none';if(ok)vis++})}if(emp){var emEl=document.querySelector(emp);if(emEl)emEl.classList.toggle('hidden',vis>0)}}});document.addEventListener('submit',function(e){var f=e.target.closest('form[yav\\:post],form[data-yav-post],form[yav\\:get],form[data-yav-get],form[yav\\:put],form[data-yav-put],form[yav\\:delete],form[data-yav-delete]');if(f){e.preventDefault();var m='POST',u=f.getAttribute('yav:post')||f.getAttribute('data-yav-post');if(!u){m='GET';u=f.getAttribute('yav:get')||f.getAttribute('data-yav-get')}if(!u){m='PUT';u=f.getAttribute('yav:put')||f.getAttribute('data-yav-put')}if(!u){m='DELETE';u=f.getAttribute('yav:delete')||f.getAttribute('data-yav-delete')}if(u)ax(f,m,u,new URLSearchParams(new FormData(f)))}});var pf={};document.addEventListener('mouseover',function(e){var a=e.target.closest('a[href]');if(a&&(a.getAttribute('yav:prefetch')==='hover'||a.getAttribute('data-yav-prefetch')==='hover')){var h=a.getAttribute('href');if(h&&h.charAt(0)==='/'&&!pf[h]){pf[h]=1;var l=document.createElement('link');l.rel='prefetch';l.href=h;document.head.appendChild(l)}}});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('[yav\\:escape="close"],[data-yav-escape="close"],[yav\\:click-outside="close"],[data-yav-click-outside="close"]').forEach(function(el){c(el)});return}if((e.ctrlKey||e.metaKey)&&e.key){var k=e.key.toLowerCase();var hk=document.querySelector('[yav\\:hotkey*="+'+k+'"],[data-yav-hotkey*="+'+k+'"]');if(hk){e.preventDefault();hk.click();return}}var d=document.querySelector('dialog[open],[role="dialog"][data-open="true"],[yav\\:focus-trap][data-open="true"]');if(d&&e.key==='Tab'){var fs=Array.from(d.querySelectorAll('a[href],button:not([disabled]),textarea:not([disabled]),input:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])'));if(fs.length>0){var f0=fs[0],f1=fs[fs.length-1];if(e.shiftKey&&document.activeElement===f0){f1.focus();e.preventDefault()}else if(!e.shiftKey&&document.activeElement===f1){f0.focus();e.preventDefault()}}}var m=document.activeElement?document.activeElement.closest('[role="menu"]'):null;if(m){var items=Array.from(m.querySelectorAll('[role="menuitem"],a,button'));var idx=items.indexOf(document.activeElement);if(e.key==='ArrowDown'){e.preventDefault();var next=items[(idx+1)%items.length];if(next)next.focus()}else if(e.key==='ArrowUp'){e.preventDefault();var prev=items[(idx-1+items.length)%items.length];if(prev)prev.focus()}else if(e.key==='Home'){e.preventDefault();if(items[0])items[0].focus()}else if(e.key==='End'){e.preventDefault();if(items[items.length-1])items[items.length-1].focus()}}});window.addEventListener('resize',function(){document.querySelectorAll('[yav\\:close-on-resize],[data-yav-close-on-resize]').forEach(function(el){var w=parseInt(el.getAttribute('yav:close-on-resize')||el.getAttribute('data-yav-close-on-resize')||'1024',10);if(window.innerWidth>=w)c(el)})});window.addEventListener('yav:navigate',hp);syncNav();try{var sl=localStorage.getItem('yav_lang');if(sl)applyLang(sl)}catch(_){}})();</script></body>
+</html>

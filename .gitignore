@@ -1,6 +1,5 @@
 /target
 /.yav
-dist/
 **/*.rs.bk
 *.log
 .DS_Store

@@ -1,0 +1,21 @@
+{
+  "name": "Yav.rs — The Web Framework for Rust",
+  "short_name": "Yav.rs",
+  "description": "High-velocity Rust web framework with file-system routing, standalone Tailwind JIT, and zero JavaScript hydration tax.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b0d",
+  "theme_color": "#0b0b0d",
+  "icons": [
+    {
+      "src": "/public/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/public/favicon-flat.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

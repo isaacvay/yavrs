@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://yav.rs/</loc><priority>0.8</priority></url>
+  <url><loc>https://yav.rs/about</loc><priority>0.8</priority></url>
+  <url><loc>https://yav.rs/benchmarks</loc><priority>0.8</priority></url>
+  <url><loc>https://yav.rs/components</loc><priority>0.8</priority></url>
+  <url><loc>https://yav.rs/docs</loc><priority>0.8</priority></url>
+  <url><loc>https://yav.rs/faq</loc><priority>0.8</priority></url>
+  <url><loc>https://yav.rs/privacy</loc><priority>0.8</priority></url>
+  <url><loc>https://yav.rs/releases</loc><priority>0.8</priority></url>
+  <url><loc>https://yav.rs/showcase</loc><priority>0.8</priority></url>
+</urlset>

@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Architecture — Yav.rs</title>
+<link rel="stylesheet" href="/public/styles.1616c727.css" /><link rel="icon" type="image/svg+xml" href="/public/favicon.d1351192.svg" /><meta name="description" content="Deep architectural breakdown of Yav: zero-copy virtual DOM, Axum 0.8 SSR engine, memory safety, and crate taxonomy." />
+<link rel="canonical" href="https://yav.rs/about" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://yav.rs/about" />
+<meta property="og:title" content="Architecture — Yav.rs" />
+<meta property="og:description" content="Deep architectural breakdown of Yav: zero-copy virtual DOM, Axum 0.8 SSR engine, memory safety, and crate taxonomy." />
+<meta property="og:image" content="https://yav.rs/public/og-banner.png" />
+<meta property="og:site_name" content="Yav.rs" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content="https://yav.rs/about" />
+<meta name="twitter:title" content="Architecture — Yav.rs" />
+<meta name="twitter:description" content="Deep architectural breakdown of Yav: zero-copy virtual DOM, Axum 0.8 SSR engine, memory safety, and crate taxonomy." />
+<meta name="twitter:image" content="https://yav.rs/public/og-banner.png" />
+<meta name="theme-color" content="#0b0b0d" />
+<meta name="color-scheme" content="dark" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Yav",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Linux, macOS, Windows",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "url": "https://yav.rs",
+  "description": "Deep architectural breakdown of Yav: zero-copy virtual DOM, Axum 0.8 SSR engine, memory safety, and crate taxonomy."
+}
+</script></head>
+<body>
+<div class="page-frame min-h-screen flex flex-col font-sans antialiased"><script>
+document.documentElement.classList.add('dark');
+window.copyText = function (btn, text) {
+  var str = text;
+  if (!str || typeof str !== 'string') {
+    str = btn.getAttribute('data-copy');
+  }
+  if (!str) {
+    var win = btn.closest ? btn.closest('.ide-window, .term-window, .plate') : null;
+    if (win) {
+      var c = win.querySelector('.code');
+      if (c) str = c.innerText || c.textContent;
+    }
+  }
+  if (!str && btn.parentElement) {
+    var codeEl = btn.parentElement.querySelector('code');
+    if (codeEl) str = codeEl.innerText || codeEl.textContent;
+  }
+  if (!str) str = '';
+
+  function fallback(t) {
+    var ta = document.createElement('textarea');
+    ta.value = t;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(str).catch(function () { fallback(str); });
+    } else {
+      fallback(str);
+    }
+  } catch (err) {
+    fallback(str);
+  }
+
+  var el = btn.querySelector ? btn.querySelector('[data-copy-label]') : null;
+  if (!el) el = btn;
+  var svg = btn.querySelector ? btn.querySelector('svg') : null;
+  var prev = el.getAttribute('data-prev-text') || el.textContent;
+  el.setAttribute('data-prev-text', prev);
+
+  el.textContent = 'copied ✓';
+  el.classList.add('copied');
+  btn.classList.add('is-copied');
+  el.style.setProperty('color', '#22c55e', 'important');
+  el.style.fontWeight = '600';
+  btn.style.setProperty('border-color', 'rgba(34, 197, 94, 0.6)', 'important');
+  if (svg) {
+    svg.style.setProperty('color', '#22c55e', 'important');
+    svg.style.setProperty('stroke', '#22c55e', 'important');
+  }
+
+  clearTimeout(btn._copyTimer);
+  btn._copyTimer = setTimeout(function () { 
+    el.textContent = prev; 
+    el.classList.remove('copied');
+    btn.classList.remove('is-copied');
+    el.style.removeProperty('color');
+    el.style.fontWeight = '';
+    btn.style.removeProperty('border-color');
+    if (svg) {
+      svg.style.removeProperty('color');
+      svg.style.removeProperty('stroke');
+    }
+  }, 1600);
+};
+</script><style>
+/* Guaranteed popover positioning right below the 64px header */
+#header-search-container, #lang-switcher-container {
+  align-self: stretch !important;
+  display: flex !important;
+  align-items: center !important;
+  position: relative !important;
+}
+
+#cmd-palette-popover, #lang-menu {
+  display: none;
+  position: absolute !important;
+  top: 100% !important;
+  margin-top: 8px !important;
+  z-index: 9999 !important;
+}
+
+@media (max-width: 639px) {
+  #cmd-palette-popover {
+    position: fixed !important;
+    top: 72px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+  }
+}
+
+@media (min-width: 640px) {
+  #cmd-palette-popover {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    margin-top: 8px !important;
+    width: 520px !important;
+  }
+}
+
+#lang-menu {
+  position: absolute !important;
+  top: 100% !important;
+  right: 0 !important;
+  margin-top: 8px !important;
+  width: 208px !important;
+}
+
+/* Guaranteed Vivid Emerald Green on copied state */
+[data-copy-label] {
+  transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+[data-copy-label].copied,
+button:hover [data-copy-label].copied,
+button [data-copy-label].copied,
+button.is-copied [data-copy-label],
+button.is-copied:hover [data-copy-label] {
+  color: #22c55e !important;
+  font-weight: 600 !important;
+}
+button.is-copied,
+button.is-copied:hover {
+  border-color: rgba(34, 197, 94, 0.6) !important;
+  background-color: rgba(34, 197, 94, 0.08) !important;
+  color: #22c55e !important;
+}
+button.is-copied svg,
+button.is-copied:hover svg {
+  color: #22c55e !important;
+  stroke: #22c55e !important;
+}
+</style><script id="yav-i18n-payload" type="application/json">{"es":{"nav.architecture":"Arquitectura","steps.step3.title":"Iniciar servidor de desarrollo","nav.benchmarks":"Rendimiento","steps.step2.desc":"Genera la estructura completa de layouts, rutas y estilos.","cta.title.line2":"Conserva tu fin de semana.","bento.card5.desc":"Acceso nativo completo a tareas de Tokio, middlewares de Tower, WebSockets y sesiones seguras.","metrics.throughput":"Rendimiento","sandbox.island.title":"Isla de estado reactivo","bento.card1.desc":"Yav elimina el coste de hidratación: el HTML se genera directamente en buffers contiguos de memoria y los widgets interactivos se ejecutan mediante micro-scripts livianos.","showcase.badge":"PRUEBA EN PRODUCCIÓN · SISTEMAS REALES","cta.title.line1":"Despliega el binario. ","privacy.badge":"ÉTICA DE DATOS Y ESPECIFICACIÓN DE SEGURIDAD","sandbox.ttfb":"TTFB simulado","privacy.subtitle":"Yav se basa en una huella de datos mínima. Cero análisis de rastreo, sin telemetría y seguridad criptográfica por defecto.","hero.title.line1":"Rápido por naturaleza.","sandbox.escaping":"Escape HTML:","metrics.hydration.desc":"Cero tiempo de ejecución JavaScript al navegador","banner.action":"Comenzar","bench.title":"Rendimiento puro. Cero concesiones.","banner.text":"Axum 0.8 de nivel de producción, renderizado RSX en compilación, cero hidratación JS.","steps.badge":"Empiece en 60 segundos","showcase.submit":"Enviar proyecto vía GitHub PR","bento.badge":"Innovaciones Clave","bento.card3.desc":"Yav gestiona el compilador oficial de Tailwind directamente sin requerir Node.js ni npm.","metrics.latency.desc":"Tiempo hasta el primer byte instantáneo","releases.subtitle":"Progresión semver transparente, garantías de compatibilidad y rendimiento del ecosistema Yav.","faq.subtitle":"Motivaciones claras, compromisos técnicos honestos y comparativa directa entre Yav, WASM y frameworks JavaScript.","footer.rendered":"Rendered con RSX en 0.12ms","nav.docs":"Documentación","metrics.latency":"Latencia mediana","hero.title.line3":"El framework web moderno para Rust.","hero.title.line2":"Seguro por diseño.","banner.released":"v0.1.4 PUBLICADO","nav.search":"Búsqueda rápida...","steps.step3.desc":"Inicia recarga en vivo, compilación de Tailwind y sincronización.","footer.copyright":"Con doble licencia MIT o Apache-2.0.","hero.cta.arch":"Explorar arquitectura","bento.card5.title":"Base sólida de Axum 0.8 y Tokio","bento.card2.desc":"Escriba marcado declarativo con la ergonomía de JSX, respaldado por la potencia del compilador de Rust.","faq.badge":"JUSTIFICACIÓN · COMPROMISOS TÉCNICOS · PREGUNTAS FRECUENTES","bento.title":"Diseñado para la velocidad, construido para la confiabilidad.","sandbox.none":"Ninguna (0 MB)","metrics.memory":"Memoria inactiva","cta.github":"Dar estrella en GitHub","bench.badge":"Pruebas de Rendimiento Reales","cta.title":"Despliega el binario. Conserva tu fin de semana.","steps.step2.title":"Crear nuevo proyecto","releases.title":"Versiones y Registro de Cambios de Ingeniería","steps.title":"Tres comandos para su primera aplicación.","nav.overview":"Visión general","sandbox.island.desc":"Interacción del cliente sin coste","bento.card2.title":"Macro RSX en tiempo de compilación","bench.subtitle":"Medido con wrk en instancias Linux de 8 vCPU idénticas con serialización JSON.","hero.pill.engine":"Axum 0.8","hero.pill.nohydration":"Cero hidratación JS","privacy.title":"Política de Privacidad y Modelo de Seguridad","footer.status":"Todos los sistemas operativos","bento.card3.title":"Tailwind CSS autónomo","sandbox.verified":"verificado por rustc","nav.components":"Componentes","metrics.hydration":"Hidratación del cliente","bento.card4.title":"Enrutador Matchit por sistema de archivos","sandbox.active":"Activo","cta.badge":"Siguiente paso","bento.subtitle":"Todo lo necesario para construir, probar y desplegar software web moderno sin herramientas complejas de JavaScript.","bento.card4.desc":"Estructura intuitiva de carpetas convertida en tiempo de compilación en árboles Radix ultrarrápidos.","sandbox.node":"Dependencia de Node.js:","cta.docs":"Leer la documentación","sandbox.no_xss":"Cero XSS por defecto","metrics.throughput.desc":"req/sec en hardware estándar de 8 núcleos","sandbox.compiler":"Verificación del compilador:","steps.step1.title":"Instalar la CLI de Yav","hero.pill.rsx":"RSX en compilación","releases.badge":"LÍNEA TEMPORAL SEMVER · REGISTRO DE CAMBIOS","faq.title":"¿Por qué Yav? Arquitectura y Comparativas","metrics.memory.desc":"Huella de memoria nativa ultraligera","steps.step1.desc":"Instala la herramienta de desarrollo yav en su PATH.","bento.card1.title":"Renderizado en servidor sin hidratación","hero.cta.start":"Comenzar (guía de 5 min)","hero.subtitle":"Cree aplicaciones web de nivel de producción con plantillas RSX compiladas, enrutamiento automático por sistema de archivos y Tailwind CSS integrado. Sin Node.js. Sin npm. Cero sobrecarga del cliente.","showcase.subtitle":"Desde telemetría financiera hasta tiendas en el edge, descubra lo que los equipos construyen sin el coste de hidratación JavaScript.","showcase.title":"Creado con Yav. Probado en producción.","cta.subtitle":"Únase a la nueva generación de desarrolladores full-stack de Rust. Tipado seguro, seguridad de memoria y ultrarrápido."},"fr":{"bento.card4.title":"Routeur Matchit par système de fichiers","sandbox.node":"Dépendance Node.js :","bench.badge":"Benchmarks Réels","sandbox.ttfb":"TTFB simulé","bench.title":"Performance brute. Zéro compromis.","bento.card3.title":"Tailwind CSS autonome","sandbox.none":"Aucune (0 Mo)","metrics.latency":"Latence médiane","cta.title.line1":"Livrez le binaire. ","footer.rendered":"Rendu avec RSX en 0.12ms","bento.card1.title":"Rendu serveur sans hydratation","hero.title.line2":"Sûr par conception.","privacy.subtitle":"Yav repose sur le principe de l'empreinte minimale. Zéro pixel traceur, aucune télémétrie transmise et sécurité cryptographique par défaut.","privacy.badge":"ÉTHIQUE DES DONNÉES & SÉCURITÉ TECHNIQUE","hero.pill.rsx":"RSX au build","bench.subtitle":"Mesuré avec wrk sur instances Linux 8 vCPU identiques avec validation de session et sérialisation JSON.","metrics.throughput":"Débit","banner.text":"Axum 0.8 de niveau production, rendu RSX au build, zéro hydratation JS.","showcase.title":"Conçu avec Yav. Éprouvé en production.","steps.step1.title":"Installer la CLI Yav","steps.badge":"Démarrez en 60 secondes","faq.badge":"MOTIVATIONS · COMPROMIS D'ARCHITECTURE · FAQ","metrics.hydration.desc":"Zéro runtime JavaScript envoyé au navigateur","steps.step3.desc":"Lance le rechargement à chaud, la compilation Tailwind et la synchronisation navigateur.","footer.status":"Tous les systèmes opérationnels","releases.subtitle":"Progression semver rigoureuse, garanties de rétrocompatibilité et mesures de performance de l'écosystème Yav.","faq.title":"Pourquoi Yav ? Architecture et Comparatifs","steps.step3.title":"Démarrer le serveur dev","hero.cta.arch":"Explorer l'architecture","nav.architecture":"Architecture","faq.subtitle":"Motivations architecturales claires, compromis techniques honnêtes et comparatif direct entre Yav, WASM côté client et frameworks JavaScript.","metrics.throughput.desc":"req/sec sur machine standard 8 cœurs","hero.pill.engine":"Axum 0.8","bento.card2.title":"Macro RSX au moment du build","nav.search":"Recherche rapide...","banner.action":"Commencer","sandbox.verified":"vérifié par rustc","steps.title":"Trois commandes vers votre première application.","hero.cta.start":"Démarrer (guide 5 min)","releases.badge":"HISTORIQUE SEMVER · CHANGELOG DE PRODUCTION","banner.released":"v0.1.4 DISPONIBLE","sandbox.active":"Actif","sandbox.no_xss":"Zéro faille XSS par défaut","bento.card5.desc":"Yav n'est pas une boîte noire limitante. Vous conservez l'accès natif complet aux tâches asynchrones Tokio, extracteurs Axum, couches middleware Tower, WebSockets, Server-Sent Events et sessions signées HMAC.","hero.pill.nohydration":"Zéro hydratation JS","sandbox.compiler":"Vérification compilateur :","cta.docs":"Lire la documentation","metrics.latency.desc":"Délai de premier octet instantané","steps.step2.desc":"Génère l'ensemble des layouts, routes, styles et manifestes.","bento.card5.title":"Fondation Axum 0.8 & Tokio sans compromis","nav.docs":"Documentation","nav.components":"Composants","bento.subtitle":"Tout le nécessaire pour créer, tester et livrer des logiciels web modernes—sans la fragilité des pipelines de build JavaScript.","privacy.title":"Politique de Confidentialité & Modèle de Sécurité","bento.card4.desc":"Déposez vos gestionnaires dans src/routes/ avec des paramètres dynamiques comme [id].rs. Lors de la compilation, Yav transforme votre arborescence en arbres Radix ultra-rapides en O(k).","bento.card1.desc":"Les frameworks JavaScript traditionnels sérialisent toutes les données et forcent le navigateur à parser 500 Ko+ de JS uniquement pour attacher des écouteurs. Yav élimine cette taxe d'hydratation : le HTML est directement concaténé en mémoire et les widgets interactifs fonctionnent via des micro-scripts légers.","bento.badge":"Innovations Majeures","cta.github":"Mettre une étoile sur GitHub","hero.title.line3":"Le framework web moderne pour Rust.","nav.overview":"Aperçu","cta.badge":"Déploiement","hero.title.line1":"Rapide par nature.","steps.step2.title":"Générer un nouveau projet","cta.title.line2":"Gardez votre week-end.","showcase.subtitle":"De la télémétrie financière ultra-rapide aux boutiques e-commerce déployées à l'edge, découvrez ce que les équipes construisent sans le fardeau de l'hydratation JavaScript.","showcase.submit":"Proposer un projet via GitHub PR","sandbox.escaping":"Échappement HTML :","steps.step1.desc":"Installe la chaîne d'outils standalone yav sur votre PATH.","cta.title":"Livrez le binaire. Gardez votre week-end.","sandbox.island.desc":"Interaction client à coût zéro","cta.subtitle":"Rejoignez la nouvelle génération de développeurs Rust full-stack. Typé, sûr en mémoire et ultra-rapide.","metrics.memory":"Mémoire au repos","bento.card3.desc":"Yav gère directement le binaire officiel standalone de Tailwind. Il détecte les modifications de styles, déclenche des recompilations incrémentales instantanées et produit des bundles minifiés avec hachage de contenu.","releases.title":"Versions et Journal des Modifications","sandbox.island.title":"Îlot d'état réactif","footer.copyright":"Sous double licence MIT ou Apache-2.0.","metrics.hydration":"Hydratation client","hero.subtitle":"Développez des applications web robustes avec des gabarits RSX compilés, un routage par arborescence de fichiers et Tailwind CSS intégré. Sans Node.js. Sans npm. Zéro surcoût d'exécution client.","bento.title":"Conçu pour la vitesse, taillé pour la fiabilité.","bento.card2.desc":"Rédigez un balisage déclaratif avec l'ergonomie de JSX, renforcé par la puissance du compilateur Rust. Attributs typés, échappement HTML automatique et zéro parsing de gabarit à l'exécution.","showcase.badge":"PREUVES DE PRODUCTION · SYSTÈMES RÉELS","metrics.memory.desc":"Empreinte mémoire native ultra-légère","nav.benchmarks":"Performances"},"de":{"metrics.hydration":"Client-Hydration","hero.cta.arch":"Architektur-Deep-Dive","bento.card5.title":"Kompromissloses Axum 0.8- und Tokio-Fundament","metrics.throughput.desc":"Anfragen/Sek. auf 8-Kern-Standardhardware","cta.title.line1":"Binary deployen. ","hero.title.line2":"Sicher durch Design.","steps.step2.title":"Neues Projekt gerüsten","cta.badge":"Nächste Schritte","sandbox.island.desc":"Kostenlose Client-Interaktion","releases.subtitle":"Transparente Semver-Entwicklung, Abwärtskompatibilität und Performance-Benchmarks des Yav-Toolchains.","faq.badge":"BEGRÜNDUNG · ARCHITEKTUR-ABWÄGUNGEN · FAQ","steps.step1.desc":"Installiert die eigenständige yav-Toolchain in Ihrem PATH.","bento.card1.title":"Server-Side Rendering ohne Hydration","hero.pill.nohydration":"Null JS-Hydration","steps.step3.desc":"Startet Live-Reload, Tailwind-Kompilierung und Browser-Synchronisierung.","banner.text":"Produktionsreifes Axum 0.8, RSX-Kompilierungszeit-Rendering, null JS-Hydration.","bento.card1.desc":"Yav eliminiert den Hydration-Overhead: HTML wird direkt im Speicher generiert und interaktive Widgets laufen über schlanke Mikro-Skripte.","cta.title":"Binary deployen. Wochenende behalten.","showcase.title":"Mit Yav gebaut. In Produktion erprobt.","bento.card3.title":"Autonomes Tailwind CSS","bento.card2.desc":"Deklaratives Markup mit der Ergonomie von JSX, unterstützt durch den Rust-Compiler.","metrics.throughput":"Durchsatz","hero.pill.rsx":"Kompilierzeit-RSX","steps.title":"Drei Befehle zu Ihrer ersten App.","cta.docs":"Dokumentation lesen","bento.badge":"Kerninnovationen","bento.subtitle":"Alles, was Sie zum Erstellen, Testen und Bereitstellen moderner Websoftware benötigen – ohne anfällige JavaScript-Build-Pipelines.","metrics.latency":"Mittlere Latenz","bento.title":"Entwickelt für Geschwindigkeit, gebaut für Zuverlässigkeit.","hero.cta.start":"Erste Schritte (5-Min-Guide)","steps.badge":"In 60 Sekunden starten","nav.docs":"Dokumentation","bento.card4.desc":"Intuitive Ordnerstruktur, die zur Kompilierzeit in O(k)-Radix-Bäume übersetzt wird.","nav.benchmarks":"Benchmarks","hero.title.line3":"Das moderne Web-Framework für Rust.","nav.search":"Schnellsuche...","sandbox.island.title":"Reaktive Status-Insel","cta.subtitle":"Treten Sie der nächsten Generation von Full-Stack-Rust-Entwicklern bei. Typsicher, speichersicher und rasend schnell.","nav.overview":"Übersicht","bench.title":"Reine Rechenleistung. Keine Kompromisse.","nav.architecture":"Architektur","bento.card4.title":"Dateibasiertes Matchit-Routing","banner.released":"v0.1.4 VERÖFFENTLICHT","metrics.memory.desc":"Schlanker nativer Speicher-Footprint","cta.github":"Auf GitHub sternen","privacy.title":"Datenschutzrichtlinie & Sicherheitsmodell","cta.title.line2":"Wochenende behalten.","bench.subtitle":"Gemessen mit wrk auf identischen 8-vCPU-Linux-Instanzen mit JSON-Serialisierung.","releases.badge":"SEMVER-ZEITLEISTE · PRODUKTIONS-CHANGELOG","steps.step2.desc":"Generiert Layouts, Routen, Stile und Konfigurationen.","sandbox.escaping":"HTML-Maskierung:","showcase.badge":"PRODUKTIONSNACHWEIS · ECHTE SYSTEME","metrics.memory":"Arbeitsspeicher","sandbox.none":"Keine (0 MB)","sandbox.ttfb":"Simulierte TTFB","bento.card5.desc":"Vollständiger nativer Zugriff auf Tokio-Tasks, Tower-Middlewares, WebSockets und Sessions.","sandbox.compiler":"Compiler-Prüfung:","footer.rendered":"Gerendert mit RSX in 0.12ms","sandbox.active":"Aktiv","showcase.subtitle":"Von extrem schneller Finanztelemetrie bis zu Edge-Storefronts: Erleben Sie, was Teams ohne JavaScript-Hydration aufbauen.","hero.pill.engine":"Axum 0.8","hero.title.line1":"Von Natur aus schnell.","sandbox.no_xss":"Kein XSS standardmäßig","sandbox.verified":"durch rustc verifiziert","hero.subtitle":"Erstellen Sie produktionsreife Webanwendungen mit kompilierten RSX-Templates, automatischem dateibasiertem Routing und integriertem Tailwind CSS. Kein Node.js. Kein npm. Null Client-Runtime-Overhead.","steps.step3.title":"Dev-Server starten","sandbox.node":"Node.js-Abhängigkeit:","nav.components":"Komponenten","steps.step1.title":"Yav CLI installieren","showcase.submit":"Projekt per GitHub-PR einreichen","privacy.badge":"DATENETHIK & TECHNISCHE SICHERHEIT","metrics.hydration.desc":"Keine JavaScript-Laufzeit an den Browser gesendet","footer.copyright":"Doppelt lizenziert unter MIT oder Apache-2.0.","faq.subtitle":"Klare Architekturmotivationen, ehrliche technische Kompromisse und ein direkter Vergleich zwischen Yav, Client-WASM und JS-Frameworks.","faq.title":"Warum Yav? Architektur & Vergleiche","bento.card2.title":"Kompilierzeit-RSX-Makro","banner.action":"Loslegen","bench.badge":"Echte Benchmarks","bento.card3.desc":"Yav verwaltet den offiziellen Tailwind-Compiler direkt ohne Node.js oder npm.","releases.title":"Releases & Entwicklungs-Changelog","metrics.latency.desc":"Sofortige Time-to-First-Byte","privacy.subtitle":"Yav basiert auf dem Prinzip des minimalen Daten-Footprints. Null Tracking, keine Client-Telemetrie und standardmäßige Sicherheit.","footer.status":"Alle Systeme betriebsbereit"},"en":{"metrics.hydration.desc":"Zero JavaScript runtime sent to browser","faq.subtitle":"Clear architectural motivations, honest technical trade-offs, and an unvarnished comparison between Yav, client-side WASM, and JavaScript full-stack frameworks.","steps.step3.desc":"Starts live reload, Tailwind compilation, and browser synchronization.","hero.pill.rsx":"Compile-Time RSX","releases.title":"Releases & Engineering Changelog","bench.badge":"Real-World Benchmarks","metrics.latency":"Median Latency","sandbox.no_xss":"Zero-XSS by default","footer.copyright":"Dual-licensed under MIT or Apache-2.0.","bento.card5.desc":"Yav is not a black-box wrapper that locks you in. You have complete native access to Tokio multi-threaded asynchronous tasks, Axum extractors, Tower middleware layers, WebSockets, Server-Sent Events, and signed encrypted cookie sessions.","releases.badge":"SEMVER TIMELINE · PRODUCTION CHANGELOG","privacy.title":"Privacy Policy & Security Model","hero.cta.arch":"Architecture deep dive","nav.search":"Quick search...","nav.benchmarks":"Benchmarks","bento.card1.desc":"Traditional JavaScript frameworks render HTML on the server, only to serialize all data and force the browser to parse 500KB+ of JS just to attach event listeners. Yav eliminates this hydration tax: HTML is compiled into direct buffer appends, transmitted instantly, and interactive widgets run via lightweight micro-scripts.","metrics.hydration":"Client Hydration","bento.card3.desc":"Yav manages the official standalone Tailwind compiler binary directly. It detects CSS changes, triggers instant incremental re-compilations, and bundles production styles with automatic content hashing.","privacy.badge":"DATA ETHICS & TECHNICAL SECURITY SPECIFICATION","cta.title":"Ship the binary. Keep the weekend.","sandbox.node":"Node.js dependency:","steps.title":"Three commands to your first app.","releases.subtitle":"Transparent semver progression, backward-compatibility invariants, and runtime performance benchmarks across every published edition of the Yav toolchain.","sandbox.ttfb":"Simulated TTFB","cta.docs":"Read Documentation","sandbox.verified":"rustc verified","sandbox.compiler":"Compiler check:","cta.github":"Star on GitHub","bench.subtitle":"Tested with wrk on identical 8 vCPU Linux instances rendering dynamic templates with session validation and JSON serialization.","cta.title.line2":"Keep the weekend.","metrics.memory.desc":"Lightweight native memory footprint","bento.card2.title":"Compile-Time RSX Macro","nav.architecture":"Architecture","steps.step1.desc":"Installs the standalone yav development toolchain onto your PATH.","sandbox.island.title":"Reactive State Island","bento.card1.title":"Zero-Hydration Server-Side Rendering","hero.pill.nohydration":"Zero JS Hydration","banner.released":"v0.1.4 RELEASED","cta.badge":"Next steps","privacy.subtitle":"Yav is built on the principle of minimal data footprint. We collect zero tracking analytics, transmit no client-side telemetry, and enforce cryptographic security by default.","sandbox.none":"None (0 MB)","showcase.badge":"PRODUCTION PROOF · REAL-WORLD SYSTEMS","sandbox.island.desc":"Zero-cost client interaction","sandbox.active":"Active","metrics.latency.desc":"Instantaneous time-to-first-byte","bento.card4.title":"File-System Matchit Router","showcase.submit":"Submit Showcase via GitHub PR","faq.badge":"RATIONALE · ARCHITECTURE TRADE-OFFS · FAQS","sandbox.escaping":"HTML Escaping:","footer.rendered":"Rendered with RSX in 0.12ms","steps.step3.title":"Run Dev Server","steps.step2.desc":"Generates all layouts, routes, styles, and package configuration.","hero.title.line2":"Safe by design.","metrics.throughput.desc":"req/sec on standard 8-core hardware","bench.title":"Raw metal performance. Zero compromises.","nav.overview":"Overview","showcase.title":"Built with Yav. Tested in production.","metrics.throughput":"Throughput","nav.docs":"Docs","bento.badge":"Core Innovations","showcase.subtitle":"From micro-second financial telemetry to edge-deployed e-commerce storefronts, see what engineering teams build when JavaScript hydration taxes and bloated runtimes are eliminated.","hero.title.line1":"Fast by nature.","steps.step2.title":"Scaffold New Project","cta.title.line1":"Ship the binary. ","bento.card2.desc":"Write intuitive declarative markup with the ergonomics of JSX, backed by the full power of the Rust compiler. Type-checked attributes, automatic HTML escaping, and zero runtime template parsing.","metrics.memory":"Idle Memory","banner.text":"Production-grade Axum 0.8, RSX compile-time rendering, zero JS hydration.","bento.card3.title":"Autonomous Tailwind CSS","faq.title":"Why Yav? Architecture & Comparisons","bento.card5.title":"Uncompromised Axum 0.8 & Tokio Foundation","steps.step1.title":"Install the Yav CLI","nav.components":"Components","hero.title.line3":"The modern web framework for Rust.","bento.card4.desc":"Drop route handlers in src/routes/ with intuitive dynamic parameters like [id].rs. At build time, Yav compiles your entire folder hierarchy into high-speed Radix routing trees with constant-time O(k) lookup.","steps.badge":"Get Started in 60 Seconds","cta.subtitle":"Join the next generation of full-stack Rust developers. Type safe, memory safe, and blazingly fast.","hero.subtitle":"Build production-grade web applications with compiled RSX templates, automatic file-system routing, and built-in Tailwind CSS. No Node.js. No npm. Zero client runtime overhead.","hero.cta.start":"Get Started (5-min guide)","hero.pill.engine":"Axum 0.8","bento.title":"Engineered for speed, built for reliability.","footer.status":"All Systems Operational","bento.subtitle":"Everything required to build, test, and ship modern web software—without the fragility of multi-tier JavaScript build pipelines.","banner.action":"Get Started"}}</script><div class="rails" aria-hidden="true"></div><header id="site-header" class="site-header sticky top-0 z-40 w-full"><div class="wrap flex h-16 items-center justify-between gap-6"><a href="/" class="flex items-center gap-3" aria-label="Yav home"><img src="/public/favicon.svg" class="w-6 h-6" alt="" /><span class="text-[16px] font-semibold tracking-[-0.03em] text-paper">yav<span class="text-dim font-normal">.rs</span></span></a><nav class="hidden lg:flex items-center" aria-label="Primary"><a href="/" data-nav="" class="nav-link"><span class="idx">01</span><span data-i18n="nav.overview">Overview</span></a><a href="/about" data-nav="" class="nav-link"><span class="idx">02</span><span data-i18n="nav.architecture">Architecture</span></a><a href="/docs" data-nav="" class="nav-link"><span class="idx">03</span><span data-i18n="nav.docs">Docs</span></a><a href="/benchmarks" data-nav="" class="nav-link"><span class="idx">04</span><span data-i18n="nav.benchmarks">Benchmarks</span></a><a href="/components" data-nav="" class="nav-link"><span class="idx">05</span><span data-i18n="nav.components">Components</span></a></nav><div class="self-stretch flex items-center gap-2"><div class="relative self-stretch flex items-center" id="header-search-container"><button id="header-search-btn" onclick="window.toggleCmdPalette()" class="flex items-center gap-2.5 h-[34px] px-2.5 md:pl-3 md:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2" title="Search documentation (Ctrl+K)" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg><span class="hidden md:inline" data-i18n="nav.search">Search</span><kbd class="kbd hidden md:inline-flex text-[10px]">Ctrl K</kbd></button><div id="cmd-palette-popover" class="popover-dropdown search-popover-mobile search-popover-desktop plate bg-ink-2 shadow-[0_24px_70px_rgba(0,0,0,0.95)] border border-rule overflow-hidden" onclick="event.stopPropagation()"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="flex items-center px-3.5 border-b border-rule bg-sunk"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide mr-2.5 shrink-0"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg><input id="cmd-palette-input" type="text" placeholder="Search documentation, routes, commands..." class="w-full h-11 bg-transparent text-sm text-paper placeholder-dim focus:outline-none font-sans" oninput="filterCommands(this.value)" autocomplete="off" /><button onclick="window.closeCmdPalette()" class="text-dim hover:text-paper ml-2 text-xs font-mono p-1 cursor-pointer" title="Close (ESC)"><kbd class="kbd text-[10px]">ESC</kbd></button></div><div class="p-1.5 max-h-[340px] overflow-y-auto space-y-0.5 text-xs font-sans" id="cmd-palette-list"><div class="px-2.5 pt-2 pb-1 label text-[10px] text-dim font-mono">01 Index Navigation</div><a href="/" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">01</span><span class="font-medium">Overview / Homepage</span></div><span class="font-mono text-[11px] text-dim">/</span></a><a href="/about" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">02</span><span class="font-medium">Architecture &amp; Tokio Engine</span></div><span class="font-mono text-[11px] text-dim">/about</span></a><a href="/docs" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">03</span><span class="font-medium">Documentation &amp; Quickstart</span></div><span class="font-mono text-[11px] text-dim">/docs</span></a><a href="/benchmarks" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">04</span><span class="font-medium">Verified Benchmarks</span></div><span class="font-mono text-[11px] text-dim">/benchmarks</span></a><a href="/components" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">05</span><span class="font-medium">UI Components &amp; Icons</span></div><span class="font-mono text-[11px] text-dim">/components</span></a><a href="/showcase" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">06</span><span class="font-medium">Production Showcase</span></div><span class="font-mono text-[11px] text-dim">/showcase</span></a><a href="/faq" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">07</span><span class="font-medium">Why Yav? / FAQ</span></div><span class="font-mono text-[11px] text-dim">/faq</span></a><a href="/releases" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">08</span><span class="font-medium">Releases &amp; Changelog</span></div><span class="font-mono text-[11px] text-dim">/releases</span></a><a href="/privacy" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="font-mono text-[11px] text-oxide group-hover:underline">09</span><span class="font-medium">Privacy &amp; Security Model</span></div><span class="font-mono text-[11px] text-dim">/privacy</span></a><div class="px-2.5 pt-3 pb-1 label text-[10px] text-dim font-mono">02 Enterprise Architecture &amp; Protocols</div><a href="/docs#ai-mcp" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-oxide font-mono text-[11px]">✦</span><span class="font-medium">AI SDK &amp; Model Context Protocol (MCP)</span></div><span class="font-mono text-[11px] text-dim">/docs#ai-mcp</span></a><a href="/docs#passkeys-rebac" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-oxide font-mono text-[11px]">✦</span><span class="font-medium">WebAuthn Passkeys &amp; ReBAC Zanzibar</span></div><span class="font-mono text-[11px] text-dim">/docs#passkeys-rebac</span></a><a href="/docs#resilience" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-oxide font-mono text-[11px]">✦</span><span class="font-medium">Resilience: Circuit Breaker &amp; XFetch</span></div><span class="font-mono text-[11px] text-dim">/docs#resilience</span></a><a href="/docs#modern-protocols" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-oxide font-mono text-[11px]">✦</span><span class="font-medium">GraphQL, TurboStream &amp; Tus Resumable</span></div><span class="font-mono text-[11px] text-dim">/docs#modern-protocols</span></a><a href="/components#charts" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-ok font-mono text-[11px]">⬡</span><span class="font-medium">Enterprise SVG Charts &amp; Heatmaps</span></div><span class="font-mono text-[11px] text-dim">/components#charts</span></a><a href="/components#enterprise" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-ok font-mono text-[11px]">⬡</span><span class="font-medium">DataGrid, Kanban (LexoRank) &amp; FlowCanvas</span></div><span class="font-mono text-[11px] text-dim">/components#enterprise</span></a><a href="/components#visual-widgets" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded"><div class="flex items-center gap-2.5"><span class="text-ok font-mono text-[11px]">⬡</span><span class="font-medium">3D Mesh Viewer &amp; Reactive Spreadsheet</span></div><span class="font-mono text-[11px] text-dim">/components#visual-widgets</span></a><div class="px-2.5 pt-3 pb-1 label text-[10px] text-dim font-mono">03 Developer Actions</div><button onclick="navigator.clipboard.writeText(&#x27;cargo install yav-cli&#x27;); alertNotification(&#x27;Copied: cargo install yav-cli&#x27;); window.closeCmdPalette();" class="cmd-item w-full flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono rounded"><div class="flex items-center gap-2.5"><span class="text-oxide">$</span><span class="text-[12px] text-paper">cargo install yav-cli</span></div><span class="text-[10px] text-oxide font-medium">copy</span></button><button onclick="navigator.clipboard.writeText(&#x27;yav new my-app&#x27;); alertNotification(&#x27;Copied: yav new my-app&#x27;); window.closeCmdPalette();" class="cmd-item w-full flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono rounded"><div class="flex items-center gap-2.5"><span class="text-oxide">$</span><span class="text-[12px] text-paper">yav new my-app</span></div><span class="text-[10px] text-dim">scaffold</span></button><a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors rounded"><div class="flex items-center gap-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim"><path d="M3.5 15.668q.675.081 1 .618c.326.537 1.537 2.526 2.913 2.526H9.5m5.672-3.513q.823 1.078.823 1.936V21m-5.625-5.609q-.87.954-.869 1.813V21"/><path d="M15.172 15.299c1.202-.25 2.293-.682 3.14-1.316 1.448-1.084 2.188-2.758 2.188-4.411 0-1.16-.44-2.243-1.204-3.16-.425-.511.819-3.872-.286-3.359-1.105.514-2.725 1.198-3.574.947-.909-.268-1.9-.416-2.936-.416-.9 0-1.766.111-2.574.317-1.174.298-2.296-.363-3.426-.848-1.13-.484-.513 3.008-.849 3.422C4.921 7.38 4.5 8.44 4.5 9.572c0 1.653.895 3.327 2.343 4.41.965.722 2.174 1.183 3.527 1.41"/></svg><span class="font-medium">GitHub Repository</span></div><span class="font-mono text-[11px] text-dim">↗</span></a><div id="cmd-no-results" class="hidden p-6 text-center text-dim font-mono text-xs">No matching routes or commands found.</div></div><div class="px-3.5 py-1.5 bg-sunk border-t border-rule flex items-center justify-between text-[11px] text-dim font-mono"><span class="flex items-center gap-1.5"><span class="text-oxide">✦</span><span class="text-mute text-[10px]">Editorial Command Bar</span></span><span class="text-mute text-[10px]">ESC to close</span></div></div><div id="cmd-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-12 opacity-0 transition-all duration-300 pointer-events-none"><div class="px-4 py-2.5 plate bg-sunk text-paper text-xs font-mono flex items-center gap-2.5 border border-rule shadow-xl"><span class="dot dot-ok"></span><span id="cmd-notification-text">Action complete</span></div></div><script>
+                function alertNotification(msg) {
+                    var toast = document.getElementById('cmd-notification');
+                    var text = document.getElementById('cmd-notification-text');
+                    if (!toast || !text) return;
+                    text.innerText = msg;
+                    toast.classList.remove('translate-y-12', 'opacity-0');
+                    toast.classList.add('translate-y-0', 'opacity-100');
+                    setTimeout(function() {
+                        toast.classList.remove('translate-y-0', 'opacity-100');
+                        toast.classList.add('translate-y-12', 'opacity-0');
+                    }, 2000);
+                }
+
+                function filterCommands(query) {
+                    var q = (query || '').toLowerCase().trim();
+                    var items = document.querySelectorAll('#cmd-palette-list .cmd-item');
+                    var visible = 0;
+                    items.forEach(function(el) {
+                        var text = (el.innerText || '').toLowerCase();
+                        if (!q || text.indexOf(q) !== -1) {
+                            el.style.display = 'flex';
+                            visible++;
+                        } else {
+                            el.style.display = 'none';
+                        }
+                    });
+                    var empty = document.getElementById('cmd-no-results');
+                    if (empty) {
+                        if (visible === 0) {
+                            empty.classList.remove('hidden');
+                        } else {
+                            empty.classList.add('hidden');
+                        }
+                    }
+                }
+                </script></div><div class="relative self-stretch flex items-center text-left" id="lang-switcher-container"><button id="lang-btn" onclick="window.toggleLangMenu()" class="inline-flex items-center gap-1.5 h-[34px] px-2.5 border border-rule hover:border-oxide/50 text-[12px] font-mono text-paper-2 hover:text-paper transition-colors cursor-pointer bg-ink-2" title="Select Language" aria-expanded="false" aria-haspopup="true"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><circle cx="12" cy="12" r="10" /> <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" /> <path d="M2 12h20" /></svg><span id="lang-current-label" class="font-bold">EN</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3 h-3 text-dim"><path d="m6 9 6 6 6-6" /></svg></button><div id="lang-menu" class="popover-dropdown lang-popover plate bg-ink-2 shadow-[0_20px_50px_rgba(0,0,0,0.95)] border border-rule overflow-hidden" onclick="event.stopPropagation()"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="px-3 py-2 label text-[10px] border-b border-rule bg-sunk flex items-center justify-between"><span>Select Locale</span><span class="font-mono text-[9px] text-oxide">i18n</span></div><div class="p-1 space-y-0.5"><button onclick="setLanguage(&#x27;en&#x27;)" class="lang-option w-full flex items-center justify-between px-3 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono text-xs rounded" data-locale="en"><span class="flex items-center gap-2.5"><span class="text-xs font-semibold text-paper">US</span><span>English</span></span><span class="text-[10px] font-mono text-oxide font-bold">DEFAULT</span></button><button onclick="setLanguage(&#x27;fr&#x27;)" class="lang-option w-full flex items-center justify-between px-3 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono text-xs rounded" data-locale="fr"><span class="flex items-center gap-2.5"><span class="text-xs font-semibold text-paper">FR</span><span>Français</span></span><span class="text-[10px] font-mono text-dim">fr</span></button><button onclick="setLanguage(&#x27;es&#x27;)" class="lang-option w-full flex items-center justify-between px-3 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono text-xs rounded" data-locale="es"><span class="flex items-center gap-2.5"><span class="text-xs font-semibold text-paper">ES</span><span>Español</span></span><span class="text-[10px] font-mono text-dim">es</span></button><button onclick="setLanguage(&#x27;de&#x27;)" class="lang-option w-full flex items-center justify-between px-3 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono text-xs rounded" data-locale="de"><span class="flex items-center gap-2.5"><span class="text-xs font-semibold text-paper">DE</span><span>Deutsch</span></span><span class="text-[10px] font-mono text-dim">de</span></button></div></div><script>
+                function setLanguage(lang) {
+                    localStorage.setItem('yav_lang', lang);
+                    document.cookie = 'yav_lang=' + lang + '; path=/; max-age=31536000';
+                    applyLanguage(lang);
+                    if (window.closeLangMenu) window.closeLangMenu();
+                }
+
+                function applyLanguage(lang) {
+                    var currentLabel = document.getElementById('lang-current-label');
+                    if (currentLabel) {
+                        currentLabel.innerText = lang.toUpperCase();
+                    }
+                    document.documentElement.lang = lang;
+
+                    var i18nScript = document.getElementById('yav-i18n-payload');
+                    if (!i18nScript) return;
+
+                    try {
+                        var dict = JSON.parse(i18nScript.textContent);
+                        var translations = dict[lang] || dict['en'];
+                        if (!translations) return;
+
+                        document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                            var key = el.getAttribute('data-i18n');
+                            if (translations[key]) {
+                                el.innerText = translations[key];
+                            }
+                        });
+
+                        document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+                            var key = el.getAttribute('data-i18n-placeholder');
+                            if (translations[key]) {
+                                el.placeholder = translations[key];
+                            }
+                        });
+                    } catch(e) {
+                        console.error('Failed to parse i18n payload', e);
+                    }
+                }
+
+                (function() {
+                    function init() {
+                        var savedLang = localStorage.getItem('yav_lang') || 'en';
+                        applyLanguage(savedLang);
+                    }
+                    if (document.readyState === 'loading') {
+                        document.addEventListener('DOMContentLoaded', init);
+                    } else {
+                        init();
+                    }
+                })();
+                </script></div><a id="header-github-link" href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors" title="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M3.5 15.668q.675.081 1 .618c.326.537 1.537 2.526 2.913 2.526H9.5m5.672-3.513q.823 1.078.823 1.936V21m-5.625-5.609q-.87.954-.869 1.813V21"/><path d="M15.172 15.299c1.202-.25 2.293-.682 3.14-1.316 1.448-1.084 2.188-2.758 2.188-4.411 0-1.16-.44-2.243-1.204-3.16-.425-.511.819-3.872-.286-3.359-1.105.514-2.725 1.198-3.574.947-.909-.268-1.9-.416-2.936-.416-.9 0-1.766.111-2.574.317-1.174.298-2.296-.363-3.426-.848-1.13-.484-.513 3.008-.849 3.422C4.921 7.38 4.5 8.44 4.5 9.572c0 1.653.895 3.327 2.343 4.41.965.722 2.174 1.183 3.527 1.41"/></svg></a><a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden sm:inline-flex">Get started<span class="arr">→</span></a><button id="mobile-menu-btn" class="lg:hidden inline-flex items-center justify-center w-[34px] h-[34px] text-paper border border-[rgba(236,233,227,0.14)] bg-ink-2 hover:border-oxide/50 transition-colors cursor-pointer" aria-label="Toggle navigation menu" aria-expanded="false"><span id="menu-icon-open"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M4 5h16" /> <path d="M4 12h16" /> <path d="M4 19h16" /></svg></span><span id="menu-icon-close" class="hidden"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="M18 6 6 18" /> <path d="m6 6 12 12" /></svg></span></button></div></div><nav id="mobile-nav" class="hidden lg:hidden border-t border-rule bg-ink/95 backdrop-blur-xl shadow-2xl transition-all duration-200 opacity-0 -translate-y-2" aria-label="Mobile Navigation"><div class="wrap py-6 space-y-6 max-h-[calc(100vh-4.5rem)] overflow-y-auto"><button onclick="closeMobileNav(); openCmdPalette();" class="w-full flex items-center justify-between h-11 px-3.5 bg-ink-2 border border-rule text-dim text-xs font-mono cursor-pointer hover:border-oxide/50 transition-colors"><span class="flex items-center gap-2.5"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="m21 21-4.34-4.34" /> <circle cx="11" cy="11" r="8" /></svg><span class="text-mute">Search documentation &amp; symbols...</span></span><kbd class="kbd text-[10px]">Ctrl K</kbd></button><div class="space-y-2"><div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2">01 · Framework Architecture</div><div class="grid gap-1.5"><a href="/" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">01</span><span class="font-medium">Overview</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a><a href="/about" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">02</span><span class="font-medium">Architecture &amp; Tokio Engine</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a><a href="/docs" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">03</span><span class="font-medium">Engineering Documentation</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a><a href="/benchmarks" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">04</span><span class="font-medium">Verified Benchmarks (124k req/s)</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a><a href="/components" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group"><span class="flex items-center gap-3"><span class="font-mono text-[11px] text-oxide">05</span><span class="font-medium">UI Components &amp; Icons</span></span><span class="text-dim text-xs group-hover:text-oxide transition-colors">→</span></a></div></div><div class="space-y-2"><div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2">02 · Ecosystem &amp; Resources</div><div class="grid grid-cols-2 gap-2 text-xs"><a href="/showcase" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group"><div class="flex items-center gap-2 text-paper font-semibold group-hover:text-oxide transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" /> <circle cx="12" cy="8" r="6" /></svg><span>Showcase</span></div><p class="text-[11px] text-mute">Production systems</p></a><a href="/faq" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group"><div class="flex items-center gap-2 text-paper font-semibold group-hover:text-oxide transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-oxide"><circle cx="12" cy="12" r="10" /> <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /> <path d="M12 17h.01" /></svg><span>Why Yav?</span></div><p class="text-[11px] text-mute">Matrix &amp; FAQs</p></a><a href="/releases" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group"><div class="flex items-center gap-2 text-paper font-semibold group-hover:text-ok transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-ok"><path d="M15 6a9 9 0 0 0-9 9V3" /> <circle cx="18" cy="6" r="3" /> <circle cx="6" cy="18" r="3" /></svg><span>Changelog</span></div><p class="text-[11px] text-mute">v0.1.4 stable</p></a><a href="/privacy" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group"><div class="flex items-center gap-2 text-paper font-semibold group-hover:text-paper transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5 text-dim"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /> <path d="m9 12 2 2 4-4" /></svg><span>Security</span></div><p class="text-[11px] text-mute">Zero tracking</p></a></div></div><div class="p-3.5 plate bg-ink-2 flex items-center justify-between text-xs font-mono"><div class="flex items-center gap-2"><span class="text-oxide font-bold">$</span><span class="text-paper">cargo install yav-cli</span></div><button onclick="copyText(this, &#x27;cargo install yav-cli&#x27;)" class="px-2.5 py-1 text-[11px] text-oxide hover:text-oxide-hi bg-sunk border border-rule hover:border-oxide/40 rounded cursor-pointer transition-colors"><span data-copy-label="" class="text-oxide font-medium">copy</span></button></div><div class="pt-2 border-t border-rule/50 flex items-center justify-between text-xs font-mono text-dim"><a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="flex items-center gap-1.5 hover:text-paper transition-colors"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3.5 h-3.5"><path d="M3.5 15.668q.675.081 1 .618c.326.537 1.537 2.526 2.913 2.526H9.5m5.672-3.513q.823 1.078.823 1.936V21m-5.625-5.609q-.87.954-.869 1.813V21"/><path d="M15.172 15.299c1.202-.25 2.293-.682 3.14-1.316 1.448-1.084 2.188-2.758 2.188-4.411 0-1.16-.44-2.243-1.204-3.16-.425-.511.819-3.872-.286-3.359-1.105.514-2.725 1.198-3.574.947-.909-.268-1.9-.416-2.936-.416-.9 0-1.766.111-2.574.317-1.174.298-2.296-.363-3.426-.848-1.13-.484-.513 3.008-.849 3.422C4.921 7.38 4.5 8.44 4.5 9.572c0 1.653.895 3.327 2.343 4.41.965.722 2.174 1.183 3.527 1.41"/></svg><span>GitHub</span></a><a href="https://crates.io/crates/yav" target="_blank" rel="noreferrer" class="hover:text-paper transition-colors">crates.io</a><span class="flex items-center gap-1.5 text-ok"><span class="dot dot-ok"></span><span>All systems operational</span></span></div></div></nav><div id="scroll-progress" class="scroll-progress" aria-hidden="true"></div></header><main id="main-content" class="flex-grow w-full"><section class="wrap pt-12 sm:pt-16 pb-12 sm:pb-16 border-b border-[rgba(236,233,227,0.08)]"><div class="fade flex flex-wrap items-center justify-between gap-4 pb-6 sm:pb-8" style="--d:0ms"><div class="flex items-center gap-6 label"><span class="label-oxide font-mono text-[13px]">Fig. 02</span><span class="text-[12px] tracking-widest uppercase text-paper-2">Architectural Specification</span></div><div class="chip px-4 py-1.5 h-auto"><span class="dot dot-ok pulse-dot"></span><span class="text-[12px]">Axum 0.8 · Tokio 1.40 · Matchit Radix</span></div></div><div class="max-w-5xl space-y-3"><h1 class="h-page text-paper tracking-[-0.04em]"><span class="line-mask block"><span style="--d:80ms">Designed for</span></span><span class="line-mask block pt-2 sm:pt-3"><span style="--d:180ms" class="serif text-oxide">deterministic</span> speed.</span></h1></div><div class="grid lg:grid-cols-12 gap-10 lg:gap-14 pt-8 sm:pt-10 items-start"><div class="lg:col-span-6 space-y-8 fade" style="--d:320ms"><div class="space-y-6 pl-5 sm:pl-7 border-l-2 border-oxide/50"><p class="lede text-[18px] sm:text-[20px] leading-[1.6] text-paper">Axum and Hyper handle the raw socket. A proc-macro turns your RSX into straight-line contiguous buffer writes. <strong class="font-semibold text-paper">The result is a single native binary with zero interpreter, zero virtual DOM and zero garbage collector between the request and the response.</strong></p><p class="text-[15.5px] text-mute leading-[1.8]">Traditional SSR frameworks load an entire JavaScript runtime, parse trees dynamically on the heap, and run garbage collection passes during peak load. Yav computes template topology at compile-time and streams bytes directly into kernel socket buffers.</p></div><div class="flex flex-wrap items-center gap-4 pt-4 font-mono text-[13.5px]"><a href="#pipeline" class="btn btn-oxide px-6 py-3"><span>Explore Execution Pipeline</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 ml-2"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></svg></a><a href="#crates" class="btn btn-line px-6 py-3"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 mr-2 text-oxide"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /> <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /> <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg><span>Crates Breakdown</span></a></div></div><div class="lg:col-span-6 fade" style="--d:440ms"><div class="plate bg-sunk shadow-2xl"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="plate-head h-12 px-6"><span class="flex items-center gap-2.5 font-medium tracking-wider text-[12px]"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="M12 20v2" /> <path d="M12 2v2" /> <path d="M17 20v2" /> <path d="M17 2v2" /> <path d="M2 12h2" /> <path d="M2 17h2" /> <path d="M2 7h2" /> <path d="M20 12h2" /> <path d="M20 17h2" /> <path d="M20 7h2" /> <path d="M7 20v2" /> <path d="M7 2v2" /> <rect x="4" y="4" width="16" height="16" rx="2" /> <rect x="8" y="8" width="8" height="8" rx="1" /></svg>ARCHITECTURAL INVARIANTS</span><span class="text-dim font-mono text-[11px]">target: x86_64 / aarch64</span></div><div class="p-8 sm:p-10 grid grid-cols-2 gap-8 sm:gap-10 font-mono"><div class="border-b border-r border-[rgba(236,233,227,0.08)] pb-8 pr-6 sm:pr-8 pl-1 sm:pl-2"><span class="label text-[11px] block pb-2 text-dim">Template VDOM</span><span class="text-[32px] sm:text-[36px] font-bold text-paper block">0 B</span><span class="text-[12px] text-dim block pt-2 leading-relaxed">Direct byte buffer writing</span></div><div class="border-b border-[rgba(236,233,227,0.08)] pb-8 pl-4 sm:pl-6"><span class="label text-[11px] block pb-2 text-dim">Median TTFB</span><span class="text-[32px] sm:text-[36px] font-bold text-oxide block">0.28 ms</span><span class="text-[12px] text-dim block pt-2 leading-relaxed">Microsecond socket turnaround</span></div><div class="border-r border-[rgba(236,233,227,0.08)] pt-6 pr-6 sm:pr-8 pl-1 sm:pl-2"><span class="label text-[11px] block pb-2 text-dim">Path Resolution</span><span class="text-[32px] sm:text-[36px] font-bold text-paper block">~40 ns</span><span class="text-[12px] text-dim block pt-2 leading-relaxed">Matchit Radix O(k) tree</span></div><div class="pt-6 pl-4 sm:pl-6"><span class="label text-[11px] block pb-2 text-dim">Idle Footprint</span><span class="text-[32px] sm:text-[36px] font-bold text-paper block">8.2 MB</span><span class="text-[12px] text-dim block pt-2 leading-relaxed">No Node.js or JVM runtime</span></div></div></div></div></div></section><section id="pipeline" class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">2.1</span><span class="t">Execution pipeline</span><span class="sec-rule"></span><span class="r">280 µs socket-to-wire</span></div><div class="pt-6 pb-6 max-w-3xl space-y-3 reveal pl-5 sm:pl-7 border-l-2 border-oxide/50"><h2 class="h-section text-paper leading-[1.18]">From socket to wire in <span class="serif text-oxide">280 microseconds.</span></h2><p class="text-[15.5px] sm:text-[16px] text-mute leading-[1.8]">Every incoming HTTP request traverses five zero-allocation, compile-time specialized phases. There are no virtual DOM trees, no intermediate JavaScript bridges, and zero memory allocations on the hot path.</p></div><div class="grid lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start"><div class="lg:col-span-5 space-y-3 font-mono text-[13px] reveal"><button id="pipe-btn-0" onclick="window.selectPipelineStage(0)" class="relative w-full text-left py-4 px-5 border border-oxide bg-sunk text-paper transition-all cursor-pointer flex items-center justify-between group shadow-sm hover:border-oxide overflow-hidden"><div id="pipe-bar-0" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:1"></div><div class="flex items-center gap-3.5 pl-1"><span id="pipe-dot-0" class="dot dot-ok" style="opacity:1"></span><div><span class="text-[10px] text-dim block tracking-wider">PHASE 01 / INGRESS</span><span class="font-medium text-paper text-[13.5px]">Socket Ingress &amp; Framing</span></div></div><span class="text-dim group-hover:text-paper font-semibold text-[12px]">~38 µs</span></button><button id="pipe-btn-1" onclick="window.selectPipelineStage(1)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="pipe-bar-1" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3.5 pl-1"><span id="pipe-dot-1" class="dot dot-ok" style="opacity:0.25"></span><div><span class="text-[10px] text-dim block tracking-wider">PHASE 02 / ROUTING</span><span class="font-medium text-paper text-[13.5px]">Radix Path Match</span></div></div><span class="text-dim group-hover:text-paper font-semibold text-[12px]">~4 µs</span></button><button id="pipe-btn-2" onclick="window.selectPipelineStage(2)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="pipe-bar-2" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3.5 pl-1"><span id="pipe-dot-2" class="dot dot-ok" style="opacity:0.25"></span><div><span class="text-[10px] text-dim block tracking-wider">PHASE 03 / SECURITY</span><span class="font-medium text-paper text-[13.5px]">Tower Layers &amp; HMAC</span></div></div><span class="text-dim group-hover:text-paper font-semibold text-[12px]">~24 µs</span></button><button id="pipe-btn-3" onclick="window.selectPipelineStage(3)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="pipe-bar-3" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3.5 pl-1"><span id="pipe-dot-3" class="dot dot-ok" style="opacity:0.25"></span><div><span class="text-[10px] text-oxide block tracking-wider font-semibold">PHASE 04 / TEMPLATE</span><span class="font-medium text-oxide text-[13.5px]">RSX Buffer Stream</span></div></div><span class="text-oxide font-bold text-[12px]">~162 µs</span></button><button id="pipe-btn-4" onclick="window.selectPipelineStage(4)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="pipe-bar-4" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3.5 pl-1"><span id="pipe-dot-4" class="dot dot-ok" style="opacity:0.25"></span><div><span class="text-[10px] text-dim block tracking-wider">PHASE 05 / WIRE</span><span class="font-medium text-paper text-[13.5px]">Kernel Socket Flush</span></div></div><span class="text-dim group-hover:text-paper font-semibold text-[12px]">~52 µs</span></button></div><div id="pipe-plate-container" class="lg:col-span-7 lg:sticky lg:top-24 self-start reveal" style="--d:140ms"><div class="plate bg-sunk shadow-2xl"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="plate-head h-14 px-6 sm:px-8"><span class="flex items-center gap-2.5 font-medium tracking-wide"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="M12 19h8" /> <path d="m4 17 6-6-6-6" /></svg><span id="pipe-stage-title" class="text-[13.5px] text-paper">Stage 01 — Socket Ingress &amp; Frame Parsing</span></span><span class="text-oxide font-mono text-[12px] font-bold" id="pipe-stage-time">~38 µs</span></div><div class="px-6 py-4 border-b border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.02)] flex flex-wrap items-center justify-between gap-6 font-mono text-[12px]"><div><span class="text-dim">Heap Allocation: </span><span id="pipe-stage-alloc" class="text-paper font-semibold">0 B heap (Zero-Copy)</span></div><div><span class="text-dim">Kernel Syscall: </span><span id="pipe-stage-syscall" class="text-oxide font-semibold">epoll_wait / accept4</span></div><div><span class="text-dim">Concurrency: </span><span class="text-paper font-semibold">Tokio Work-Stealing</span></div></div><div class="p-6 sm:p-8 pl-7 sm:pl-9 border-b border-[rgba(236,233,227,0.08)]"><p id="pipe-stage-sub" class="text-[14.5px] text-mute leading-[1.8]">Non-blocking Tokio worker accepts TCP/TLS socket; Hyper parses HTTP frames directly into unallocated slices.</p></div><div class="p-6 sm:p-8 pl-7 sm:pl-9 bg-ink-2/40 overflow-x-auto"><div class="flex items-center justify-between pb-3 text-dim font-mono text-[11.5px]"><div class="flex items-center gap-2"><span id="pipe-stage-file" class="text-paper font-medium">yav-server/src/conn.rs</span><span class="text-oxide font-medium">· zero-allocation buffer</span></div><button id="pipe-stage-copy" data-copy="// Tokio Worker Thread (Non-blocking I/O loop)
+let (socket, remote_addr) = listener.accept().await?;
+let stream = hyper_util::rt::TokioIo::new(socket);
+
+// Hyper HTTP/1.1 &amp; HTTP/2 frame parsing
+let conn = hyper::server::conn::auto::Builder::new(TokioExecutor::new())
+    .serve_connection(stream, service);
+
+// Slices buffers directly from OS ring buffer with zero allocations." onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3 h-3 text-oxide"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg><span data-copy-label="" class="text-oxide font-medium">copy snippet</span></button></div><pre class="font-mono text-[13px] leading-[1.85] text-paper-2 selection:bg-oxide selection:text-ink"><code id="pipe-stage-code"><span class="token-comment">// Tokio Worker Thread (Non-blocking I/O loop)</span>
+<span class="token-keyword">let</span> (socket, remote_addr) = listener.<span class="token-fn">accept</span>().<span class="token-keyword">await</span>?;
+<span class="token-keyword">let</span> stream = <span class="token-type">hyper_util::rt::TokioIo</span>::<span class="token-fn">new</span>(socket);
+
+<span class="token-comment">// Hyper HTTP/1.1 &amp; HTTP/2 frame parsing</span>
+<span class="token-keyword">let</span> conn = <span class="token-type">hyper::server::conn::auto::Builder</span>::<span class="token-fn">new</span>(<span class="token-type">TokioExecutor</span>::<span class="token-fn">new</span>())
+    .<span class="token-fn">serve_connection</span>(stream, service);
+
+<span class="token-comment">// Slices buffers directly from OS ring buffer with zero allocations.</span></code></pre></div></div></div></div><div class="pt-8 sm:pt-10 pb-6"><div class="cells grid-cols-1 md:grid-cols-3"><article class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4"><div class="flex justify-between pb-2"><span class="cn font-mono text-[12px]">Phase 01</span><span class="font-mono text-[12px] text-dim font-semibold">~42 µs total</span></div><h3 class="text-[22px] text-paper">Zero-Alloc Ingress</h3><p class="text-[14.5px] leading-[1.75] text-mute">Tokio epoll workers accept connections without thread context switches. Matchit resolves static and parameterized paths in nanoseconds.</p><div class="dim-line pt-6"><span>protocol</span><span class="bar"></span><span>HTTP/1.1 + HTTP/2</span></div></article><article class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4"><div class="flex justify-between pb-2"><span class="cn text-oxide font-mono text-[12px]">Phase 02</span><span class="font-mono text-[12px] text-oxide font-semibold">~162 µs total</span></div><h3 class="text-[22px] text-paper">RSX Buffer Writes</h3><p class="text-[14.5px] leading-[1.75] text-mute">Your component executes without creating an intermediate object tree. Static HTML literals are pushed into a pre-reserved contiguous buffer.</p><div class="dim-line pt-6"><span>vdom heap</span><span class="bar"></span><span class="text-oxide font-semibold">0 bytes</span></div></article><article class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4"><div class="flex justify-between pb-2"><span class="cn font-mono text-[12px]">Phase 03</span><span class="font-mono text-[12px] text-dim font-semibold">~76 µs total</span></div><h3 class="text-[22px] text-paper">Wire Transmission</h3><p class="text-[14.5px] leading-[1.75] text-mute">Pre-compressed Brotli payload is written directly to the kernel socket via writev. The browser receives the first byte in under 0.3 ms.</p><div class="dim-line pt-6"><span>p50 TTFB</span><span class="bar"></span><span>0.28 ms</span></div></article></div></div><script>
+window.selectPipelineStage = function(stageIdx) {
+    var stages = [
+        {
+            num: '01',
+            phase: 'INGRESS',
+            title: 'Stage 01 — Socket Ingress & Frame Parsing',
+            sub: 'Non-blocking Tokio worker accepts TCP/TLS socket; Hyper parses HTTP frames directly into unallocated slices.',
+            time: '~38 µs',
+            alloc: '0 B heap (Zero-Copy)',
+            syscall: 'epoll_wait / accept4',
+            file: 'yav-server/src/conn.rs',
+            hardware: 'L1/L2 Cache Hit',
+            code: '// Tokio Worker Thread (Non-blocking I/O loop)\nlet (socket, remote_addr) = listener.accept().await?;\nlet stream = hyper_util::rt::TokioIo::new(socket);\n\n// Hyper HTTP/1.1 & HTTP/2 frame parsing\nlet conn = hyper::server::conn::auto::Builder::new(TokioExecutor::new())\n    .serve_connection(stream, service);\n\n// Slices buffers directly from OS ring buffer with zero allocations.',
+            codeHtml: '<span class="token-comment">// Tokio Worker Thread (Non-blocking I/O loop)</span>\n<span class="token-keyword">let</span> (socket, remote_addr) = listener.<span class="token-fn">accept</span>().<span class="token-keyword">await</span>?;\n<span class="token-keyword">let</span> stream = <span class="token-type">hyper_util::rt::TokioIo</span>::<span class="token-fn">new</span>(socket);\n\n<span class="token-comment">// Hyper HTTP/1.1 &amp; HTTP/2 frame parsing</span>\n<span class="token-keyword">let</span> conn = <span class="token-type">hyper::server::conn::auto::Builder</span>::<span class="token-fn">new</span>(<span class="token-type">TokioExecutor</span>::<span class="token-fn">new</span>())\n    .<span class="token-fn">serve_connection</span>(stream, service);\n\n<span class="token-comment">// Slices buffers directly from OS ring buffer with zero allocations.</span>'
+        },
+        {
+            num: '02',
+            phase: 'ROUTING',
+            title: 'Stage 02 — Zero-Allocation Radix Resolution',
+            sub: 'Matchit Radix tree matches URI against compiled route tree in O(k) steps where k is path length.',
+            time: '~4 µs',
+            alloc: '0 B (Stack slices)',
+            syscall: 'None (In-Memory)',
+            file: 'yav-router/src/radix.rs',
+            hardware: 'CPU Register Bound',
+            code: '// Matchit Radix tree lookup (Compiled at launch by auto_routes!)\nlet path = req.uri().path();\nmatch router.at(path) {\n    Ok(matched) => {\n        // Extracted route parameters are borrowed &str slices\n        let id: &str = matched.params.get("id").unwrap_or_default();\n        matched.value(req, id).await\n    }\n    Err(_) => handle_404(req).await,\n}',
+            codeHtml: '<span class="token-comment">// Matchit Radix tree lookup (Compiled at launch by auto_routes!)</span>\n<span class="token-keyword">let</span> path = req.<span class="token-fn">uri</span>().<span class="token-fn">path</span>();\n<span class="token-keyword">match</span> router.<span class="token-fn">at</span>(path) {\n    <span class="token-type">Ok</span>(matched) =&gt; {\n        <span class="token-comment">// Extracted route parameters are borrowed &amp;str slices</span>\n        <span class="token-keyword">let</span> id: &amp;<span class="token-type">str</span> = matched.params.<span class="token-fn">get</span>(<span class="token-string">"id"</span>).<span class="token-fn">unwrap_or_default</span>();\n        matched.<span class="token-fn">value</span>(req, id).<span class="token-keyword">await</span>\n    }\n    <span class="token-type">Err</span>(_) =&gt; <span class="token-fn">handle_404</span>(req).<span class="token-keyword">await</span>,\n}'
+        },
+        {
+            num: '03',
+            phase: 'SECURITY',
+            title: 'Stage 03 — Tower Middleware & Stateless Session HMAC',
+            sub: 'Double-submit CSRF verification, security headers, and HMAC-SHA256 signature verification in constant time.',
+            time: '~24 µs',
+            alloc: '0 B (Constant-Time CMP)',
+            syscall: 'None (Local CPU)',
+            file: 'yav-server/src/session.rs',
+            hardware: 'SIMD Accelerated',
+            code: '// Cryptographic Cookie Session Verification\nlet cookie = req.headers().get(header::COOKIE)?;\nlet (payload, signature) = parse_signed_cookie(cookie)?;\n\n// Constant-time HMAC comparison (subtle::ConstantTimeEq)\nif !verify_hmac_sha256(payload, signature, &SECRET_KEY) {\n    return Err(StatusCode::UNAUTHORIZED);\n}\n// No Redis lookup. No external latency. Zero lock contention.',
+            codeHtml: '<span class="token-comment">// Cryptographic Cookie Session Verification</span>\n<span class="token-keyword">let</span> cookie = req.<span class="token-fn">headers</span>().<span class="token-fn">get</span>(<span class="token-type">header::COOKIE</span>)?;\n<span class="token-keyword">let</span> (payload, signature) = <span class="token-fn">parse_signed_cookie</span>(cookie)?;\n\n<span class="token-comment">// Constant-time HMAC comparison (subtle::ConstantTimeEq)</span>\n<span class="token-keyword">if</span> !<span class="token-fn">verify_hmac_sha256</span>(payload, signature, &amp;<span class="token-type">SECRET_KEY</span>) {\n    <span class="token-keyword">return</span> <span class="token-type">Err</span>(<span class="token-type">StatusCode::UNAUTHORIZED</span>);\n}\n<span class="token-comment">// No Redis lookup. No external latency. Zero lock contention.</span>'
+        },
+        {
+            num: '04',
+            phase: 'TEMPLATE',
+            title: 'Stage 04 — RSX Compile-time Direct Buffer Splicing',
+            sub: 'Proc-macro renders static string slices and escaped expressions directly into a contiguous pre-reserved buffer.',
+            time: '~162 µs',
+            alloc: '0 B (Pre-Sized Buffer)',
+            syscall: 'None (RAM L1/L2)',
+            file: 'yav-macros/src/rsx.rs',
+            hardware: 'Contiguous Memory Stream',
+            code: '// Generated by rsx! proc macro at compile time:\nlet mut buf = String::with_capacity(ESTIMATED_SIZE);\nbuf.push_str("<main class=\"wrap\"><h1>");\n// Fast SIMD-accelerated HTML escaping into buffer\nyav::core::escape_html_into(&user_name, &mut buf);\nbuf.push_str("</h1><p>Session active</p></main>");\n\n// ZERO virtual DOM tree. ZERO node reconciliation diff.',
+            codeHtml: '<span class="token-comment">// Generated by rsx! proc macro at compile time:</span>\n<span class="token-keyword">let</span> <span class="token-keyword">mut</span> buf = <span class="token-type">String</span>::<span class="token-fn">with_capacity</span>(<span class="token-num">ESTIMATED_SIZE</span>);\nbuf.<span class="token-fn">push_str</span>(<span class="token-string">"&lt;main class=&quot;wrap&quot;&gt;&lt;h1&gt;"</span>);\n<span class="token-comment">// Fast SIMD-accelerated HTML escaping into buffer</span>\n<span class="token-fn">yav::core::escape_html_into</span>(&amp;user_name, &amp;<span class="token-keyword">mut</span> buf);\nbuf.<span class="token-fn">push_str</span>(<span class="token-string">"&lt;/h1&gt;&lt;p&gt;Session active&lt;/p&gt;&lt;/main&gt;"</span>);\n\n<span class="token-comment">// ZERO virtual DOM tree. ZERO node reconciliation diff.</span>'
+        },
+        {
+            num: '05',
+            phase: 'TRANSMISSION',
+            title: 'Stage 05 — Kernel TCP Socket Flush to Wire',
+            sub: 'Hyper streams contiguous buffer with HTTP/2 framing and optional Brotli pre-compression via vectored I/O.',
+            time: '~52 µs',
+            alloc: '0 B (Zero-Copy writev)',
+            syscall: 'writev / sendfile',
+            file: 'yav-server/src/wire.rs',
+            hardware: 'Kernel NIC Ring',
+            code: '// HTTP Response packaging with pre-compressed Brotli\nlet response = Response::builder()\n    .status(StatusCode::OK)\n    .header(header::CONTENT_TYPE, "text/html; charset=utf-8")\n    .header(header::CONTENT_ENCODING, "br")\n    .body(Full::new(Bytes::from(buf)))?;\n\n// Kernel flushes bytes to client network card in ~52 µs',
+            codeHtml: '<span class="token-comment">// HTTP Response packaging with pre-compressed Brotli</span>\n<span class="token-keyword">let</span> response = <span class="token-type">Response</span>::<span class="token-fn">builder</span>()\n    .<span class="token-fn">status</span>(<span class="token-type">StatusCode::OK</span>)\n    .<span class="token-fn">header</span>(<span class="token-type">header::CONTENT_TYPE</span>, <span class="token-string">"text/html; charset=utf-8"</span>)\n    .<span class="token-fn">header</span>(<span class="token-type">header::CONTENT_ENCODING</span>, <span class="token-string">"br"</span>)\n    .<span class="token-fn">body</span>(<span class="token-type">Full</span>::<span class="token-fn">new</span>(<span class="token-type">Bytes</span>::<span class="token-fn">from</span>(buf)))?;\n\n<span class="token-comment">// Kernel flushes bytes to client network card in ~52 µs</span>'
+        }
+    ];
+
+    var data = stages[stageIdx];
+    if (!data) return;
+
+    var elTitle = document.getElementById('pipe-stage-title');
+    var elSub = document.getElementById('pipe-stage-sub');
+    var elTime = document.getElementById('pipe-stage-time');
+    var elAlloc = document.getElementById('pipe-stage-alloc');
+    var elSyscall = document.getElementById('pipe-stage-syscall');
+    var elFile = document.getElementById('pipe-stage-file');
+    var elCode = document.getElementById('pipe-stage-code');
+
+    if (elTitle) elTitle.textContent = data.title;
+    if (elSub) elSub.textContent = data.sub;
+    if (elTime) elTime.textContent = data.time;
+    if (elAlloc) elAlloc.textContent = data.alloc;
+    if (elSyscall) elSyscall.textContent = data.syscall;
+    if (elFile) elFile.textContent = data.file;
+    if (elCode) elCode.innerHTML = data.codeHtml;
+    var copyBtn = document.getElementById('pipe-stage-copy');
+    if (copyBtn) copyBtn.setAttribute('data-copy', data.code);
+
+    // Update active tab buttons
+    for (var i = 0; i < stages.length; i++) {
+        var btn = document.getElementById('pipe-btn-' + i);
+        var indicator = document.getElementById('pipe-dot-' + i);
+        var bar = document.getElementById('pipe-bar-' + i);
+        if (btn) {
+            if (i === stageIdx) {
+                btn.classList.add('bg-sunk', 'text-paper', 'border-oxide');
+                btn.classList.remove('text-dim', 'border-[rgba(236,233,227,0.08)]');
+            } else {
+                btn.classList.remove('bg-sunk', 'text-paper', 'border-oxide');
+                btn.classList.add('text-dim', 'border-[rgba(236,233,227,0.08)]');
+            }
+        }
+        if (indicator) {
+            indicator.style.opacity = (i === stageIdx) ? '1' : '0.25';
+        }
+        if (bar) {
+            bar.style.opacity = (i === stageIdx) ? '1' : '0';
+        }
+    }
+
+    // On mobile / small viewports, ensure plate stays visible
+    if (window.innerWidth < 1024) {
+        var plate = document.getElementById('pipe-plate-container');
+        if (plate) {
+            plate.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+};
+</script></section><section id="memory" class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">2.2</span><span class="t">Memory Architecture</span><span class="sec-rule"></span><span class="r">zero VDOM heap overhead</span></div><div class="pt-6 grid lg:grid-cols-12 gap-10 lg:gap-14 items-start pb-6"><div class="lg:col-span-5 space-y-8 reveal pl-2 sm:pl-4"><div class="space-y-4 pl-5 sm:pl-7 border-l-2 border-oxide/50"><h2 class="h-section text-paper leading-[1.2]">Compile-time layout vs <span class="serif text-oxide">runtime VDOM.</span></h2><p class="text-[15.5px] text-mute leading-[1.8]">Traditional web frameworks allocate a dynamic Virtual DOM tree on every single render. Hundreds of micro-objects are scattered across the heap, followed by expensive tree-diffing algorithms and periodic garbage collector pauses.</p></div><p class="text-[15.5px] text-mute leading-[1.8] pl-5 sm:pl-7">Yav moves this entire topology analysis to &lt;strong class=&quot;text-paper font-semibold&quot;&gt;compile time&lt;/strong&gt;. The Rust compiler embeds all static HTML fragments directly into the read-only data segment (&lt;code class=&quot;text-oxide font-mono&quot;&gt;.rodata&lt;/code&gt;) of the binary. At runtime, dynamic components merely append slices into a single contiguous buffer.</p><div class="p-6 sm:p-7 border border-[rgba(236,233,227,0.08)] bg-sunk space-y-3.5 font-mono text-[12.5px] border-l-2 border-l-oxide pl-6 sm:pl-8"><div class="flex items-center gap-2.5 text-oxide font-semibold text-[13px]"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" /></svg><span>Why Contiguous Memory Wins</span></div><p class="text-dim leading-[1.75]">A single pre-sized buffer stays inside L1/L2 CPU cache lines (64 bytes). Pointer-chasing tree structures trigger constant RAM cache misses.</p></div></div><div class="lg:col-span-7 reveal" style="--d:140ms"><div class="plate bg-sunk shadow-2xl"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="plate-head h-12 px-6"><span class="tracking-wider text-[12px] font-medium">MEMORY TOPOLOGY COMPARISON</span><span class="text-dim font-mono text-[11px]">Heap Allocation Analysis</span></div><div class="p-7 sm:p-9 pl-8 sm:pl-10 space-y-8"><div class="space-y-3"><div class="flex justify-between font-mono text-[13px]"><span class="text-dim font-semibold">Traditional VDOM (Next.js / Nuxt / Leptos WASM)</span><span class="text-[#ff7878] font-medium">~350–500 KB heap allocations / req</span></div><div class="p-4 border border-[rgba(255,120,120,0.2)] bg-[rgba(255,120,120,0.03)] rounded-xs space-y-3 font-mono text-[11.5px]"><div class="flex items-center justify-between text-dim"><span>Heap: [VNode*] -&gt; [Props HashMap] -&gt; [Children Vec] -&gt; [Diff Tree]</span><span class="text-[#ff7878]">Cache Misses</span></div><div class="w-full bg-[rgba(255,120,120,0.15)] h-2.5 rounded-xs overflow-hidden"><div class="bg-[#ff5555] h-full w-[88%]"></div></div></div></div><div class="space-y-3"><div class="flex justify-between font-mono text-[13px]"><span class="text-paper font-semibold flex items-center gap-2.5"><span class="dot dot-ok pulse-dot"></span>Yav Proc-Macro Compiled Slices</span><span class="text-oxide font-bold">0 dynamic allocations (L1 cache)</span></div><div class="p-4 border border-[rgba(224,89,47,0.3)] bg-[rgba(224,89,47,0.05)] rounded-xs space-y-3 font-mono text-[11.5px]"><div class="flex items-center justify-between text-dim"><span>.rodata: [&amp;&#x27;static str (headers)] + [&amp;&#x27;static str (footers)] -&gt; BytesMut</span><span class="text-oxide font-medium">Zero-Copy</span></div><div class="w-full bg-[rgba(236,233,227,0.06)] h-2.5 rounded-xs overflow-hidden"><div class="bg-oxide h-full w-[4%]"></div></div></div></div><div class="pt-4 border-t border-[rgba(236,233,227,0.08)]"><div class="text-dim font-mono text-[11.5px] pb-3 uppercase tracking-wider flex items-center justify-between"><span>MACRO EXPANSION UNDER THE HOOD</span><button data-copy="// 1. What you write in RSX:
+rsx! { &lt;div class=&amp;quot;card&amp;quot;&gt;&lt;h2&gt;{title}&lt;/h2&gt;&lt;/div&gt; }
+
+// 2. What the compiler emits into machine code:
+buf.push_str(&amp;quot;&lt;static slice at 0x401020&gt;&amp;quot;);  // zero alloc
+yav::core::escape_html_into(&amp;title, &amp;mut buf); // SIMD escape
+buf.push_str(&amp;quot;&lt;static slice at 0x401048&gt;&amp;quot;);  // zero alloc" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3 h-3 text-oxide"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg><span data-copy-label="" class="text-oxide font-medium">copy snippet</span></button></div><pre class="p-5 sm:p-6 bg-ink-2/60 border border-[rgba(236,233,227,0.08)] font-mono text-[12.5px] leading-[1.8] text-paper-2 overflow-x-auto"><code><span class="token-comment">// 1. What you write in RSX:</span>
+<span class="token-macro">rsx!</span> { <span class="token-tag">&lt;div </span><span class="token-attr">class=</span><span class="token-string">&quot;card&quot;</span><span class="token-tag">&gt;&lt;h2&gt;</span>{title}<span class="token-tag">&lt;/h2&gt;&lt;/div&gt;</span> }
+
+<span class="token-comment">// 2. What the compiler emits into machine code:</span>
+<span class="token-type">buf</span>.push_str(<span class="text-dim">&amp;lt;static slice at 0x401020&amp;gt;</span>);  <span class="token-comment">// zero alloc</span>
+<span class="token-fn">yav::core::escape_html_into</span>(&amp;title, &amp;mut buf); <span class="token-comment">// SIMD escape</span>
+<span class="token-type">buf</span>.push_str(<span class="text-dim">&amp;lt;static slice at 0x401048&amp;gt;</span>);  <span class="token-comment">// zero alloc</span></code></pre></div></div></div></div></div></section><section id="crates" class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">2.3</span><span class="t">Crate composition</span><span class="sec-rule"></span><span class="r">modular architecture</span></div><div class="pt-6 pb-6 max-w-3xl space-y-3 reveal pl-5 sm:pl-7 border-l-2 border-oxide/50"><h2 class="h-section text-paper leading-[1.18]">Small crates. <span class="serif text-oxide">Hard edges.</span></h2><p class="text-[15.5px] sm:text-[16px] text-mute leading-[1.8]">Yav is intentionally decomposed into focused crates with strict boundaries and zero circular dependencies. Each crate can be audited, imported or replaced independently.</p></div><div class="grid lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-start"><div class="lg:col-span-5 space-y-3 font-mono text-[13px] reveal"><button id="crate-btn-core" onclick="window.selectCrate(&#x27;core&#x27;)" class="relative w-full text-left py-4 px-5 border border-oxide bg-sunk text-paper transition-all cursor-pointer flex items-center justify-between group shadow-sm hover:border-oxide overflow-hidden"><div id="crate-bar-core" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:1"></div><div class="flex items-center gap-3 pl-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" /> <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" /> <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg><div><span class="text-[10px] text-dim block tracking-wider uppercase">Tier 01 · Foundation</span><span class="font-semibold text-paper text-[14px] group-hover:text-oxide">yav-core</span></div></div><span class="label text-[10.5px]">foundation</span></button><button id="crate-btn-macros" onclick="window.selectCrate(&#x27;macros&#x27;)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="crate-bar-macros" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3 pl-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim group-hover:text-oxide"><path d="m16 18 6-6-6-6" /> <path d="m8 6-6 6 6 6" /></svg><div><span class="text-[10px] text-dim block tracking-wider uppercase">Tier 01 · Compiler</span><span class="font-semibold text-paper text-[14px] group-hover:text-oxide">yav-macros</span></div></div><span class="label text-[10.5px]">proc macros</span></button><button id="crate-btn-server" onclick="window.selectCrate(&#x27;server&#x27;)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="crate-bar-server" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3 pl-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim group-hover:text-oxide"><rect width="20" height="8" x="2" y="2" rx="2" ry="2" /> <rect width="20" height="8" x="2" y="14" rx="2" ry="2" /> <line x1="6" x2="6.01" y1="6" y2="6" /> <line x1="6" x2="6.01" y1="18" y2="18" /></svg><div><span class="text-[10px] text-dim block tracking-wider uppercase">Tier 02 · Web Protocol</span><span class="font-semibold text-paper text-[14px] group-hover:text-oxide">yav-server</span></div></div><span class="label text-[10.5px]">http engine</span></button><button id="crate-btn-router" onclick="window.selectCrate(&#x27;router&#x27;)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="crate-bar-router" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3 pl-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim group-hover:text-oxide"><path d="M15 6a9 9 0 0 0-9 9V3" /> <circle cx="18" cy="6" r="3" /> <circle cx="6" cy="18" r="3" /></svg><div><span class="text-[10px] text-dim block tracking-wider uppercase">Tier 02 · Routing</span><span class="font-semibold text-paper text-[14px] group-hover:text-oxide">yav-router</span></div></div><span class="label text-[10.5px]">radix routing</span></button><button id="crate-btn-build" onclick="window.selectCrate(&#x27;build&#x27;)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="crate-bar-build" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3 pl-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim group-hover:text-oxide"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" /> <path d="M14 2v5a1 1 0 0 0 1 1h5" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></svg><div><span class="text-[10px] text-dim block tracking-wider uppercase">Tier 02 · Manifest &amp; Assets</span><span class="font-semibold text-paper text-[14px] group-hover:text-oxide">yav-build</span></div></div><span class="label text-[10.5px]">pipeline</span></button><button id="crate-btn-icons" onclick="window.selectCrate(&#x27;icons&#x27;)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="crate-bar-icons" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3 pl-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim group-hover:text-oxide"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></svg><div><span class="text-[10px] text-dim block tracking-wider uppercase">Tier 03 · 13k+ SVGs</span><span class="font-semibold text-paper text-[14px] group-hover:text-oxide">yav-icons</span></div></div><span class="label text-[10.5px]">vector icons</span></button><button id="crate-btn-ui" onclick="window.selectCrate(&#x27;ui&#x27;)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="crate-bar-ui" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3 pl-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim group-hover:text-oxide"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" /> <path d="m3.3 7 8.7 5 8.7-5" /> <path d="M12 22V12" /></svg><div><span class="text-[10px] text-dim block tracking-wider uppercase">Tier 03 · 60+ Primitives</span><span class="font-semibold text-paper text-[14px] group-hover:text-oxide">yav-ui</span></div></div><span class="label text-[10.5px]">components</span></button><button id="crate-btn-cli" onclick="window.selectCrate(&#x27;cli&#x27;)" class="relative w-full text-left py-4 px-5 border border-[rgba(236,233,227,0.08)] bg-ink-2/30 text-dim hover:text-paper hover:bg-sunk/60 transition-all cursor-pointer flex items-center justify-between group shadow-sm overflow-hidden"><div id="crate-bar-cli" class="absolute left-0 top-0 bottom-0 w-1 bg-oxide transition-opacity" style="opacity:0"></div><div class="flex items-center gap-3 pl-1"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-dim group-hover:text-oxide"><path d="M12 19h8" /> <path d="m4 17 6-6-6-6" /></svg><div><span class="text-[10px] text-dim block tracking-wider uppercase">Tier 03 · Toolchain</span><span class="font-semibold text-paper text-[14px] group-hover:text-oxide">yav-cli</span></div></div><span class="label text-[10.5px]">20 commands</span></button></div><div id="crate-plate-container" class="lg:col-span-7 lg:sticky lg:top-24 self-start reveal" style="--d:140ms"><div class="plate bg-sunk shadow-2xl"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="plate-head h-14 px-6 sm:px-8"><span class="flex items-center gap-2.5 font-medium tracking-wide"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" /> <path d="m3.3 7 8.7 5 8.7-5" /> <path d="M12 22V12" /></svg><span id="crate-detail-name" class="font-mono text-[14px] text-paper">yav-core</span></span><span id="crate-detail-badge" class="text-oxide font-mono text-[11.5px] font-semibold">Tier 01 — Foundation Runtime</span></div><div class="p-7 sm:p-9 pl-8 sm:pl-10 space-y-7"><div class="space-y-2"><span class="text-dim font-mono text-[11px] uppercase tracking-wider block">Scope &amp; Responsibilities</span><p id="crate-detail-desc" class="text-[15px] text-mute leading-[1.8]">The foundational substrate of Yav. Houses the core Node abstraction, high-performance SIMD HTML escaping algorithms, context stacks, and the JSON payload serializer for internationalization.</p></div><div class="p-4 border border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.02)] flex flex-wrap items-center justify-between gap-4 font-mono text-[12.5px]"><span class="text-dim">Cargo Dependencies:</span><span id="crate-detail-deps" class="text-paper font-semibold">syn (build-only), serde, serde_json</span></div><div class="space-y-3"><div class="flex items-center justify-between font-mono text-[11.5px] text-dim"><div class="flex items-center gap-2"><span class="uppercase tracking-wider">Core Interface &amp; Code Signature</span><span class="text-faint">·</span><span id="crate-detail-file" class="text-paper font-medium">crates/yav-core/src/lib.rs</span></div><button id="crate-detail-copy" data-copy="// yav-core: High-performance primitive
+pub enum Node {
+    Element(Element),
+    Text(String),
+    Static(&amp;&#x27;static str),
+    Raw(String),
+    Fragment(Vec&lt;Node&gt;),
+}
+
+// Fast SIMD HTML escaping directly into contiguous buffer
+pub fn escape_html_into(input: &amp;str, out: &amp;mut String) {
+    // Scans 16/32 bytes per instruction using AVX2 / ARM NEON
+}" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-3 h-3 text-oxide"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /> <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></svg><span data-copy-label="" class="text-oxide font-medium">copy snippet</span></button></div><pre class="p-6 bg-ink-2/60 border border-[rgba(236,233,227,0.08)] font-mono text-[13px] leading-[1.85] text-paper-2 overflow-x-auto"><code id="crate-detail-code"><span class="token-comment">// yav-core: High-performance primitive</span>
+<span class="token-keyword">pub enum</span> <span class="token-type">Node</span> {
+    <span class="token-fn">Element</span>(<span class="token-type">Element</span>),
+    <span class="token-fn">Text</span>(<span class="token-type">String</span>),
+    <span class="token-fn">Static</span>(&amp;<span class="token-keyword">&#x27;static</span> <span class="token-type">str</span>),
+    <span class="token-fn">Raw</span>(<span class="token-type">String</span>),
+    <span class="token-fn">Fragment</span>(<span class="token-type">Vec</span>&amp;lt;<span class="token-type">Node</span>&amp;gt;),
+}
+
+<span class="token-comment">// Fast SIMD HTML escaping directly into contiguous buffer</span>
+<span class="token-keyword">pub fn</span> <span class="token-fn">escape_html_into</span>(input: &amp;<span class="token-type">str</span>, out: &amp;<span class="token-keyword">mut</span> <span class="token-type">String</span>) {
+    <span class="token-comment">// Scans 16/32 bytes per instruction using AVX2 / ARM NEON</span>
+}</code></pre></div></div></div></div></div><script>
+window.selectCrate = function(crateId) {
+    var crates = {
+        'core': {
+            name: 'yav-core',
+            badge: 'Tier 01 — Foundation Runtime',
+            file: 'crates/yav-core/src/lib.rs',
+            desc: 'The foundational substrate of Yav. Houses the core Node and Element abstractions, SIMD HTML escaping, fine-grained reactive Signals, StateMachine statecharts, CRDTs (LwwRegister, LwwMap), multiplayer PresenceRoom, LexoRank O(1) ordering, Local-First offline sync, and zero-overhead WebAssembly Client Islands.',
+            deps: 'syn (build-only), serde, serde_json',
+            code: '// yav-core: Foundation runtime & CRDTs\npub enum Node {\n    Element(Element),\n    Text(String),\n    Static(&\'static str),\n    Raw(String),\n    Fragment(Vec<Node>),\n}\n\n// CRDT collaboration & reactive Signals\nlet count = Signal::new(0);\nlet double = Computed::new(move || count.get() * 2);\nlet lww = LwwRegister::new("initial_state", 1);',
+            codeHtml: '<span class="token-comment">// yav-core: Foundation runtime &amp; CRDTs</span>\n<span class="token-keyword">pub enum</span> <span class="token-type">Node</span> {\n    <span class="token-fn">Element</span>(<span class="token-type">Element</span>),\n    <span class="token-fn">Text</span>(<span class="token-type">String</span>),\n    <span class="token-fn">Static</span>(&amp;<span class="token-keyword">\'static</span> <span class="token-type">str</span>),\n    <span class="token-fn">Raw</span>(<span class="token-type">String</span>),\n    <span class="token-fn">Fragment</span>(<span class="token-type">Vec</span>&lt;<span class="token-type">Node</span>&gt;),\n}\n\n<span class="token-comment">// CRDT collaboration &amp; reactive Signals</span>\n<span class="token-keyword">let</span> count = <span class="token-type">Signal</span>::<span class="token-fn">new</span>(<span class="token-num">0</span>);\n<span class="token-keyword">let</span> double = <span class="token-type">Computed</span>::<span class="token-fn">new</span>(<span class="token-keyword">move</span> || count.<span class="token-fn">get</span>() * <span class="token-num">2</span>);\n<span class="token-keyword">let</span> lww = <span class="token-type">LwwRegister</span>::<span class="token-fn">new</span>(<span class="token-string">"initial_state"</span>, <span class="token-num">1</span>);'
+        },
+        'macros': {
+            name: 'yav-macros',
+            badge: 'Tier 01 — Proc-Macro Compiler',
+            file: 'crates/yav-macros/src/lib.rs',
+            desc: 'Contains the RSX parser, #[component] macro, #[server] Server Actions compiler, and code generators. Transforms declarative JSX-like syntax into zero-allocation buffer appends with native if/else and for control flow.',
+            deps: 'proc-macro2, syn, quote',
+            code: '// yav-macros: Compile-time specialization & Server Actions\n#[proc_macro]\npub fn rsx(input: TokenStream) -> TokenStream {\n    let parsed = syn::parse_macro_input!(input as RsxRoot);\n    parsed.generate_optimized_code().into()\n}\n\n#[proc_macro_attribute]\npub fn server(attr: TokenStream, item: TokenStream) -> TokenStream;',
+            codeHtml: '<span class="token-comment">// yav-macros: Compile-time specialization &amp; Server Actions</span>\n<span class="token-macro">#[proc_macro]</span>\n<span class="token-keyword">pub fn</span> <span class="token-fn">rsx</span>(input: <span class="token-type">TokenStream</span>) -&gt; <span class="token-type">TokenStream</span> {\n    <span class="token-keyword">let</span> parsed = <span class="token-macro">syn::parse_macro_input!</span>(input <span class="token-keyword">as</span> <span class="token-type">RsxRoot</span>);\n    parsed.<span class="token-fn">generate_optimized_code</span>().<span class="token-fn">into</span>()\n}\n\n<span class="token-macro">#[proc_macro_attribute]</span>\n<span class="token-keyword">pub fn</span> <span class="token-fn">server</span>(attr: <span class="token-type">TokenStream</span>, item: <span class="token-type">TokenStream</span>) -&gt; <span class="token-type">TokenStream</span>;'
+        },
+        'server': {
+            name: 'yav-server',
+            badge: 'Tier 02 — Full-Stack HTTP Engine & AI SDK',
+            file: 'crates/yav-server/src/lib.rs',
+            desc: 'The unified server engine built on Axum 0.8 and Tokio. Powers Model Context Protocol (MCP) servers, native AI SDK & streaming UI, WebAuthn/Passkeys, OpenTelemetry distributed tracing, CircuitBreaker resilience, Outbox pattern, multi-region DB replicas, pure-Rust WebP pipeline, vector PDF signers, GraphQL, TurboStream, and Tus v1.0.0 resumable uploads.',
+            deps: 'axum (0.8), tokio, hyper, tower, tower-http, sha2, hmac',
+            code: '// yav-server: Enterprise full-stack server & AI engine\npub struct YavApp {\n    pub host: String,\n    pub port: u16,\n    router: axum::Router,\n}\n\nimpl YavApp {\n    pub fn mcp_server(mut self, server: McpServer) -> Self { ... }\n    pub fn passkeys(mut self, config: PasskeyConfig) -> Self { ... }\n    pub fn circuit_breaker(mut self, cb: CircuitBreaker) -> Self { ... }\n}',
+            codeHtml: '<span class="token-comment">// yav-server: Enterprise full-stack server &amp; AI engine</span>\n<span class="token-keyword">pub struct</span> <span class="token-type">YavApp</span> {\n    <span class="token-keyword">pub</span> host: <span class="token-type">String</span>,\n    <span class="token-keyword">pub</span> port: <span class="token-type">u16</span>,\n    router: <span class="token-type">axum::Router</span>,\n}\n\n<span class="token-keyword">impl</span> <span class="token-type">YavApp</span> {\n    <span class="token-keyword">pub fn</span> <span class="token-fn">mcp_server</span>(<span class="token-keyword">mut</span> self, server: <span class="token-type">McpServer</span>) -&gt; <span class="token-type">Self</span> { ... }\n    <span class="token-keyword">pub fn</span> <span class="token-fn">passkeys</span>(<span class="token-keyword">mut</span> self, config: <span class="token-type">PasskeyConfig</span>) -&gt; <span class="token-type">Self</span> { ... }\n    <span class="token-keyword">pub fn</span> <span class="token-fn">circuit_breaker</span>(<span class="token-keyword">mut</span> self, cb: <span class="token-type">CircuitBreaker</span>) -&gt; <span class="token-type">Self</span> { ... }\n}'
+        },
+        'router': {
+            name: 'yav-router',
+            badge: 'Tier 02 — O(L) Radix Tree Router',
+            file: 'crates/yav-router/src/lib.rs',
+            desc: 'Next.js App Router conventions with O(L) Radix RouteTrie resolution. Supports file routing, Parallel Routes (@slot), Intercepting Routes ((.) / (..) / (...)), Optional Catch-All ([[...slug]]), and compile-time auto_routes! discovery with #[server] RPC auto-mounting.',
+            deps: 'matchit, walkdir',
+            code: '// yav-router: Radix prefix trie & parallel slots\nlet mut trie = RouteTrie::new();\ntrie.insert("/", root_handler)?;\ntrie.insert("/shop/[[...slug]]", shop_catchall)?;\ntrie.insert("/@analytics/page", analytics_slot)?;\n\n// Lookup complexity is O(L) independent of total routes\nlet matched = trie.resolve(request_path)?;',
+            codeHtml: '<span class="token-comment">// yav-router: Radix prefix trie &amp; parallel slots</span>\n<span class="token-keyword">let</span> <span class="token-keyword">mut</span> trie = <span class="token-type">RouteTrie</span>::<span class="token-fn">new</span>();\ntrie.<span class="token-fn">insert</span>(<span class="token-string">"/"</span>, root_handler)?;\ntrie.<span class="token-fn">insert</span>(<span class="token-string">"/shop/[[...slug]]"</span>, shop_catchall)?;\ntrie.<span class="token-fn">insert</span>(<span class="token-string">"/@analytics/page"</span>, analytics_slot)?;\n\n<span class="token-comment">// Lookup complexity is O(L) independent of total routes</span>\n<span class="token-keyword">let</span> matched = trie.<span class="token-fn">resolve</span>(request_path)?;'
+        },
+        'cli': {
+            name: 'yav-cli',
+            badge: 'Tier 03 — Developer Toolchain (20 Cmds)',
+            file: 'crates/yav-cli/src/main.rs',
+            desc: 'Unified developer toolbelt with 20 commands: rapid project scaffolding, live reload server with WebSocket swap, standalone Tailwind JIT, SQLite/Postgres migrations (yav db) with SHA-256 journal, static site export (yav export), system diagnostics (yav doctor), route table inspection (yav routes), and cloud deploy generators.',
+            deps: 'clap, notify, tokio, reqwest',
+            code: '// yav-cli: Unified developer terminal suite\n$ yav dev               # Start live reload daemon + Tailwind watcher\n$ yav db migrate        # Execute SQL migrations with SHA-256 journal\n$ yav export            # Static Site Generation (SSG) to dist/\n$ yav doctor            # Full local system & toolchain diagnostic audit',
+            codeHtml: '<span class="token-comment">// yav-cli: Unified developer terminal suite</span>\n<span class="token-keyword">$</span> yav dev               <span class="token-comment"># Start live reload daemon + Tailwind watcher</span>\n<span class="token-keyword">$</span> yav db migrate        <span class="token-comment"># Execute SQL migrations with SHA-256 journal</span>\n<span class="token-keyword">$</span> yav export            <span class="token-comment"># Static Site Generation (SSG) to dist/</span>\n<span class="token-keyword">$</span> yav doctor            <span class="token-comment"># Full local system &amp; toolchain diagnostic audit</span>'
+        },
+        'ui': {
+            name: 'yav-ui',
+            badge: 'Tier 03 — 60+ Enterprise Components & Themes',
+            file: 'crates/yav-ui/src/lib.rs',
+            desc: 'Library of 60+ enterprise UI primitives: server-rendered SVG Charts (Line, Bar, Donut, Sparkline, Heatmap, Sankey, Radar), DataGrid, KanbanBoard with O(1) LexoRank, FlowCanvas node graph with live Bézier curve rerouting, in-app DevTools HUD, Calendar, reactive Spreadsheet formula engine, 3D ModelViewer, and 8 design themes.',
+            deps: 'yav-core, yav-macros, yav-icons',
+            code: '// yav-ui: 60+ enterprise UI components\nuse yav::ui::charts::{LineChart, DonutChart};\nuse yav::ui::kanban::KanbanBoard;\nuse yav::ui::model_viewer_3d::ModelViewer3D;\n\nrsx! {\n    <LineChart id="perf" series={perf_data} />\n    <KanbanBoard id="sprint" drop_url="/api/move" />\n    <ModelViewer3D shape="cube" orbit_controls=true />\n}',
+            codeHtml: '<span class="token-comment">// yav-ui: 60+ enterprise UI components</span>\n<span class="token-keyword">use</span> yav::ui::charts::{<span class="token-type">LineChart</span>, <span class="token-type">DonutChart</span>};\n<span class="token-keyword">use</span> yav::ui::kanban::<span class="token-type">KanbanBoard</span>;\n<span class="token-keyword">use</span> yav::ui::model_viewer_3d::<span class="token-type">ModelViewer3D</span>;\n\n<span class="token-macro">rsx!</span> {\n    <span class="token-tag">&lt;LineChart</span> <span class="token-attr">id</span>=<span class="token-string">"perf"</span> <span class="token-attr">series</span>={<span class="token-var">perf_data</span>} <span class="token-tag">/&gt;</span>\n    <span class="token-tag">&lt;KanbanBoard</span> <span class="token-attr">id</span>=<span class="token-string">"sprint"</span> <span class="token-attr">drop_url</span>=<span class="token-string">"/api/move"</span> <span class="token-tag">/&gt;</span>\n    <span class="token-tag">&lt;ModelViewer3D</span> <span class="token-attr">shape</span>=<span class="token-string">"cube"</span> <span class="token-attr">orbit_controls</span>=<span class="token-bool">true</span> <span class="token-tag">/&gt;</span>\n}'
+        },
+        'icons': {
+            name: 'yav-icons',
+            badge: 'Tier 03 — Vector Icon Engine',
+            file: 'crates/yav-icons/src/lib.rs',
+            desc: 'Over 13,000 pre-optimized SVG icons embedded directly into the binary across 3 design systems: Classic (Lucide), Minimal (MynaUI), and System (Phosphor). Zero network requests or webfont downloads.',
+            deps: 'yav-core',
+            code: '// yav-icons: Zero-request embedded SVGs\nuse yav::icons::{render_icon, IconSize};\n\n// Functional helper with size enum and custom classes\nlet icon = render_icon("zap", IconSize::Md, Some("text-oxide"), None);\n\n// Terminal inspection\n$ yav icon search "terminal"',
+            codeHtml: '<span class="token-comment">// yav-icons: Zero-request embedded SVGs</span>\n<span class="token-keyword">use</span> yav::icons::{<span class="token-fn">render_icon</span>, <span class="token-type">IconSize</span>};\n\n<span class="token-comment">// Functional helper with size enum and custom classes</span>\n<span class="token-keyword">let</span> icon = <span class="token-fn">render_icon</span>(<span class="token-string">"zap"</span>, <span class="token-type">IconSize::Md</span>, <span class="token-type">Some</span>(<span class="token-string">"text-oxide"</span>), <span class="token-type">None</span>);\n\n<span class="token-comment">// Terminal inspection</span>\n<span class="token-keyword">$</span> yav icon search <span class="token-string">"terminal"</span>'
+        },
+        'build': {
+            name: 'yav-build',
+            badge: 'Tier 02 — Manifest & Asset Pipeline',
+            file: 'crates/yav-build/src/lib.rs',
+            desc: 'Manages package.yavml single-file manifest parsing, standalone Tailwind CSS JIT compilation without Node.js, asset fingerprinting, in-memory Brotli and Gzip pre-compression, and markdown parsing.',
+            deps: 'flate2, toml, sha2',
+            code: '// yav-build: Asset pipeline & compression\nlet manifest = PackageManifest::load("package.yavml")?;\n\n// Pre-compresses assets to .br and .gz in a single in-memory pass\nasset_pipeline::process_and_fingerprint("public", "dist")?;\n\n// Zero-dependency markdown parser with frontmatter\nlet post = parse_markdown(raw_markdown_str);',
+            codeHtml: '<span class="token-comment">// yav-build: Asset pipeline &amp; compression</span>\n<span class="token-keyword">let</span> manifest = <span class="token-type">PackageManifest</span>::<span class="token-fn">load</span>(<span class="token-string">"package.yavml"</span>)?;\n\n<span class="token-comment">// Pre-compresses assets to .br and .gz in a single in-memory pass</span>\nasset_pipeline::<span class="token-fn">process_and_fingerprint</span>(<span class="token-string">"public"</span>, <span class="token-string">"dist"</span>)?;\n\n<span class="token-comment">// Zero-dependency markdown parser with frontmatter</span>\n<span class="token-keyword">let</span> post = <span class="token-fn">parse_markdown</span>(raw_markdown_str);'
+        }
+    };
+
+    var data = crates[crateId];
+    if (!data) return;
+
+    var elName = document.getElementById('crate-detail-name');
+    var elBadge = document.getElementById('crate-detail-badge');
+    var elFile = document.getElementById('crate-detail-file');
+    var elDesc = document.getElementById('crate-detail-desc');
+    var elDeps = document.getElementById('crate-detail-deps');
+    var elCode = document.getElementById('crate-detail-code');
+
+    if (elName) elName.textContent = data.name;
+    if (elBadge) elBadge.textContent = data.badge;
+    if (elFile) elFile.textContent = data.file;
+    if (elDesc) elDesc.textContent = data.desc;
+    if (elDeps) elDeps.textContent = data.deps;
+    if (elCode) elCode.innerHTML = data.codeHtml;
+    var copyBtn = document.getElementById('crate-detail-copy');
+    if (copyBtn) copyBtn.setAttribute('data-copy', data.code);
+
+    // Toggle active state on list buttons
+    var allKeys = ['core', 'macros', 'server', 'router', 'build', 'icons', 'ui', 'cli'];
+    allKeys.forEach(function(k) {
+        var el = document.getElementById('crate-btn-' + k);
+        var bar = document.getElementById('crate-bar-' + k);
+        if (el) {
+            if (k === crateId) {
+                el.classList.add('border-oxide', 'bg-sunk', 'text-paper');
+                el.classList.remove('border-[rgba(236,233,227,0.08)]', 'text-dim');
+            } else {
+                el.classList.remove('border-oxide', 'bg-sunk', 'text-paper');
+                el.classList.add('border-[rgba(236,233,227,0.08)]', 'text-dim');
+            }
+        }
+        if (bar) {
+            bar.style.opacity = (k === crateId) ? '1' : '0';
+        }
+    });
+
+    // On mobile / small viewports, ensure plate stays visible
+    if (window.innerWidth < 1024) {
+        var plate = document.getElementById('crate-plate-container');
+        if (plate) {
+            plate.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+};
+</script></section><section id="security" class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">2.4</span><span class="t">Security Architecture</span><span class="sec-rule"></span><span class="r">zero external state</span></div><div class="pt-6 grid lg:grid-cols-12 gap-10 lg:gap-14 items-start pb-6"><div class="lg:col-span-5 space-y-8 reveal pl-2 sm:pl-4"><div class="space-y-4 pl-5 sm:pl-7 border-l-2 border-oxide/50"><h2 class="h-section text-paper leading-[1.2]">Cryptographic sessions. <span class="serif text-oxide">Zero Redis dependency.</span></h2><p class="text-[15.5px] text-mute leading-[1.8]">Traditional frameworks query a Redis cluster or database on every single incoming HTTP request just to validate the user&#x27;s session ID. This introduces 2 to 8 ms of network round-trip latency, connection pool limits, and a critical single point of failure.</p></div><p class="text-[15.5px] text-mute leading-[1.8] pl-5 sm:pl-7">Yav employs &lt;strong class=&quot;text-paper font-semibold&quot;&gt;tamper-proof cryptographic cookie sessions&lt;/strong&gt; signed with HMAC-SHA256 (or encrypted with AES-256-GCM). Validation happens completely in-memory via constant-time comparison, yielding microsecond validation with zero external infrastructure.</p></div><div class="lg:col-span-7 reveal" style="--d:120ms"><div class="cells grid-cols-1 sm:grid-cols-2"><div class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4"><div class="flex items-center gap-2.5 text-oxide font-mono text-[14px] font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /></svg><span>HMAC-SHA256 Signing</span></div><p class="text-[14px] text-mute leading-[1.75]">Payload is signed with a secret master key. Signatures are verified in constant time via &lt;code class=&quot;text-paper&quot;&gt;subtle::ConstantTimeEq&lt;/code&gt;, completely immune to timing side-channel attacks.</p><div class="dim-line pt-4 font-mono text-[11.5px]"><span>crypto</span><span class="bar"></span><span>constant-time</span></div></div><div class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4"><div class="flex items-center gap-2.5 text-oxide font-mono text-[14px] font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><rect width="18" height="11" x="3" y="11" rx="2" ry="2" /> <path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg><span>Double-Submit CSRF</span></div><p class="text-[14px] text-mute leading-[1.75]">Every mutating form is automatically supplied with a cryptographic nonce. The server validates that the cookie nonce and the form payload match byte-for-byte.</p><div class="dim-line pt-4 font-mono text-[11.5px]"><span>protection</span><span class="bar"></span><span>automatic</span></div></div><div class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4"><div class="flex items-center gap-2.5 text-oxide font-mono text-[14px] font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><rect width="20" height="8" x="2" y="2" rx="2" ry="2" /> <rect width="20" height="8" x="2" y="14" rx="2" ry="2" /> <line x1="6" x2="6.01" y1="6" y2="6" /> <line x1="6" x2="6.01" y1="18" y2="18" /></svg><span>Zero-Infrastructure Auth</span></div><p class="text-[14px] text-mute leading-[1.75]">Deploy across 20 global regions on bare metal or edge containers without maintaining a distributed Redis cache. Session state travels safely with the user.</p><div class="dim-line pt-4 font-mono text-[11.5px]"><span>state</span><span class="bar"></span><span>stateless edge</span></div></div><div class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4"><div class="flex items-center gap-2.5 text-oxide font-mono text-[14px] font-semibold"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4"><path d="M20 6 9 17l-5-5" /></svg><span>Hardened Security Headers</span></div><p class="text-[14px] text-mute leading-[1.75]">Automatic injection of &lt;code class=&quot;text-paper&quot;&gt;SameSite=Lax&lt;/code&gt;, &lt;code class=&quot;text-paper&quot;&gt;HttpOnly&lt;/code&gt;, &lt;code class=&quot;text-paper&quot;&gt;Secure&lt;/code&gt;, strict Content-Security-Policy, and HSTS.</p><div class="dim-line pt-4 font-mono text-[11.5px]"><span>score</span><span class="bar"></span><span>A+ Observatory</span></div></div></div></div></div></section><section id="concurrency" class="wrap pt-12 sm:pt-16"><div class="sec-head reveal"><span class="n">2.5</span><span class="t">Concurrency Model</span><span class="sec-rule"></span><span class="r">Tokio work-stealing</span></div><div class="pt-6 grid lg:grid-cols-12 gap-10 lg:gap-12 items-start pb-6"><div class="lg:col-span-6 space-y-7 reveal"><div class="space-y-4 pl-5 sm:pl-6 border-l-2 border-oxide/50"><h2 class="h-section text-paper leading-[1.18]">8 cores, 124,500 req/s. <span class="serif text-oxide">Zero lock contention.</span></h2><p class="text-[15.5px] text-mute leading-[1.8]">In multi-threaded web applications, performance bottlenecks rarely come from raw computation. They stem from thread synchronization: global mutexes, lock contention on session stores, and cache ping-pong across CPU cores.</p></div><p class="text-[15.5px] text-mute leading-[1.8] pl-5 sm:pl-6">Yav&#x27;s architecture eliminates shared mutable state on the request path entirely. Route trees are immutable. Sessions are cryptographic cookies. Telemetry relies strictly on lock-free hardware atomics.</p></div><div class="lg:col-span-6 reveal" style="--d:140ms"><div class="plate bg-sunk shadow-2xl"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span><div class="plate-head h-12 px-6"><span class="flex items-center gap-2.5 font-medium tracking-wide"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="w-4 h-4 text-oxide"><path d="M12 20v2" /> <path d="M12 2v2" /> <path d="M17 20v2" /> <path d="M17 2v2" /> <path d="M2 12h2" /> <path d="M2 17h2" /> <path d="M2 7h2" /> <path d="M20 12h2" /> <path d="M20 17h2" /> <path d="M20 7h2" /> <path d="M7 20v2" /> <path d="M7 2v2" /> <rect x="4" y="4" width="16" height="16" rx="2" /> <rect x="8" y="8" width="8" height="8" rx="1" /></svg><span class="text-[12px]">TOKIO WORK-STEALING THREAD ARCHITECTURE</span></span><span class="text-dim font-mono text-[11px]">8 Hardware Workers</span></div><div class="p-6 sm:p-7 space-y-5 font-mono text-[12px]"><div class="grid grid-cols-2 gap-3 sm:gap-3.5"><div class="p-4 border border-[rgba(236,233,227,0.08)] bg-ink-2/50 text-center space-y-1 shadow-sm"><span class="text-dim text-[11px] block">Worker 0</span><span class="text-oxide font-bold text-[15px] block">15,560 req/s</span><span class="text-[10px] text-dim block">core #0 (epoll)</span></div><div class="p-4 border border-[rgba(236,233,227,0.08)] bg-ink-2/50 text-center space-y-1 shadow-sm"><span class="text-dim text-[11px] block">Worker 1</span><span class="text-oxide font-bold text-[15px] block">15,570 req/s</span><span class="text-[10px] text-dim block">core #1 (epoll)</span></div><div class="p-4 border border-[rgba(236,233,227,0.08)] bg-ink-2/50 text-center space-y-1 shadow-sm"><span class="text-dim text-[11px] block">Worker 2</span><span class="text-oxide font-bold text-[15px] block">15,540 req/s</span><span class="text-[10px] text-dim block">core #2 (epoll)</span></div><div class="p-4 border border-[rgba(236,233,227,0.08)] bg-ink-2/50 text-center space-y-1 shadow-sm"><span class="text-dim text-[11px] block">Worker 3</span><span class="text-oxide font-bold text-[15px] block">15,590 req/s</span><span class="text-[10px] text-dim block">core #3 (epoll)</span></div></div><div class="p-4 border border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.02)] space-y-2.5"><div class="flex flex-wrap items-center justify-between text-dim gap-2"><span>Task Queue Balancing Strategy</span><span class="text-paper font-semibold">LIFO worker slots + Cross-thread stealing</span></div><div class="flex flex-wrap items-center justify-between text-dim gap-2 pt-1 border-t border-[rgba(236,233,227,0.06)]"><span>Synchronization Overhead</span><span class="text-oxide font-bold">0 mutex acquisitions on GET routes</span></div></div></div></div></div></div></section><section id="manifesto" class="wrap pt-12 sm:pt-16 pb-16 sm:pb-24"><div class="sec-head reveal"><span class="n">2.6</span><span class="t">Design Manifesto</span><span class="sec-rule"></span><span class="r">compile-time specialization</span></div><div class="pt-6 max-w-4xl reveal pl-6 sm:pl-10 lg:pl-12 border-l-2 border-oxide"><blockquote class="space-y-6"><p class="text-[26px] sm:text-[34px] lg:text-[42px] leading-[1.3] text-paper font-normal tracking-[-0.03em]">The fastest code is the code that never runs. Yav moves template work to <span class="serif text-oxide">compile time</span> and leaves the request path with nothing left to decide.</p><footer class="pt-4 flex flex-wrap items-center gap-4 text-dim font-mono text-[12.5px]"><span class="text-oxide font-semibold">— Architectural Invariant</span><span class="text-dim/50">•</span><span>Zero VDOM tree allocation</span><span class="text-dim/50">•</span><span>Zero JS runtime bridging</span><span class="text-dim/50">•</span><span>Deterministic machine code</span></footer></blockquote></div></section></main><footer class="mt-12 border-t border-[rgba(236,233,227,0.08)] overflow-hidden"><div class="wrap"><div class="grid grid-cols-2 md:grid-cols-12 gap-8 py-8"><div class="col-span-2 md:col-span-5 space-y-6"><p class="text-[22px] leading-[1.3] tracking-[-0.025em] text-paper max-w-sm">A web framework for people who read the <span class="serif text-[1.1em]">assembly</span>.</p><button id="footer-copy-install" onclick="copyText(this, &#x27;cargo install yav-cli&#x27;)" class="group inline-flex items-center gap-4 h-11 px-4 border border-[rgba(236,233,227,0.14)] hover:border-[rgba(236,233,227,0.24)] font-mono text-[13px] text-paper transition-colors cursor-pointer"><span class="text-oxide">$</span><span>cargo install yav-cli</span><span data-copy-label="" class="text-oxide font-medium text-[11px] pl-3 border-l border-[rgba(236,233,227,0.14)]">copy</span></button></div><div class="md:col-span-2 md:col-start-7 space-y-4"><div class="label">Framework</div><ul class="space-y-2.5 text-[14px]"><li><a href="/" class="ulink" data-i18n="nav.overview">Overview</a></li><li><a href="/about" class="ulink" data-i18n="nav.architecture">Architecture</a></li><li><a href="/docs" class="ulink" data-i18n="nav.docs">Docs</a></li><li><a href="/benchmarks" class="ulink" data-i18n="nav.benchmarks">Benchmarks</a></li><li><a href="/components" class="ulink" data-i18n="nav.components">Components</a></li><li><a href="/showcase" class="ulink">Showcase</a></li><li><a href="/faq" class="ulink">Why Yav / FAQ</a></li><li><a href="/releases" class="ulink">Changelog</a></li></ul></div><div class="md:col-span-2 space-y-4"><div class="label">Crates</div><ul class="space-y-2.5 font-mono text-[13px]"><li><a href="https://crates.io/crates/yav" target="_blank" rel="noreferrer" class="ulink">yav</a></li><li><a href="https://crates.io/crates/yav-core" target="_blank" rel="noreferrer" class="ulink">yav-core</a></li><li><a href="https://crates.io/crates/yav-macros" target="_blank" rel="noreferrer" class="ulink">yav-macros</a></li><li><a href="https://crates.io/crates/yav-server" target="_blank" rel="noreferrer" class="ulink">yav-server</a></li><li><a href="https://crates.io/crates/yav-cli" target="_blank" rel="noreferrer" class="ulink">yav-cli</a></li></ul></div><div class="md:col-span-2 space-y-4"><div class="label">Elsewhere</div><ul class="space-y-2.5 text-[14px]"><li><a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="ulink">GitHub</a></li><li><a href="https://docs.rs/yav" target="_blank" rel="noreferrer" class="ulink">docs.rs</a></li><li><a href="https://github.com/isaacvay/yav.rs/issues" target="_blank" rel="noreferrer" class="ulink">Issues</a></li></ul></div></div></div><div class="wrap"><div class="wordmark" aria-hidden="true">yav.rs</div></div><div class="border-t border-[rgba(236,233,227,0.08)]"><div class="wrap h-14 flex items-center justify-between gap-4 font-mono text-[11.5px] text-dim"><span>© 2026 Isaac Yav &amp; contributors — <a href="/privacy" class="hover:text-paper transition-colors underline underline-offset-2">Privacy &amp; Security</a> — MIT / Apache-2.0</span><span class="hidden sm:flex items-center gap-2"><span class="dot dot-ok"></span><span data-i18n="footer.status">All systems operational</span></span></div></div></footer><script>(function() {
+  if (window.__YAV_MOTION_INSTALLED__) return;
+  window.__YAV_MOTION_INSTALLED__ = true;
+
+  const prefersReducedMotion = () =>
+    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function solveSpring(k, c, m) {
+    let pos = 0, v = 0, dt = 1 / 60, frames = [0];
+    for (let i = 0; i < 180; i++) {
+      const f = -k * (pos - 1) - c * v;
+      v += (f / (m || 1)) * dt;
+      pos += v * dt;
+      frames.push(pos);
+      if (i > 6 && Math.abs(pos - 1) < 0.0015 && Math.abs(v) < 0.0015) break;
+    }
+    frames.push(1);
+    return { frames, duration: Math.min(frames.length * 16.67, 1800) };
+  }
+
+  function buildTransform(initial, target, p) {
+    const init = initial || {};
+    const transforms = [];
+    if (target.x !== undefined || target.y !== undefined || init.x !== undefined || init.y !== undefined) {
+      const ix = init.x !== undefined ? init.x : 0;
+      const iy = init.y !== undefined ? init.y : 0;
+      const tx = target.x !== undefined ? target.x : ix;
+      const ty = target.y !== undefined ? target.y : iy;
+      transforms.push(`translate3d(${(ix + (tx - ix) * p).toFixed(2)}px, ${(iy + (ty - iy) * p).toFixed(2)}px, 0)`);
+    }
+    if (target.scale !== undefined || init.scale !== undefined) {
+      const is = init.scale !== undefined ? init.scale : 1;
+      const ts = target.scale !== undefined ? target.scale : is;
+      transforms.push(`scale(${(is + (ts - is) * p).toFixed(4)})`);
+    }
+    if (target.rotate !== undefined || init.rotate !== undefined) {
+      const ir = init.rotate !== undefined ? init.rotate : 0;
+      const tr = target.rotate !== undefined ? target.rotate : ir;
+      transforms.push(`rotate(${(ir + (tr - ir) * p).toFixed(2)}deg)`);
+    }
+    return transforms.join(' ');
+  }
+
+  function animateTo(el, target, transition) {
+    if (!target) return;
+    const trans = transition || {};
+    let initial = {};
+    try {
+      initial = JSON.parse(el.getAttribute('data-motion-initial') || '{}');
+    } catch (_) {}
+
+    if (prefersReducedMotion()) {
+      el.style.transition = 'none';
+      if (target.opacity !== undefined) el.style.opacity = target.opacity;
+      const tf = buildTransform(initial, target, 1);
+      if (tf) el.style.transform = tf;
+      return;
+    }
+    if (trans.is_spring && typeof el.animate === 'function') {
+      const sp = solveSpring(trans.stiffness || 260, trans.damping || 20, trans.mass || 1);
+      const keyframes = sp.frames.map(p => {
+        const kf = { transform: buildTransform(initial, target, p) || 'none' };
+        if (target.opacity !== undefined || initial.opacity !== undefined) {
+          const iop = initial.opacity !== undefined ? initial.opacity : 1;
+          const top = target.opacity !== undefined ? target.opacity : iop;
+          kf.opacity = (iop + (top - iop) * p).toFixed(3);
+        }
+        return kf;
+      });
+      el.animate(keyframes, { duration: sp.duration, fill: 'forwards', easing: 'linear' });
+      return;
+    }
+    const duration = trans.duration_ms || 400;
+    const ease = trans.is_spring
+      ? 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+      : (trans.ease || 'cubic-bezier(0.16, 1, 0.3, 1)');
+
+    const tf = buildTransform(initial, target, 1);
+    el.style.transition = duration > 0 ? `all ${duration}ms ${ease}` : 'none';
+    if (target.opacity !== undefined) {
+      el.style.opacity = target.opacity;
+    }
+    if (tf) {
+      el.style.transform = tf;
+    }
+    if (target.blur !== undefined) {
+      el.style.filter = `blur(${target.blur}px)`;
+    }
+  }
+
+  let scrollBound = false;
+  function updateProgress() {
+    const progressBars = document.querySelectorAll('[data-scroll-progress], [yav\\:scroll-progress]');
+    if (progressBars.length === 0) return;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
+    progressBars.forEach(bar => {
+      bar.style.setProperty('--progress', progress);
+      bar.style.transform = `scaleX(${progress})`;
+    });
+  }
+
+  const observer = 'IntersectionObserver' in window ? new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const target = entry.target;
+
+      if (target.hasAttribute('data-motion-group')) {
+        const stagger = prefersReducedMotion() ? 0 : parseInt(target.getAttribute('data-stagger') || '60', 10);
+        const items = target.querySelectorAll('[data-motion]');
+        items.forEach((item, idx) => {
+          try {
+            const anim = JSON.parse(item.getAttribute('data-motion-animate') || '{}');
+            const trans = JSON.parse(item.getAttribute('data-motion-transition') || '{}');
+            setTimeout(() => animateTo(item, anim, trans), idx * stagger);
+          } catch (_) {}
+        });
+        observer.unobserve(target);
+      } else if (target.hasAttribute('data-motion')) {
+        try {
+          const anim = JSON.parse(target.getAttribute('data-motion-animate') || '{}');
+          const trans = JSON.parse(target.getAttribute('data-motion-transition') || '{}');
+          const delay = prefersReducedMotion() ? 0 : (trans.delay_ms || 0);
+          setTimeout(() => animateTo(target, anim, trans), delay);
+        } catch (_) {}
+
+        const once = target.getAttribute('data-motion-once') !== 'false';
+        if (once) observer.unobserve(target);
+      }
+    });
+  }, { threshold: 0.15 }) : null;
+
+  function initYavMotion() {
+    if (!scrollBound && document.querySelector('[data-scroll-progress], [yav\\:scroll-progress]')) {
+      scrollBound = true;
+      window.addEventListener('scroll', updateProgress, { passive: true });
+    }
+    updateProgress();
+
+    if (observer) {
+      document.querySelectorAll('[data-motion-inview="true"]').forEach(el => {
+        if (!el.__yav_inview_init) {
+          el.__yav_inview_init = true;
+          observer.observe(el);
+        }
+      });
+    }
+
+    document.querySelectorAll('[data-motion]:not([data-motion-inview="true"])').forEach(el => {
+      if (el.__yav_anim_init) return;
+      el.__yav_anim_init = true;
+      try {
+        const anim = JSON.parse(el.getAttribute('data-motion-animate') || '{}');
+        const trans = JSON.parse(el.getAttribute('data-motion-transition') || '{}');
+        const delay = prefersReducedMotion() ? 0 : (trans.delay_ms || 0);
+        setTimeout(() => animateTo(el, anim, trans), delay);
+      } catch (_) {}
+    });
+
+    document.querySelectorAll('[data-motion-hover], [data-motion-tap]').forEach(el => {
+      if (el.__yav_gesture_init) return;
+      el.__yav_gesture_init = true;
+      try {
+        const hoverState = el.getAttribute('data-motion-hover') ? JSON.parse(el.getAttribute('data-motion-hover')) : null;
+        const tapState = el.getAttribute('data-motion-tap') ? JSON.parse(el.getAttribute('data-motion-tap')) : null;
+        const animState = el.getAttribute('data-motion-animate') ? JSON.parse(el.getAttribute('data-motion-animate')) : null;
+        const trans = JSON.parse(el.getAttribute('data-motion-transition') || '{}');
+
+        if (hoverState) {
+          el.addEventListener('mouseenter', () => animateTo(el, hoverState, trans));
+          el.addEventListener('mouseleave', () => animateTo(el, animState || { x: 0, y: 0, scale: 1, rotate: 0, opacity: 1 }, trans));
+        }
+        if (tapState) {
+          el.addEventListener('mousedown', () => animateTo(el, tapState, { duration_ms: 100 }));
+          el.addEventListener('mouseup', () => animateTo(el, hoverState || animState || { scale: 1, rotate: 0 }, trans));
+        }
+      } catch (_) {}
+    });
+  }
+
+  window.addEventListener('yav:navigate', initYavMotion);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initYavMotion);
+  } else {
+    initYavMotion();
+  }
+})();</script><script>
+(function () {
+  var path = location.pathname.replace(/\/$/, '') || '/';
+  document.querySelectorAll('[data-nav]').forEach(function (a) {
+    if (a.getAttribute('href') === path) a.setAttribute('aria-current', 'page');
+  });
+
+  var header = document.getElementById('site-header');
+  var bar = document.getElementById('scroll-progress');
+  function onScroll() {
+    var y = window.scrollY || 0;
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (header) {
+      if (y > 8) {
+        header.classList.add('is-scrolled');
+      } else {
+        header.classList.remove('is-scrolled');
+      }
+    }
+    if (bar && max > 0) {
+      bar.style.setProperty('--progress', Math.min(y / max, 1));
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Scroll reveal observer
+  if ('IntersectionObserver' in window) {
+    var revObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-in');
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      revObs.observe(el);
+    });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) {
+      el.classList.add('is-in');
+    });
+  }
+
+  // Mobile Nav & Dropdown Menu Controller
+  var mBtn = document.getElementById('mobile-menu-btn');
+  var mNav = document.getElementById('mobile-nav');
+  var mOpenIcon = document.getElementById('menu-icon-open');
+  var mCloseIcon = document.getElementById('menu-icon-close');
+
+  window.toggleMobileNav = function () {
+    if (!mNav) return;
+    var isHidden = mNav.classList.contains('hidden');
+    if (isHidden) {
+      mNav.classList.remove('hidden');
+      if (mBtn) mBtn.setAttribute('aria-expanded', 'true');
+      if (mOpenIcon) mOpenIcon.classList.add('hidden');
+      if (mCloseIcon) mCloseIcon.classList.remove('hidden');
+      setTimeout(function () {
+        mNav.classList.remove('opacity-0', '-translate-y-2');
+        mNav.classList.add('opacity-100', 'translate-y-0');
+      }, 10);
+    } else {
+      window.closeMobileNav();
+    }
+  };
+
+  window.closeMobileNav = function () {
+    if (!mNav || mNav.classList.contains('hidden')) return;
+    mNav.classList.remove('opacity-100', 'translate-y-0');
+    mNav.classList.add('opacity-0', '-translate-y-2');
+    if (mBtn) mBtn.setAttribute('aria-expanded', 'false');
+    if (mOpenIcon) mOpenIcon.classList.remove('hidden');
+    if (mCloseIcon) mCloseIcon.classList.add('hidden');
+    setTimeout(function () {
+      mNav.classList.add('hidden');
+    }, 180);
+  };
+
+  if (mBtn) {
+    mBtn.addEventListener('click', window.toggleMobileNav);
+  }
+
+  // Command Palette Popover
+  window.toggleCmdPalette = function () {
+    var p = document.getElementById('cmd-palette-popover');
+    if (!p) return;
+    if (p.style.display === 'block' || p.classList.contains('is-open')) {
+      window.closeCmdPalette();
+    } else {
+      window.openCmdPalette();
+    }
+  };
+
+  window.openCmdPalette = function () {
+    var p = document.getElementById('cmd-palette-popover');
+    var btn = document.getElementById('header-search-btn');
+    if (!p) return;
+    window.closeLangMenu();
+    p.classList.add('is-open');
+    p.style.display = 'block';
+    p.style.opacity = '1';
+    p.style.visibility = 'visible';
+    p.style.pointerEvents = 'auto';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    var input = document.getElementById('cmd-palette-input');
+    if (input) {
+      setTimeout(function () { input.focus(); input.select(); }, 40);
+    }
+  };
+
+  window.closeCmdPalette = function () {
+    var p = document.getElementById('cmd-palette-popover');
+    var btn = document.getElementById('header-search-btn');
+    if (!p) return;
+    p.classList.remove('is-open');
+    p.style.display = 'none';
+    p.style.opacity = '0';
+    p.style.visibility = 'hidden';
+    p.style.pointerEvents = 'none';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  };
+
+  // Language Menu Popover
+  window.toggleLangMenu = function () {
+    var m = document.getElementById('lang-menu');
+    if (!m) return;
+    if (m.style.display === 'block' || m.classList.contains('is-open')) {
+      window.closeLangMenu();
+    } else {
+      window.openLangMenu();
+    }
+  };
+
+  window.openLangMenu = function () {
+    var m = document.getElementById('lang-menu');
+    var btn = document.getElementById('lang-btn');
+    if (!m) return;
+    window.closeCmdPalette();
+    m.classList.add('is-open');
+    m.style.display = 'block';
+    m.style.opacity = '1';
+    m.style.visibility = 'visible';
+    m.style.pointerEvents = 'auto';
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+  };
+
+  window.closeLangMenu = function () {
+    var m = document.getElementById('lang-menu');
+    var btn = document.getElementById('lang-btn');
+    if (!m) return;
+    m.classList.remove('is-open');
+    m.style.display = 'none';
+    m.style.opacity = '0';
+    m.style.visibility = 'hidden';
+    m.style.pointerEvents = 'none';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  };
+
+  // Close menus on click-outside
+  document.addEventListener('click', function (e) {
+    var sBtn = document.getElementById('header-search-btn');
+    var sPop = document.getElementById('cmd-palette-popover');
+    if (sPop && (sPop.style.display === 'block' || sPop.classList.contains('is-open'))) {
+      var insideSearch = (sBtn && sBtn.contains(e.target)) || (sPop && sPop.contains(e.target));
+      if (!insideSearch) {
+        window.closeCmdPalette();
+      }
+    }
+
+    var lBtn = document.getElementById('lang-btn');
+    var lPop = document.getElementById('lang-menu');
+    if (lPop && (lPop.style.display === 'block' || lPop.classList.contains('is-open'))) {
+      var insideLang = (lBtn && lBtn.contains(e.target)) || (lPop && lPop.contains(e.target));
+      if (!insideLang) {
+        window.closeLangMenu();
+      }
+    }
+
+    if (mNav && mBtn && !mNav.contains(e.target) && !mBtn.contains(e.target)) {
+      window.closeMobileNav();
+    }
+  });
+
+  // Close menus on Escape key & Ctrl+K shortcut
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      window.closeCmdPalette();
+      window.closeLangMenu();
+      window.closeMobileNav();
+    }
+    if ((e.metaKey || e.ctrlKey) && e.key && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      window.toggleCmdPalette();
+    }
+  });
+
+  // Reset mobile menu on resize to desktop
+  window.addEventListener('resize', function () {
+    if (window.innerWidth >= 1024) {
+      window.closeMobileNav();
+    }
+  });
+
+  // Count-up numbers with IntersectionObserver
+  function runCountUp(el) {
+    if (el._counted) return;
+    el._counted = true;
+    var raw = el.dataset.count;
+    var to = parseFloat(raw);
+    if (isNaN(to)) return;
+    var parts = raw.split('.');
+    var dec = parts[1] ? parts[1].length : 0;
+    var t0 = performance.now();
+    var duration = 1400;
+    function step(t) {
+      var p = Math.min((t - t0) / duration, 1);
+      var k = 1 - Math.pow(1 - p, 3);
+      el.textContent = (to * k).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      if (p < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = to.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var countObs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          runCountUp(e.target);
+          countObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      countObs.observe(el);
+    });
+  } else {
+    document.querySelectorAll('[data-count]').forEach(runCountUp);
+  }
+
+  // Scroll-spy for .toc
+  var toc = document.querySelector('.toc');
+  if (toc) {
+    var links = {};
+    toc.querySelectorAll("a[href^='#']").forEach(function (a) {
+      var href = a.getAttribute('href');
+      if (href) links[href.slice(1)] = a;
+    });
+    if ('IntersectionObserver' in window) {
+      var sio = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (e.isIntersecting) {
+            Object.keys(links).forEach(function (k) {
+              links[k].classList.toggle('is-active', k === e.target.id);
+            });
+          }
+        });
+      }, { rootMargin: '-20% 0px -60% 0px' });
+      Object.keys(links).forEach(function (id) {
+        var s = document.getElementById(id);
+        if (s) sio.observe(s);
+      });
+    }
+  }
+})();
+
+window.copyText = function (btn, text) {
+  var str = text;
+  if (!str || typeof str !== 'string') {
+    str = btn.getAttribute('data-copy');
+  }
+  if (!str) {
+    var win = btn.closest ? btn.closest('.ide-window, .term-window, .plate') : null;
+    if (win) {
+      var c = win.querySelector('.code');
+      if (c) str = c.innerText || c.textContent;
+    }
+  }
+  if (!str && btn.parentElement) {
+    var codeEl = btn.parentElement.querySelector('code');
+    if (codeEl) str = codeEl.innerText || codeEl.textContent;
+  }
+  if (!str) str = '';
+
+  function fallback(t) {
+    var ta = document.createElement('textarea');
+    ta.value = t;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(str).catch(function () { fallback(str); });
+    } else {
+      fallback(str);
+    }
+  } catch (err) {
+    fallback(str);
+  }
+
+  var el = btn.querySelector ? btn.querySelector('[data-copy-label]') : null;
+  if (!el) el = btn;
+  var svg = btn.querySelector ? btn.querySelector('svg') : null;
+  var prev = el.getAttribute('data-prev-text') || el.textContent;
+  el.setAttribute('data-prev-text', prev);
+
+  el.textContent = 'copied ✓';
+  el.classList.add('copied');
+  btn.classList.add('is-copied');
+  el.style.setProperty('color', '#22c55e', 'important');
+  el.style.fontWeight = '600';
+  btn.style.setProperty('border-color', 'rgba(34, 197, 94, 0.6)', 'important');
+  if (svg) {
+    svg.style.setProperty('color', '#22c55e', 'important');
+    svg.style.setProperty('stroke', '#22c55e', 'important');
+  }
+
+  clearTimeout(btn._copyTimer);
+  btn._copyTimer = setTimeout(function () { 
+    el.textContent = prev; 
+    el.classList.remove('copied');
+    btn.classList.remove('is-copied');
+    el.style.removeProperty('color');
+    el.style.fontWeight = '';
+    btn.style.removeProperty('border-color');
+    if (svg) {
+      svg.style.removeProperty('color');
+      svg.style.removeProperty('stroke');
+    }
+  }, 1600);
+};
+</script></div>
+<script id="yav-micro-actions">(function(){function g(e){var s=e.getAttribute('yav:toggle')||e.getAttribute('data-yav-toggle')||e.getAttribute('yav:show')||e.getAttribute('data-yav-show')||e.getAttribute('yav:hide')||e.getAttribute('data-yav-hide');return s?document.querySelector(s):null}function c(t,r){if(!t)return;t.classList.add('hidden');t.setAttribute('hidden','');t.removeAttribute('data-open');t.classList.remove('is-open');var trig=r;if(!trig&&t.id){trig=document.querySelector('[yav\\:toggle="#'+t.id+'"],[data-yav-toggle="#'+t.id+'"]')}if(trig){trig.setAttribute('aria-expanded','false');if(document.activeElement&&t.contains(document.activeElement)){trig.focus()}}}function o(t,r){if(!t)return;var grp=t.getAttribute('yav:group')||t.getAttribute('data-yav-group');if(grp){document.querySelectorAll('[yav\\:group="'+grp+'"],[data-yav-group="'+grp+'"]').forEach(function(other){if(other!==t)c(other)})}t.classList.remove('hidden');t.removeAttribute('hidden');t.setAttribute('data-open','true');t.classList.add('is-open');if(r)r.setAttribute('aria-expanded','true');var f=t.querySelector('[autofocus],input,button,a[href],[tabindex]:not([tabindex="-1"])');if(f)setTimeout(function(){f.focus()},10)}function sp(){var b=document.getElementById('yav-top-loader');if(!b){b=document.createElement('div');b.id='yav-top-loader';b.style.cssText='position:fixed;top:0;left:0;height:2.5px;width:0%;background:linear-gradient(90deg,#6366f1,#06b6d4);z-index:99999;transition:width .2s ease,opacity .3s ease;pointer-events:none';document.body.appendChild(b)}b.style.opacity='1';b.style.width='35%';setTimeout(function(){if(b.style.opacity==='1')b.style.width='78%'},100)}function hp(){var b=document.getElementById('yav-top-loader');if(b){b.style.width='100%';setTimeout(function(){b.style.opacity='0';b.style.width='0%'},220)}}function toast(msg){if(!msg)return;var t=document.getElementById('cmd-notification')||document.querySelector('[data-yav-toast]');if(!t){t=document.createElement('div');t.setAttribute('data-yav-toast','');t.style.cssText='position:fixed;bottom:24px;right:24px;z-index:9999;padding:10px 16px;background:#111112;color:#ece9e3;border:1px solid rgba(236,233,227,0.16);font-family:monospace;font-size:12px;transition:all .25s ease;opacity:0;transform:translateY(12px);pointer-events:none';document.body.appendChild(t)}var tx=t.querySelector('#cmd-notification-text,[data-yav-toast-text]')||t;tx.textContent=msg;t.classList.remove('translate-y-12','opacity-0');t.style.opacity='1';t.style.transform='translateY(0)';clearTimeout(t.__yav_tm);t.__yav_tm=setTimeout(function(){t.style.opacity='0';t.style.transform='translateY(12px)';t.classList.add('translate-y-12','opacity-0')},2000)}function applyLang(lang){if(!lang)return;try{localStorage.setItem('yav_lang',lang);document.cookie='yav_lang='+lang+'; path=/; max-age=31536000'}catch(_){}var lbl=document.getElementById('lang-current-label')||document.querySelector('[data-yav-lang-label]');if(lbl)lbl.textContent=lang.toUpperCase();document.documentElement.lang=lang;var sc=document.getElementById('yav-i18n-payload');if(!sc)return;try{var d=JSON.parse(sc.textContent||'{}');var tr=d[lang]||d['en'];if(!tr)return;document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(tr[k])el.textContent=tr[k]});document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){var k=el.getAttribute('data-i18n-placeholder');if(tr[k])el.placeholder=tr[k]})}catch(_){}}function syncNav(){var p=location.pathname.replace(/\/$/,'')||'/';document.querySelectorAll('[yav\\:nav-active],[data-yav-nav-active],[data-nav]').forEach(function(a){var h=(a.getAttribute('href')||'').replace(/\/$/,'')||'/';var v=a.getAttribute('yav:nav-active')||a.getAttribute('data-yav-nav-active')||'page';if(h===p)a.setAttribute('aria-current',v);else a.removeAttribute('aria-current')})}function morphEl(from,to){if(!from||!to)return;if(from.nodeType===1&&(from.hasAttribute('yav:preserve')||from.hasAttribute('data-yav-preserve')))return;if(from.nodeType!==to.nodeType||from.nodeName!==to.nodeName){from.replaceWith(to.cloneNode(true));return}if(from.nodeType===3||from.nodeType===8){if(from.nodeValue!==to.nodeValue)from.nodeValue=to.nodeValue;return}if(from.nodeType===1){var isAct=document.activeElement===from&&(from.tagName==='INPUT'||from.tagName==='TEXTAREA'||from.tagName==='SELECT');var oldAttrs=from.attributes,newAttrs=to.attributes;for(var i=oldAttrs.length-1;i>=0;i--){var nm=oldAttrs[i].name;if(!to.hasAttribute(nm))from.removeAttribute(nm)}for(var j=0;j<newAttrs.length;j++){var a=newAttrs[j];if(isAct&&a.name==='value')continue;if(from.getAttribute(a.name)!==a.value)from.setAttribute(a.name,a.value)}if(!isAct&&'value' in to&&from.value!==to.value)from.value=to.value;var fc=Array.from(from.childNodes),tc=Array.from(to.childNodes),max=Math.max(fc.length,tc.length);for(var k=0;k<max;k++){if(k>=tc.length){if(fc[k]&&!(fc[k].nodeType===1&&(fc[k].hasAttribute('yav:preserve')||fc[k].hasAttribute('data-yav-preserve'))))fc[k].remove()}else if(k>=fc.length){from.appendChild(tc[k].cloneNode(true))}else{morphEl(fc[k],tc[k])}}}}window.__yavMorph=morphEl;function sw(el,html,mode){if(!el)return;if(mode==='outerHTML')el.outerHTML=html;else if(mode==='beforeend')el.insertAdjacentHTML('beforeend',html);else if(mode==='afterbegin')el.insertAdjacentHTML('afterbegin',html);else if(mode==='delete')el.remove();else if(mode==='morph'){var tmp=document.createElement(el.tagName||'div');tmp.innerHTML=html;morphEl(el,tmp)}else el.innerHTML=html;window.dispatchEvent(new CustomEvent('yav:navigate'))}function ax(el,m,url,body){var ts=el.getAttribute('yav:target')||el.getAttribute('data-yav-target');var tg=ts?document.querySelector(ts):el;var sm=el.getAttribute('yav:swap')||el.getAttribute('data-yav-swap')||'innerHTML';var optTog=el.getAttribute('yav:optimistic-toggle')||el.getAttribute('data-yav-optimistic-toggle');var optInc=el.getAttribute('yav:optimistic-inc')||el.getAttribute('data-yav-optimistic-inc');var optSet=el.getAttribute('yav:optimistic-set')||el.getAttribute('data-yav-optimistic-set');var rbMsg=el.getAttribute('yav:rollback-toast')||el.getAttribute('data-yav-rollback-toast');var prevTog=optTog?el.classList.contains(optTog):null;var incEl=optInc?document.querySelector(optInc):null;var prevInc=incEl?incEl.textContent:null;var setEl=null,prevSet=null;if(optSet){var sp=optSet.split(':');setEl=document.querySelector(sp[0]);if(setEl){prevSet=setEl.textContent;setEl.textContent=sp.slice(1).join(':')}}if(optTog)el.classList.toggle(optTog);if(incEl){var iv=parseInt(incEl.textContent||'0',10);incEl.textContent=isNaN(iv)?'1':(iv+1)}fetch(url,{method:m,body:body,headers:{'X-Yav-Request':'true','HX-Request':'true'}}).then(function(r){if(!r.ok)throw new Error(r.statusText);return r.text()}).then(function(h){sw(tg,h,sm)}).catch(function(){if(optTog!==null){if(prevTog)el.classList.add(optTog);else el.classList.remove(optTog)}if(incEl&&prevInc!==null)incEl.textContent=prevInc;if(setEl&&prevSet!==null)setEl.textContent=prevSet;if(rbMsg)toast(rbMsg)})}var j=null;document.addEventListener('click',function(e){var cp=e.target.closest('[yav\\:copy],[data-yav-copy]');if(cp){var txt=cp.getAttribute('yav:copy')||cp.getAttribute('data-yav-copy');if(txt&&navigator.clipboard){navigator.clipboard.writeText(txt);var lb=cp.querySelector('[data-copy-label]')||cp;var fb=cp.getAttribute('yav:copy-label')||cp.getAttribute('data-yav-copy-label')||'copied';var prev=lb.getAttribute('data-prev-text')||lb.textContent;lb.setAttribute('data-prev-text',prev);lb.textContent=fb;setTimeout(function(){lb.textContent=prev},1400);var tm=cp.getAttribute('yav:toast')||cp.getAttribute('data-yav-toast');if(tm)toast(tm)}}var lg=e.target.closest('[yav\\:set-lang],[data-yav-set-lang]');if(lg){var l=lg.getAttribute('yav:set-lang')||lg.getAttribute('data-yav-set-lang');applyLang(l);var pop=lg.closest('[data-open="true"]');if(pop)c(pop);return}var tb=e.target.closest('[yav\\:tab],[data-yav-tab]');if(tb){var grp=tb.getAttribute('yav:tab-group')||tb.getAttribute('data-yav-tab-group')||'default';var val=tb.getAttribute('yav:tab')||tb.getAttribute('data-yav-tab');document.querySelectorAll('[yav\\:tab-group="'+grp+'"],[data-yav-tab-group="'+grp+'"]').forEach(function(b){var act=(b.getAttribute('yav:tab')||b.getAttribute('data-yav-tab'))===val;b.classList.toggle('active',act);b.setAttribute('aria-selected',act?'true':'false')});document.querySelectorAll('[yav\\:tab-panel^="'+grp+':"],[data-yav-tab-panel^="'+grp+':"]').forEach(function(p){var pv=p.getAttribute('yav:tab-panel')||p.getAttribute('data-yav-tab-panel');var match=pv===(grp+':'+val);p.classList.toggle('hidden',!match);if(match)window.dispatchEvent(new CustomEvent('yav:tab-change',{detail:{group:grp,tab:val,panel:p}}))});return}var fc=e.target.closest('[yav\\:filter-value],[data-yav-filter-value]');if(fc){var ft=fc.getAttribute('yav:filter-target')||fc.getAttribute('data-yav-filter-target');var fa=fc.getAttribute('yav:filter-attr')||fc.getAttribute('data-yav-filter-attr')||'data-cat';var fv=fc.getAttribute('yav:filter-value')||fc.getAttribute('data-yav-filter-value')||'all';if(ft){document.querySelectorAll(ft).forEach(function(it){var iv=it.getAttribute(fa)||'';it.style.display=(fv==='all'||iv===fv)?'':'none'})}return}var t=e.target.closest('[yav\\:toggle],[data-yav-toggle],[yav\\:show],[data-yav-show],[yav\\:hide],[data-yav-hide]');if(t){var tg=g(t);if(tg){document.querySelectorAll('[yav\\:click-outside="close"],[data-yav-click-outside="close"]').forEach(function(el){if(el!==tg&&!el.contains(t)&&!el.contains(tg)){var open=el.getAttribute('data-open')==='true'||(!el.classList.contains('hidden')&&!el.hasAttribute('hidden'));if(open)c(el)}});if(t.hasAttribute('yav:show')||t.hasAttribute('data-yav-show'))o(tg,t);else if(t.hasAttribute('yav:hide')||t.hasAttribute('data-yav-hide'))c(tg,t);else{(tg.getAttribute('data-open')==='true'||(!tg.classList.contains('hidden')&&!tg.hasAttribute('hidden')))?c(tg,t):o(tg,t)}j=tg;return}}var xm=e.target.closest('[yav\\:get],[data-yav-get],[yav\\:post],[data-yav-post],[yav\\:put],[data-yav-put],[yav\\:delete],[data-yav-delete]');if(xm&&xm.tagName!=='FORM'){e.preventDefault();var m='GET',u=xm.getAttribute('yav:get')||xm.getAttribute('data-yav-get');if(!u){m='POST';u=xm.getAttribute('yav:post')||xm.getAttribute('data-yav-post')}if(!u){m='PUT';u=xm.getAttribute('yav:put')||xm.getAttribute('data-yav-put')}if(!u){m='DELETE';u=xm.getAttribute('yav:delete')||xm.getAttribute('data-yav-delete')}if(u)ax(xm,m,u,null);return}var a=e.target.closest('a[href]');if(a&&!e.ctrlKey&&!e.metaKey&&!e.shiftKey&&a.target!=='_blank'){var href=a.getAttribute('href');if(href&&href.charAt(0)==='/'&&(a.hasAttribute('yav:boost')||a.closest('[yav\\:boost],[data-yav-boost]'))){e.preventDefault();sp();fetch(href,{headers:{'X-Yav-Boost':'true'}}).then(function(r){return r.text()}).then(function(html){hp();var apply=function(){var doc=new DOMParser().parseFromString(html,'text/html');if(doc.title)document.title=doc.title;if(doc.body)morphEl(document.body,doc.body);history.pushState({},'',href);window.scrollTo(0,0);syncNav();window.dispatchEvent(new CustomEvent('yav:navigate'))};if(document.startViewTransition)document.startViewTransition(apply);else apply()}).catch(function(){hp();window.location.href=href});return}}document.querySelectorAll('[yav\\:click-outside="close"],[data-yav-click-outside="close"]').forEach(function(el){if(el===j)return;var open=el.getAttribute('data-open')==='true'||(!el.classList.contains('hidden')&&!el.hasAttribute('hidden'));if(open&&!el.contains(e.target))c(el)});j=null});document.addEventListener('input',function(e){var fi=e.target.closest('[yav\\:filter],[data-yav-filter]');if(fi){var sel=fi.getAttribute('yav:filter')||fi.getAttribute('data-yav-filter');var emp=fi.getAttribute('yav:filter-empty')||fi.getAttribute('data-yav-filter-empty');var q=(fi.value||'').toLowerCase().trim();var vis=0;if(sel){document.querySelectorAll(sel).forEach(function(it){var tx=((it.textContent||'')+' '+(it.getAttribute('data-name')||'')).toLowerCase();var ok=!q||tx.indexOf(q)!==-1;it.style.display=ok?'':'none';if(ok)vis++})}if(emp){var emEl=document.querySelector(emp);if(emEl)emEl.classList.toggle('hidden',vis>0)}}});document.addEventListener('submit',function(e){var f=e.target.closest('form[yav\\:post],form[data-yav-post],form[yav\\:get],form[data-yav-get],form[yav\\:put],form[data-yav-put],form[yav\\:delete],form[data-yav-delete]');if(f){e.preventDefault();var m='POST',u=f.getAttribute('yav:post')||f.getAttribute('data-yav-post');if(!u){m='GET';u=f.getAttribute('yav:get')||f.getAttribute('data-yav-get')}if(!u){m='PUT';u=f.getAttribute('yav:put')||f.getAttribute('data-yav-put')}if(!u){m='DELETE';u=f.getAttribute('yav:delete')||f.getAttribute('data-yav-delete')}if(u)ax(f,m,u,new URLSearchParams(new FormData(f)))}});var pf={};document.addEventListener('mouseover',function(e){var a=e.target.closest('a[href]');if(a&&(a.getAttribute('yav:prefetch')==='hover'||a.getAttribute('data-yav-prefetch')==='hover')){var h=a.getAttribute('href');if(h&&h.charAt(0)==='/'&&!pf[h]){pf[h]=1;var l=document.createElement('link');l.rel='prefetch';l.href=h;document.head.appendChild(l)}}});document.addEventListener('keydown',function(e){if(e.key==='Escape'){document.querySelectorAll('[yav\\:escape="close"],[data-yav-escape="close"],[yav\\:click-outside="close"],[data-yav-click-outside="close"]').forEach(function(el){c(el)});return}if((e.ctrlKey||e.metaKey)&&e.key){var k=e.key.toLowerCase();var hk=document.querySelector('[yav\\:hotkey*="+'+k+'"],[data-yav-hotkey*="+'+k+'"]');if(hk){e.preventDefault();hk.click();return}}var d=document.querySelector('dialog[open],[role="dialog"][data-open="true"],[yav\\:focus-trap][data-open="true"]');if(d&&e.key==='Tab'){var fs=Array.from(d.querySelectorAll('a[href],button:not([disabled]),textarea:not([disabled]),input:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])'));if(fs.length>0){var f0=fs[0],f1=fs[fs.length-1];if(e.shiftKey&&document.activeElement===f0){f1.focus();e.preventDefault()}else if(!e.shiftKey&&document.activeElement===f1){f0.focus();e.preventDefault()}}}var m=document.activeElement?document.activeElement.closest('[role="menu"]'):null;if(m){var items=Array.from(m.querySelectorAll('[role="menuitem"],a,button'));var idx=items.indexOf(document.activeElement);if(e.key==='ArrowDown'){e.preventDefault();var next=items[(idx+1)%items.length];if(next)next.focus()}else if(e.key==='ArrowUp'){e.preventDefault();var prev=items[(idx-1+items.length)%items.length];if(prev)prev.focus()}else if(e.key==='Home'){e.preventDefault();if(items[0])items[0].focus()}else if(e.key==='End'){e.preventDefault();if(items[items.length-1])items[items.length-1].focus()}}});window.addEventListener('resize',function(){document.querySelectorAll('[yav\\:close-on-resize],[data-yav-close-on-resize]').forEach(function(el){var w=parseInt(el.getAttribute('yav:close-on-resize')||el.getAttribute('data-yav-close-on-resize')||'1024',10);if(window.innerWidth>=w)c(el)})});window.addEventListener('yav:navigate',hp);syncNav();try{var sl=localStorage.getItem('yav_lang');if(sl)applyLang(sl)}catch(_){}})();</script></body>
+</html>

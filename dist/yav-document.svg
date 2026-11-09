@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="doc-card-body" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#464956" />
+      <stop offset="60%" stop-color="#383A44" />
+      <stop offset="100%" stop-color="#282930" />
+    </linearGradient>
+    <linearGradient id="ribbon-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFDE43" />
+      <stop offset="100%" stop-color="#F59E0B" />
+    </linearGradient>
+    <linearGradient id="fold-front" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFF085" />
+      <stop offset="50%" stop-color="#FFCD1E" />
+      <stop offset="100%" stop-color="#E69500" />
+    </linearGradient>
+    <linearGradient id="fold-shadow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14151B" stop-opacity="0.75" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.0" />
+    </linearGradient>
+    <linearGradient id="emblem-gold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFDD44" />
+      <stop offset="50%" stop-color="#F5A623" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <filter id="doc-shadow" x="-15%" y="-15%" width="130%" height="135%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity="0.55" />
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+    <filter id="emblem-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <g id="yav-document" filter="url(#doc-shadow)">
+    <path d="M 140 72 L 320 72 L 396 148 L 396 416 C 396 429.3 385.3 440 372 440 L 140 440 C 126.7 440 116 429.3 116 416 L 116 96 C 116 82.7 126.7 72 140 72 Z" fill="url(#doc-card-body)" />
+    <path d="M 140 73 L 320 73" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="1.5" />
+    <path d="M 320 72 L 320 148 L 396 148 Z" fill="url(#fold-shadow)" />
+    <path d="M 320 72 L 320 136 C 320 142.6 325.4 148 332 148 L 396 148 Z" fill="url(#fold-front)" />
+    <path d="M 148 72 L 192 72 L 192 148 L 170 134 L 148 148 Z" fill="url(#ribbon-gold)" />
+    <g id="center-y" filter="url(#emblem-shadow)">
+      <path d="M 194 210 L 230 210 L 256 264 L 282 210 L 318 210 L 274 286 L 274 340 L 238 340 L 238 286 Z" fill="url(#emblem-gold)" />
+      <path d="M 194 210 L 230 210 L 256 264 L 244 264 Z" fill="#FFFFFF" fill-opacity="0.12" />
+    </g>
+  </g>
+</svg>
