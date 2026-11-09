@@ -39,6 +39,35 @@ pub async fn components(_req: Request) -> yav::server::HtmlPage {
 
             // Main Catalog Showcase & Sticky Side Navigation (Direct Workspace, No Hero)
             <div class="wrap py-8 sm:py-10">
+                // Mobile & Tablet Quick Jump Navigation Pill Bar
+                <div class="lg:hidden pb-6">
+                    <div class="label pb-2 text-[10.5px] text-dim font-mono flex items-center justify-between">
+                        <span>"Jump to primitive:"</span>
+                        <span class="text-oxide">"19 categories"</span>
+                    </div>
+                    <div class="flex items-center gap-2 overflow-x-auto pb-2 table-scroll text-xs font-mono">
+                        <a href="#buttons" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.1 Buttons"</a>
+                        <a href="#badges" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.2 Badges"</a>
+                        <a href="#forms" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.3 Forms"</a>
+                        <a href="#statcards" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.4 KPI Cards"</a>
+                        <a href="#datatable" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.5 Data Table"</a>
+                        <a href="#authcard" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.6 Auth Card"</a>
+                        <a href="#feedback" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.7 Alerts"</a>
+                        <a href="#navigation" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.8 Navigation"</a>
+                        <a href="#commandmenu" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.9 Command Menu"</a>
+                        <a href="#icons" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.10 Vector Icons"</a>
+                        <a href="#motion" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.11 Motion"</a>
+                        <a href="#themes" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.12 Themes"</a>
+                        <a href="#cursor" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.13 Cursor & 3D"</a>
+                        <a href="#microactions" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.14 Micro-Actions"</a>
+                        <a href="#overlays" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.15 Drawers"</a>
+                        <a href="#codeblock" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.16 CodeBlock"</a>
+                        <a href="#charts" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.17 Charts"</a>
+                        <a href="#enterprise" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.18 Enterprise"</a>
+                        <a href="#visual-widgets" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5.19 3D & Widgets"</a>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 items-start">
                     // Sticky independently scrollable sidebar
                     <ComponentSidebar />

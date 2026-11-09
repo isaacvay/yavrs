@@ -62,8 +62,8 @@ pub fn ComponentDataTable() -> Node {
                 </div>
 
                 // Data Table Body
-                <div class="overflow-x-auto bg-[#09090b]">
-                    <table class="w-full text-left font-mono text-[12.5px] border-collapse">
+                <div class="table-scroll bg-[#09090b]">
+                    <table class="w-full min-w-[640px] text-left font-mono text-[12.5px] border-collapse">
                         <thead>
                             <tr class="border-b border-[rgba(236,233,227,0.08)] text-[11px] text-dim uppercase tracking-wider bg-ink-2/60">
                                 <th class="py-3 px-4 font-medium">"Route Endpoint"</th>

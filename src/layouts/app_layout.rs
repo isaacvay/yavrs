@@ -567,10 +567,10 @@ window.copyText = function (btn, text) {
             <div class="rails" aria-hidden="true"></div>
 
             <header id="site-header" class="site-header sticky top-0 z-40 w-full">
-                <div class="wrap flex h-16 items-center justify-between gap-6">
-                    <a href="/" class="flex items-center gap-3" aria-label="Yav home">
+                <div class="wrap flex h-16 items-center justify-between gap-2 sm:gap-6">
+                    <a href="/" class="flex items-center gap-2.5 sm:gap-3 shrink-0" aria-label="Yav home">
                         <img src="/public/favicon.svg" class="w-6 h-6" alt="" />
-                        <span class="text-[16px] font-semibold tracking-[-0.03em] text-paper">"yav"<span class="text-dim font-normal">".rs"</span></span>
+                        <span class="text-[15px] sm:text-[16px] font-semibold tracking-[-0.03em] text-paper">"yav"<span class="text-dim font-normal">".rs"</span></span>
                     </a>
 
                     <nav class="hidden lg:flex items-center" aria-label="Primary">
@@ -581,7 +581,7 @@ window.copyText = function (btn, text) {
                         <a href="/components" data-nav="" class="nav-link"><span class="idx">"05"</span><span data-i18n="nav.components">"Components"</span></a>
                     </nav>
 
-                    <div class="self-stretch flex items-center gap-2">
+                    <div class="self-stretch flex items-center gap-1.5 sm:gap-2">
                         <CommandPalette />
                         <LangSwitcher />
                         <a
@@ -589,15 +589,15 @@ window.copyText = function (btn, text) {
                             href="https://github.com/isaacvay/yav.rs"
                             target="_blank"
                             rel="noreferrer"
-                            class="inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors"
+                            class="inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors shrink-0"
                             title="GitHub"
                         >
                             {render_icon("minimal:github", IconSize::Sm, Some("w-4 h-4"), None)}
                         </a>
-                        <a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden sm:inline-flex">"Get started"<span class="arr">"→"</span></a>
+                        <a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden sm:inline-flex shrink-0">"Get started"<span class="arr">"→"</span></a>
                         <button
                             id="mobile-menu-btn"
-                            class="lg:hidden inline-flex items-center justify-center w-[34px] h-[34px] text-paper border border-[rgba(236,233,227,0.14)] bg-ink-2 hover:border-oxide/50 transition-colors cursor-pointer"
+                            class="lg:hidden inline-flex items-center justify-center w-[34px] h-[34px] text-paper border border-[rgba(236,233,227,0.14)] bg-ink-2 hover:border-oxide/50 transition-colors cursor-pointer shrink-0"
                             aria-label="Toggle navigation menu"
                             aria-expanded="false"
                         >
@@ -744,22 +744,22 @@ window.copyText = function (btn, text) {
 
             <footer class="mt-12 border-t border-[rgba(236,233,227,0.08)] overflow-hidden">
                 <div class="wrap">
-                    <div class="grid grid-cols-2 md:grid-cols-12 gap-8 py-8">
-                        <div class="col-span-2 md:col-span-5 space-y-6">
-                            <p class="text-[22px] leading-[1.3] tracking-[-0.025em] text-paper max-w-sm">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 py-8">
+                        <div class="col-span-1 sm:col-span-2 md:col-span-5 space-y-6">
+                            <p class="text-[20px] sm:text-[22px] leading-[1.3] tracking-[-0.025em] text-paper max-w-sm">
                                 "A web framework for people who read the "<span class="serif text-[1.1em]">"assembly"</span>"."
                             </p>
                             <button
                                 id="footer-copy-install"
                                 onclick="copyText(this, 'cargo install yav-cli')"
-                                class="group inline-flex items-center gap-4 h-11 px-4 border border-[rgba(236,233,227,0.14)] hover:border-[rgba(236,233,227,0.24)] font-mono text-[13px] text-paper transition-colors cursor-pointer"
+                                class="group inline-flex items-center gap-3 sm:gap-4 h-11 px-3.5 sm:px-4 max-w-full border border-[rgba(236,233,227,0.14)] hover:border-[rgba(236,233,227,0.24)] font-mono text-[12px] sm:text-[13px] text-paper transition-colors cursor-pointer overflow-hidden"
                             >
                                 <span class="text-oxide">"$"</span>
-                                <span>"cargo install yav-cli"</span>
-                                <span data-copy-label="" class="text-oxide font-medium text-[11px] pl-3 border-l border-[rgba(236,233,227,0.14)]">"copy"</span>
+                                <span class="truncate">"cargo install yav-cli"</span>
+                                <span data-copy-label="" class="text-oxide font-medium text-[11px] pl-2.5 sm:pl-3 border-l border-[rgba(236,233,227,0.14)] shrink-0">"copy"</span>
                             </button>
                         </div>
-                        <div class="md:col-span-2 md:col-start-7 space-y-4">
+                        <div class="sm:col-span-1 md:col-span-2 md:col-start-7 space-y-4">
                             <div class="label">"Framework"</div>
                             <ul class="space-y-2.5 text-[14px]">
                                 <li><a href="/" class="ulink" data-i18n="nav.overview">"Overview"</a></li>
@@ -772,7 +772,7 @@ window.copyText = function (btn, text) {
                                 <li><a href="/releases" class="ulink">"Changelog"</a></li>
                             </ul>
                         </div>
-                        <div class="md:col-span-2 space-y-4">
+                        <div class="sm:col-span-1 md:col-span-2 space-y-4">
                             <div class="label">"Crates"</div>
                             <ul class="space-y-2.5 font-mono text-[13px]">
                                 <li><a href="https://crates.io/crates/yav" target="_blank" rel="noreferrer" class="ulink">"yav"</a></li>
@@ -782,7 +782,7 @@ window.copyText = function (btn, text) {
                                 <li><a href="https://crates.io/crates/yav-cli" target="_blank" rel="noreferrer" class="ulink">"yav-cli"</a></li>
                             </ul>
                         </div>
-                        <div class="md:col-span-2 space-y-4">
+                        <div class="sm:col-span-1 md:col-span-2 space-y-4">
                             <div class="label">"Elsewhere"</div>
                             <ul class="space-y-2.5 text-[14px]">
                                 <li><a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="ulink">"GitHub"</a></li>
@@ -792,17 +792,17 @@ window.copyText = function (btn, text) {
                         </div>
                     </div>
                 </div>
-                <div class="wrap">
+                <div class="wrap overflow-hidden">
                     <div class="wordmark" aria-hidden="true">"yav.rs"</div>
                 </div>
                 <div class="border-t border-[rgba(236,233,227,0.08)]">
-                    <div class="wrap h-14 flex items-center justify-between gap-4 font-mono text-[11.5px] text-dim">
+                    <div class="wrap min-h-14 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 font-mono text-[11.5px] text-dim">
                         <span>
                             "© 2026 Isaac Yav & contributors — "
                             <a href="/privacy" class="hover:text-paper transition-colors underline underline-offset-2">"Privacy & Security"</a>
                             " — MIT / Apache-2.0"
                         </span>
-                        <span class="hidden sm:flex items-center gap-2"><span class="dot dot-ok"></span><span data-i18n="footer.status">"All systems operational"</span></span>
+                        <span class="flex items-center gap-2 shrink-0"><span class="dot dot-ok"></span><span data-i18n="footer.status">"All systems operational"</span></span>
                     </div>
                 </div>
             </footer>

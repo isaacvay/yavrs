@@ -38,18 +38,18 @@ pub async fn showcase(_req: Request) -> yav::server::HtmlPage {
                             <p class="text-mute text-[14px] leading-relaxed">
                                 "High-frequency crypto and equities market data streamer distributing 240,000 order book updates per second across WebSockets and native Server-Sent Events with hyper 1.0 zero-copy buffers."
                             </p>
-                            <div class="grid grid-cols-3 gap-2 font-mono py-2 text-center text-xs">
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"240k/s"</div>
-                                    <div class="text-[10px] text-dim">"Throughput"</div>
+                            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 font-mono py-2 text-center text-xs">
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"240k/s"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Throughput"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"180 µs"</div>
-                                    <div class="text-[10px] text-dim">"p99 Latency"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"180 µs"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"p99 Latency"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-ok font-bold text-sm">"14 MB"</div>
-                                    <div class="text-[10px] text-dim">"RAM Footprint"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-ok font-bold text-xs sm:text-sm">"14 MB"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"RAM Footprint"</div>
                                 </div>
                             </div>
                         </div>
@@ -72,18 +72,18 @@ pub async fn showcase(_req: Request) -> yav::server::HtmlPage {
                             <p class="text-mute text-[14px] leading-relaxed">
                                 "Distributed log aggregation and metrics gateway deployed as an unprivileged distroless container across 14 edge clusters, serving live dashboards with Blake3 ETags and automatic compression."
                             </p>
-                            <div class="grid grid-cols-3 gap-2 font-mono py-2 text-center text-xs">
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"18.4 MB"</div>
-                                    <div class="text-[10px] text-dim">"Docker Size"</div>
+                            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 font-mono py-2 text-center text-xs">
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"18.4 MB"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Docker Size"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"12 ms"</div>
-                                    <div class="text-[10px] text-dim">"Cold Start"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"12 ms"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Cold Start"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-ok font-bold text-sm">"100%"</div>
-                                    <div class="text-[10px] text-dim">"Brotli Cached"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-ok font-bold text-xs sm:text-sm">"100%"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Brotli Cached"</div>
                                 </div>
                             </div>
                         </div>
@@ -106,18 +106,18 @@ pub async fn showcase(_req: Request) -> yav::server::HtmlPage {
                             <p class="text-mute text-[14px] leading-relaxed">
                                 "Headless mechanical gear boutique achieving a perfect 100 Google Lighthouse score. Cart updates, instant inventory filters, and checkout mutations execute via sub-10ms partial HTML swaps."
                             </p>
-                            <div class="grid grid-cols-3 gap-2 font-mono py-2 text-center text-xs">
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-ok font-bold text-sm">"100/100"</div>
-                                    <div class="text-[10px] text-dim">"Lighthouse"</div>
+                            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 font-mono py-2 text-center text-xs">
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-ok font-bold text-xs sm:text-sm">"100/100"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Lighthouse"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"0.00 s"</div>
-                                    <div class="text-[10px] text-dim">"Total Blocking Time"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"0.00 s"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Total Blocking Time"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"24 ms"</div>
-                                    <div class="text-[10px] text-dim">"Global TTFB"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"24 ms"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Global TTFB"</div>
                                 </div>
                             </div>
                         </div>
@@ -140,18 +140,18 @@ pub async fn showcase(_req: Request) -> yav::server::HtmlPage {
                             <p class="text-mute text-[14px] leading-relaxed">
                                 "Developer portal powering over 10,000 API reference pages with zero client-side hydration penalty, sub-millisecond full-text search, and embedded vector icons compiled directly into the binary."
                             </p>
-                            <div class="grid grid-cols-3 gap-2 font-mono py-2 text-center text-xs">
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"10,400"</div>
-                                    <div class="text-[10px] text-dim">"Routes"</div>
+                            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 font-mono py-2 text-center text-xs">
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"10,400"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Routes"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"< 2 ms"</div>
-                                    <div class="text-[10px] text-dim">"Search Latency"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"< 2 ms"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Search Latency"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-ok font-bold text-sm">"0 kB"</div>
-                                    <div class="text-[10px] text-dim">"React/Vue JS"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-ok font-bold text-xs sm:text-sm">"0 kB"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"React/Vue JS"</div>
                                 </div>
                             </div>
                         </div>
@@ -174,18 +174,18 @@ pub async fn showcase(_req: Request) -> yav::server::HtmlPage {
                             <p class="text-mute text-[14px] leading-relaxed">
                                 "Collaborative flow canvas and workflow builder powered by yav::server::ai, streaming LLM tokens via SSE, Model Context Protocol tools, and real-time CRDT presence rooms."
                             </p>
-                            <div class="grid grid-cols-3 gap-2 font-mono py-2 text-center text-xs">
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"100+ Nodes"</div>
-                                    <div class="text-[10px] text-dim">"SVG Flow Graph"</div>
+                            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 font-mono py-2 text-center text-xs">
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"100+ Nodes"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"SVG Flow Graph"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"< 50 µs"</div>
-                                    <div class="text-[10px] text-dim">"CRDT Merge"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"< 50 µs"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"CRDT Merge"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-ok font-bold text-sm">"Native"</div>
-                                    <div class="text-[10px] text-dim">"MCP Server"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-ok font-bold text-xs sm:text-sm">"Native"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"MCP Server"</div>
                                 </div>
                             </div>
                         </div>
@@ -208,18 +208,18 @@ pub async fn showcase(_req: Request) -> yav::server::HtmlPage {
                             <p class="text-mute text-[14px] leading-relaxed">
                                 "Zero-trust administrative console featuring WebAuthn Passkey authentication, Zanzibar-inspired relationship access control, circuit breakers, and transactional outbox guarantees."
                             </p>
-                            <div class="grid grid-cols-3 gap-2 font-mono py-2 text-center text-xs">
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"FIDO2"</div>
-                                    <div class="text-[10px] text-dim">"Hardware Keys"</div>
+                            <div class="grid grid-cols-3 gap-1.5 sm:gap-2 font-mono py-2 text-center text-xs">
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"FIDO2"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Hardware Keys"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-paper font-bold text-sm">"< 1 ms"</div>
-                                    <div class="text-[10px] text-dim">"ReBAC Check"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-paper font-bold text-xs sm:text-sm">"< 1 ms"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"ReBAC Check"</div>
                                 </div>
-                                <div class="p-2.5 bg-ink border border-rule">
-                                    <div class="text-ok font-bold text-sm">"99.999%"</div>
-                                    <div class="text-[10px] text-dim">"Resilience"</div>
+                                <div class="p-2 sm:p-2.5 bg-ink border border-rule">
+                                    <div class="text-ok font-bold text-xs sm:text-sm">"99.999%"</div>
+                                    <div class="text-[9.5px] sm:text-[10px] text-dim truncate">"Resilience"</div>
                                 </div>
                             </div>
                         </div>

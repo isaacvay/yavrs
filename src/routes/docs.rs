@@ -40,6 +40,21 @@ pub async fn docs(_req: Request) -> yav::server::HtmlPage {
 
             // Standard Documentation Workspace (Sidebar + Content + On-Page TOC)
             <div class="wrap py-8 sm:py-10">
+                // Mobile & Tablet Quick Docs Section Pill Bar
+                <div class="lg:hidden pb-6">
+                    <div class="label pb-2 text-[10.5px] text-dim font-mono flex items-center justify-between">
+                        <span>"Documentation sections:"</span>
+                        <span class="text-oxide">"5 core chapters"</span>
+                    </div>
+                    <div class="flex items-center gap-2 overflow-x-auto pb-2 table-scroll text-xs font-mono">
+                        <a href="#installation" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"1. Getting Started"</a>
+                        <a href="#rsx-syntax" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"2. Components & RSX"</a>
+                        <a href="#filesystem-routing" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"3. Routing & Server"</a>
+                        <a href="#view-transitions" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"4. Interactivity & AI"</a>
+                        <a href="#asset-pipeline" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5. Production & Deploy"</a>
+                    </div>
+                </div>
+
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 items-start">
                     
                     // Left Sticky Navigation Sidebar (col-span-3, independently scrollable)

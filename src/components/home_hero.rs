@@ -135,14 +135,14 @@ window.runHeroSpecAnimation = function() {
                             " No Node. No npm. No hydration tax. Just Axum 0.8, Tokio and the Rust compiler doing what they do best."
                         </p>
                         <div class="flex flex-wrap items-center gap-3">
-                            <a id="hero-cta-start" href="/docs" class="btn btn-oxide">
+                            <a id="hero-cta-start" href="/docs" class="btn btn-oxide w-full sm:w-auto">
                                 <span data-i18n="hero.cta.start">"Start building"</span>
                                 {render_icon("arrow-right", IconSize::Sm, Some("w-4 h-4 ml-1"), None)}
                             </a>
-                            <button id="hero-copy-install" onclick="copyText(this, 'cargo install yav-cli')" class="btn btn-line font-mono !text-[13px]">
+                            <button id="hero-copy-install" onclick="copyText(this, 'cargo install yav-cli')" class="btn btn-line font-mono !text-[12.5px] sm:!text-[13px] w-full sm:w-auto max-w-full justify-between sm:justify-center overflow-hidden">
                                 <span class="text-oxide">"$"</span>
-                                <span>"cargo install yav-cli"</span>
-                                <span data-copy-label="" class="text-oxide font-medium text-[11px] pl-3 border-l border-[rgba(236,233,227,0.14)]">"copy"</span>
+                                <span class="truncate">"cargo install yav-cli"</span>
+                                <span data-copy-label="" class="text-oxide font-medium text-[11px] pl-2.5 sm:pl-3 border-l border-[rgba(236,233,227,0.14)] shrink-0">"copy"</span>
                             </button>
                         </div>
                     </div>
@@ -223,26 +223,26 @@ window.runHeroSpecAnimation = function() {
 
             // Spec strip
             <div id="hero-spec-strip" class="border-y border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.015)] select-none hover:bg-[rgba(236,233,227,0.03)] transition-colors cursor-pointer" title="Click to replay spec metrics animation">
-                <div class="wrap grid grid-cols-2 md:grid-cols-4">
-                    <div class="py-8 pr-6 md:border-r border-[rgba(236,233,227,0.08)] group">
-                        <div class="label pb-3" data-i18n="metrics.throughput">"Throughput"</div>
-                        <div class="text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-throughput">"0"</span></div>
-                        <div class="text-[13px] text-dim pt-1" data-i18n="metrics.throughput.desc">"req/s · 8 cores"</div>
+                <div class="wrap grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 divide-[rgba(236,233,227,0.08)]">
+                    <div class="py-6 sm:py-8 pr-4 sm:pr-6 border-r border-[rgba(236,233,227,0.08)] group">
+                        <div class="label pb-2 sm:pb-3" data-i18n="metrics.throughput">"Throughput"</div>
+                        <div class="text-[26px] sm:text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-throughput">"0"</span></div>
+                        <div class="text-[12px] sm:text-[13px] text-dim pt-1" data-i18n="metrics.throughput.desc">"req/s · 8 cores"</div>
                     </div>
-                    <div class="py-8 md:px-6 md:border-r border-[rgba(236,233,227,0.08)] group">
-                        <div class="label pb-3" data-i18n="metrics.latency">"Median TTFB"</div>
-                        <div class="text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-ttfb">"0.00"</span><span class="text-dim text-[18px]">" ms"</span></div>
-                        <div class="text-[13px] text-dim pt-1" data-i18n="metrics.latency.desc">"p99 1.12 ms"</div>
+                    <div class="py-6 sm:py-8 pl-4 sm:pl-6 md:px-6 md:border-r border-[rgba(236,233,227,0.08)] group">
+                        <div class="label pb-2 sm:pb-3" data-i18n="metrics.latency">"Median TTFB"</div>
+                        <div class="text-[26px] sm:text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-ttfb">"0.00"</span><span class="text-dim text-[16px] sm:text-[18px]">" ms"</span></div>
+                        <div class="text-[12px] sm:text-[13px] text-dim pt-1" data-i18n="metrics.latency.desc">"p99 1.12 ms"</div>
                     </div>
-                    <div class="py-8 pr-6 md:px-6 md:border-r border-[rgba(236,233,227,0.08)] group">
-                        <div class="label pb-3" data-i18n="metrics.hydration">"Client JS"</div>
-                        <div class="text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-js" class="text-oxide font-semibold">"0"</span><span class="text-dim text-[18px]">" KB"</span></div>
-                        <div class="text-[13px] text-dim pt-1" data-i18n="metrics.hydration.desc">"no hydration overhead"</div>
+                    <div class="py-6 sm:py-8 pr-4 sm:pr-6 md:px-6 border-r md:border-r border-[rgba(236,233,227,0.08)] group">
+                        <div class="label pb-2 sm:pb-3" data-i18n="metrics.hydration">"Client JS"</div>
+                        <div class="text-[26px] sm:text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-js" class="text-oxide font-semibold">"0"</span><span class="text-dim text-[16px] sm:text-[18px]">" KB"</span></div>
+                        <div class="text-[12px] sm:text-[13px] text-dim pt-1" data-i18n="metrics.hydration.desc">"no hydration overhead"</div>
                     </div>
-                    <div class="py-8 md:pl-6 group">
-                        <div class="label pb-3" data-i18n="metrics.memory">"Idle memory"</div>
-                        <div class="text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-memory">"0.0"</span><span class="text-dim text-[18px]">" MB"</span></div>
-                        <div class="text-[13px] text-dim pt-1" data-i18n="metrics.memory.desc">"resident memory RSS"</div>
+                    <div class="py-6 sm:py-8 pl-4 sm:pl-6 md:pl-6 group">
+                        <div class="label pb-2 sm:pb-3" data-i18n="metrics.memory">"Idle memory"</div>
+                        <div class="text-[26px] sm:text-[34px] tracking-[-0.04em] text-paper font-mono"><span id="hero-stat-memory">"0.0"</span><span class="text-dim text-[16px] sm:text-[18px]">" MB"</span></div>
+                        <div class="text-[12px] sm:text-[13px] text-dim pt-1" data-i18n="metrics.memory.desc">"resident memory RSS"</div>
                     </div>
                 </div>
             </div>

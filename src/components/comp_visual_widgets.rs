@@ -114,8 +114,8 @@ window.evalSpreadsheet = function() {
                                 <span class="text-xs font-mono text-ok">"Live Formulas"</span>
                             </div>
 
-                            <div class="border border-rule rounded overflow-hidden text-xs font-mono">
-                                <table class="w-full border-collapse">
+                            <div class="border border-rule rounded overflow-hidden text-xs font-mono table-scroll">
+                                <table class="w-full min-w-[360px] border-collapse">
                                     <thead class="bg-ink-2 text-dim border-b border-rule">
                                         <tr>
                                             <th class="w-8 py-1.5 px-2 text-center border-r border-rule">"#"</th>
@@ -169,7 +169,7 @@ window.evalSpreadsheet = function() {
                                 <span class="text-dim uppercase text-[11px]">"LCS Code Diff Viewer (<DiffViewer />)"</span>
                                 <span class="text-dim">"commit 6a4f89d"</span>
                             </div>
-                            <div class="border border-rule rounded overflow-hidden bg-[#070709] divide-y divide-rule/40">
+                            <div class="border border-rule rounded overflow-hidden bg-[#070709] divide-y divide-rule/40 code-scroll">
                                 <div class="px-3 py-1 bg-ink-2 text-dim text-[11px] flex items-center justify-between">
                                     <span>"@@ -12,4 +12,6 @@ App Configuration"</span>
                                     <span class="text-paper">"src/main.rs"</span>

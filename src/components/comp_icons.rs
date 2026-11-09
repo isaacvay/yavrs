@@ -77,7 +77,7 @@ pub fn ComponentIcons() -> Node {
                                 <span class="text-paper font-semibold text-[13px]" id="inspect-icon-name">"terminal"</span>
                                 <span class="text-[10px] px-1.5 py-0.5 bg-ink-2 border border-rule text-dim rounded" id="inspect-icon-cat">"compute"</span>
                             </div>
-                            <div class="text-[11px] text-faint" id="inspect-icon-syntax">
+                            <div class="text-[11px] text-faint break-all" id="inspect-icon-syntax">
                                 "{render_icon(\"terminal\", IconSize::Sm, Some(\"w-4 h-4 text-oxide\"), None)}"
                             </div>
                         </div>

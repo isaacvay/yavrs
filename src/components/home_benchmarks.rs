@@ -182,9 +182,9 @@ window.runBenchmarkAnimation = function() {
 
                     // Row 1: Actix
                     <div class="space-y-2">
-                        <div class="flex justify-between font-mono text-[13px]">
+                        <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
                             <span class="text-dim">"actix-web — raw metal, no HTML"</span>
-                            <span class="text-mute"><span id="bench-val-actix" data-val="128000">"128,000"</span>" req/s"</span>
+                            <span class="text-mute shrink-0"><span id="bench-val-actix" data-val="128000">"128,000"</span>" req/s"</span>
                         </div>
                         <div class="hbar" style="--w:100%"><i id="bench-bar-actix" style="display:block;width:0%"></i></div>
                         <div class="bench-line" style="width:0%"></div>
@@ -192,14 +192,14 @@ window.runBenchmarkAnimation = function() {
 
                     // Row 2: Yav.rs
                     <div class="space-y-2">
-                        <div class="flex justify-between font-mono text-[13px]">
+                        <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
                             <span class="text-paper font-semibold flex items-center gap-2">
                                 <span class="dot dot-ok pulse-dot"></span>
-                                "yav.rs — compiled RSX + HMAC sessions"
+                                "yav.rs — compiled RSX + HMAC"
                             </span>
-                            <span class="text-oxide font-bold">
+                            <span class="text-oxide font-bold shrink-0">
                                 <span id="bench-val-yav" data-val="124500">"124,500"</span>" req/s"
-                                <span id="bench-pct-yav" class="text-[#f07448] font-mono text-[11.5px] ml-1.5 font-normal">"(97.3%)"</span>
+                                <span id="bench-pct-yav" class="text-[#f07448] font-mono text-[11px] sm:text-[11.5px] ml-1 font-normal">"(97.3%)"</span>
                             </span>
                         </div>
                         <div class="hbar us" style="--w:97.3%"><i id="bench-bar-yav" style="display:block;width:0%"></i></div>
@@ -208,9 +208,9 @@ window.runBenchmarkAnimation = function() {
 
                     // Row 3: Go Gin
                     <div class="space-y-2">
-                        <div class="flex justify-between font-mono text-[13px]">
+                        <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
                             <span class="text-dim">"go gin — SSR templates"</span>
-                            <span class="text-mute"><span id="bench-val-gin" data-val="76200">"76,200"</span>" req/s"</span>
+                            <span class="text-mute shrink-0"><span id="bench-val-gin" data-val="76200">"76,200"</span>" req/s"</span>
                         </div>
                         <div class="hbar" style="--w:59.5%"><i id="bench-bar-gin" style="display:block;width:0%"></i></div>
                         <div class="bench-line" style="width:0%"></div>
@@ -218,9 +218,9 @@ window.runBenchmarkAnimation = function() {
 
                     // Row 4: Fastify
                     <div class="space-y-2">
-                        <div class="flex justify-between font-mono text-[13px]">
+                        <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
                             <span class="text-dim">"fastify — node 20"</span>
-                            <span class="text-mute"><span id="bench-val-fastify" data-val="34100">"34,100"</span>" req/s"</span>
+                            <span class="text-mute shrink-0"><span id="bench-val-fastify" data-val="34100">"34,100"</span>" req/s"</span>
                         </div>
                         <div class="hbar" style="--w:26.6%"><i id="bench-bar-fastify" style="display:block;width:0%"></i></div>
                         <div class="bench-line" style="width:0%"></div>
@@ -228,9 +228,9 @@ window.runBenchmarkAnimation = function() {
 
                     // Row 5: Next.js 15
                     <div class="space-y-2">
-                        <div class="flex justify-between font-mono text-[13px]">
+                        <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
                             <span class="text-dim">"next.js 15 — node SSR"</span>
-                            <span class="text-mute"><span id="bench-val-next" data-val="8900">"8,900"</span>" req/s"</span>
+                            <span class="text-mute shrink-0"><span id="bench-val-next" data-val="8900">"8,900"</span>" req/s"</span>
                         </div>
                         <div class="hbar" style="--w:7%"><i id="bench-bar-next" style="display:block;width:0%"></i></div>
                     </div>
@@ -261,7 +261,7 @@ window.runBenchmarkAnimation = function() {
                 <span class="sec-rule"></span>
                 <span class="r">"same hardware"</span>
             </div>
-            <div class="pt-6 overflow-x-auto reveal">
+            <div class="pt-6 table-scroll reveal">
                 <table class="dtable min-w-[760px]">
                     <thead>
                         <tr>

@@ -30,22 +30,24 @@ pub fn BenchMatrix() -> Node {
 
             // Filter Tabs
             <div class="pt-8 flex flex-wrap items-center justify-between gap-4">
-                <div class="btn-group font-mono text-xs">
-                    <button data-cat="all" onclick="filterBenchMatrix('all')" class="btn tab-btn matrix-cat-btn active">
-                        "All Frameworks"
-                    </button>
-                    <button data-cat="rust" onclick="filterBenchMatrix('rust')" class="btn tab-btn matrix-cat-btn">
-                        "Rust Ecosystem"
-                    </button>
-                    <button data-cat="go" onclick="filterBenchMatrix('go')" class="btn tab-btn matrix-cat-btn">
-                        "Go"
-                    </button>
-                    <button data-cat="node" onclick="filterBenchMatrix('node')" class="btn tab-btn matrix-cat-btn">
-                        "Node.js / Full-Stack"
-                    </button>
-                    <button data-cat="python" onclick="filterBenchMatrix('python')" class="btn tab-btn matrix-cat-btn">
-                        "Python & Ruby"
-                    </button>
+                <div class="table-scroll pb-1 w-full sm:w-auto">
+                    <div class="btn-group font-mono text-xs min-w-max">
+                        <button data-cat="all" onclick="filterBenchMatrix('all')" class="btn tab-btn matrix-cat-btn active">
+                            "All Frameworks"
+                        </button>
+                        <button data-cat="rust" onclick="filterBenchMatrix('rust')" class="btn tab-btn matrix-cat-btn">
+                            "Rust Ecosystem"
+                        </button>
+                        <button data-cat="go" onclick="filterBenchMatrix('go')" class="btn tab-btn matrix-cat-btn">
+                            "Go"
+                        </button>
+                        <button data-cat="node" onclick="filterBenchMatrix('node')" class="btn tab-btn matrix-cat-btn">
+                            "Node.js / Full-Stack"
+                        </button>
+                        <button data-cat="python" onclick="filterBenchMatrix('python')" class="btn tab-btn matrix-cat-btn">
+                            "Python & Ruby"
+                        </button>
+                    </div>
                 </div>
 
                 <div class="text-xs font-mono text-dim">
@@ -56,7 +58,7 @@ pub fn BenchMatrix() -> Node {
             // Matrix Table Plate
             <div class="plate bg-ink-2 mt-6 overflow-hidden">
                 <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
-                <div class="overflow-x-auto">
+                <div class="table-scroll">
                     <table class="dtable min-w-[840px]">
                         <thead>
                             <tr>

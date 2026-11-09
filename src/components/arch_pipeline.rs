@@ -242,16 +242,16 @@ window.selectPipelineStage = function(stageIdx) {
                 <div id="pipe-plate-container" class="lg:col-span-7 lg:sticky lg:top-24 self-start reveal" style="--d:140ms">
                     <div class="plate bg-sunk shadow-2xl">
                         <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
-                        <div class="plate-head h-14 px-6 sm:px-8">
-                            <span class="flex items-center gap-2.5 font-medium tracking-wide">
-                                {render_icon("terminal", IconSize::Sm, Some("w-4 h-4 text-oxide"), None)}
-                                <span id="pipe-stage-title" class="text-[13.5px] text-paper">"Stage 01 — Socket Ingress & Frame Parsing"</span>
+                        <div class="plate-head min-h-14 py-2.5 px-4 sm:px-8 flex items-center justify-between gap-3">
+                            <span class="flex items-center gap-2.5 font-medium tracking-wide min-w-0">
+                                {render_icon("terminal", IconSize::Sm, Some("w-4 h-4 text-oxide shrink-0"), None)}
+                                <span id="pipe-stage-title" class="text-[13px] sm:text-[13.5px] text-paper truncate">"Stage 01 — Socket Ingress & Frame Parsing"</span>
                             </span>
-                            <span class="text-oxide font-mono text-[12px] font-bold" id="pipe-stage-time">"~38 µs"</span>
+                            <span class="text-oxide font-mono text-[12px] font-bold shrink-0" id="pipe-stage-time">"~38 µs"</span>
                         </div>
 
                         // Telemetry stats row
-                        <div class="px-6 py-4 border-b border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.02)] flex flex-wrap items-center justify-between gap-6 font-mono text-[12px]">
+                        <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.02)] flex flex-wrap items-center justify-between gap-3 sm:gap-6 font-mono text-[11.5px] sm:text-[12px]">
                             <div>
                                 <span class="text-dim">"Heap Allocation: "</span>
                                 <span id="pipe-stage-alloc" class="text-paper font-semibold">"0 B heap (Zero-Copy)"</span>
@@ -267,14 +267,14 @@ window.selectPipelineStage = function(stageIdx) {
                         </div>
 
                         // Stage description
-                        <div class="p-6 sm:p-8 pl-7 sm:pl-9 border-b border-[rgba(236,233,227,0.08)]">
-                            <p id="pipe-stage-sub" class="text-[14.5px] text-mute leading-[1.8]">
+                        <div class="p-5 sm:p-8 pl-6 sm:pl-9 border-b border-[rgba(236,233,227,0.08)]">
+                            <p id="pipe-stage-sub" class="text-[14px] sm:text-[14.5px] text-mute leading-[1.8]">
                                 "Non-blocking Tokio worker accepts TCP/TLS socket; Hyper parses HTTP frames directly into unallocated slices."
                             </p>
                         </div>
 
                         // Code viewer
-                        <div class="p-6 sm:p-8 pl-7 sm:pl-9 bg-ink-2/40 overflow-x-auto">
+                        <div class="p-4 sm:p-8 pl-5 sm:pl-9 bg-ink-2/40 code-scroll">
                             <div class="flex items-center justify-between pb-3 text-dim font-mono text-[11.5px]">
                                 <div class="flex items-center gap-2">
                                     <span id="pipe-stage-file" class="text-paper font-medium">"yav-server/src/conn.rs"</span>

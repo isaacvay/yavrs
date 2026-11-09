@@ -77,16 +77,18 @@ pub fn BenchSimulator() -> Node {
                             <div class="label pb-1">"Workload Scenario"</div>
                             <div class="text-[14px] text-paper font-medium">"Simulate real production architectures under concurrent traffic"</div>
                         </div>
-                        <div class="btn-group font-mono text-xs">
-                            <button data-scen="static" onclick="switchBenchScenario('static')" class="btn tab-btn bench-scen-btn active">
-                                "Static Compiled RSX"
-                            </button>
-                            <button data-scen="session" onclick="switchBenchScenario('session')" class="btn tab-btn bench-scen-btn">
-                                "RSX + HMAC Session"
-                            </button>
-                            <button data-scen="json" onclick="switchBenchScenario('json')" class="btn tab-btn bench-scen-btn">
-                                "REST API (JSON)"
-                            </button>
+                        <div class="table-scroll pb-1 w-full sm:w-auto">
+                            <div class="btn-group font-mono text-xs min-w-max">
+                                <button data-scen="static" onclick="switchBenchScenario('static')" class="btn tab-btn bench-scen-btn active">
+                                    "Static Compiled RSX"
+                                </button>
+                                <button data-scen="session" onclick="switchBenchScenario('session')" class="btn tab-btn bench-scen-btn">
+                                    "RSX + HMAC Session"
+                                </button>
+                                <button data-scen="json" onclick="switchBenchScenario('json')" class="btn tab-btn bench-scen-btn">
+                                    "REST API (JSON)"
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -95,14 +97,14 @@ pub fn BenchSimulator() -> Node {
                         <div class="flex flex-wrap items-end justify-between gap-4">
                             <div>
                                 <div class="label pb-2 text-dim">"Concurrent Persistent Connections"</div>
-                                <div class="flex items-baseline gap-3">
-                                    <span id="bench-sim-c-val" class="font-mono text-[clamp(38px,5vw,56px)] leading-none tracking-[-0.04em] text-paper font-bold">
+                                <div class="flex flex-wrap items-baseline gap-2 sm:gap-3">
+                                    <span id="bench-sim-c-val" class="font-mono text-[clamp(32px,5vw,56px)] leading-none tracking-[-0.04em] text-paper font-bold">
                                         "200"
                                     </span>
-                                    <span class="font-mono text-[13px] text-oxide">"active HTTP/1.1 keep-alive sockets"</span>
+                                    <span class="font-mono text-[12px] sm:text-[13px] text-oxide">"active HTTP/1.1 keep-alive sockets"</span>
                                 </div>
                             </div>
-                            <span class="font-mono text-[12px] text-dim">"Range: 20 — 2,000 connections"</span>
+                            <span class="font-mono text-[11px] sm:text-[12px] text-dim">"Range: 20 — 2,000 connections"</span>
                         </div>
                         <input 
                             id="bench-concurrency-slider" 

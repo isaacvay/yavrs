@@ -132,57 +132,59 @@ pub fn ComponentEnterprise() -> Node {
                             <span class="text-xs font-mono text-dim uppercase">"FlowCanvas — Reactive Node Graph with Live Bézier Edge Rerouting"</span>
                             <span class="text-xs font-mono text-dim">"drag nodes to update SVG paths"</span>
                         </div>
-                        <div class="p-6 bg-sunk border border-rule rounded relative overflow-hidden h-56 bp-grid">
-                            // SVG Curved Edges
-                            <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 200" fill="none">
-                                <path d="M 160 100 C 220 100, 220 50, 280 50" stroke="#e0592f" stroke-width="2" stroke-dasharray="4 2" />
-                                <circle cx="280" cy="50" r="3" fill="#e0592f" />
+                        <div class="table-scroll pb-1">
+                            <div class="p-6 bg-sunk border border-rule rounded relative overflow-hidden h-56 bp-grid min-w-[580px]">
+                                // SVG Curved Edges
+                                <svg class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 600 200" fill="none">
+                                    <path d="M 160 100 C 220 100, 220 50, 280 50" stroke="#e0592f" stroke-width="2" stroke-dasharray="4 2" />
+                                    <circle cx="280" cy="50" r="3" fill="#e0592f" />
 
-                                <path d="M 160 100 C 220 100, 220 150, 280 150" stroke="rgba(236,233,227,0.3)" stroke-width="2" />
-                                <circle cx="280" cy="150" r="3" fill="rgba(236,233,227,0.3)" />
+                                    <path d="M 160 100 C 220 100, 220 150, 280 150" stroke="rgba(236,233,227,0.3)" stroke-width="2" />
+                                    <circle cx="280" cy="150" r="3" fill="rgba(236,233,227,0.3)" />
 
-                                <path d="M 400 50 C 450 50, 450 100, 500 100" stroke="#22c55e" stroke-width="2" />
-                                <circle cx="500" cy="100" r="3" fill="#22c55e" />
-                            </svg>
+                                    <path d="M 400 50 C 450 50, 450 100, 500 100" stroke="#22c55e" stroke-width="2" />
+                                    <circle cx="500" cy="100" r="3" fill="#22c55e" />
+                                </svg>
 
-                            // Node 1: Ingress
-                            <div class="absolute left-6 top-16 w-36 p-3 bg-ink-2 border border-rule rounded shadow-lg space-y-1">
-                                <div class="flex items-center justify-between text-[10px] font-mono text-dim">
-                                    <span>"INPUT"</span>
-                                    <span class="w-1.5 h-1.5 rounded-full bg-ok"></span>
+                                // Node 1: Ingress
+                                <div class="absolute left-6 top-16 w-36 p-3 bg-ink-2 border border-rule rounded shadow-lg space-y-1">
+                                    <div class="flex items-center justify-between text-[10px] font-mono text-dim">
+                                        <span>"INPUT"</span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-ok"></span>
+                                    </div>
+                                    <div class="text-xs font-bold text-paper">"HTTP Webhook"</div>
+                                    <div class="text-[10px] font-mono text-oxide">"POST /events"</div>
                                 </div>
-                                <div class="text-xs font-bold text-paper">"HTTP Webhook"</div>
-                                <div class="text-[10px] font-mono text-oxide">"POST /events"</div>
-                            </div>
 
-                            // Node 2: Transform
-                            <div class="absolute left-64 top-4 w-36 p-3 bg-ink-2 border border-oxide rounded shadow-lg space-y-1">
-                                <div class="flex items-center justify-between text-[10px] font-mono text-dim">
-                                    <span>"WORKER"</span>
-                                    <span class="w-1.5 h-1.5 rounded-full bg-oxide"></span>
+                                // Node 2: Transform
+                                <div class="absolute left-64 top-4 w-36 p-3 bg-ink-2 border border-oxide rounded shadow-lg space-y-1">
+                                    <div class="flex items-center justify-between text-[10px] font-mono text-dim">
+                                        <span>"WORKER"</span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-oxide"></span>
+                                    </div>
+                                    <div class="text-xs font-bold text-paper">"AI Classifier"</div>
+                                    <div class="text-[10px] font-mono text-dim">"gpt-4o-mini"</div>
                                 </div>
-                                <div class="text-xs font-bold text-paper">"AI Classifier"</div>
-                                <div class="text-[10px] font-mono text-dim">"gpt-4o-mini"</div>
-                            </div>
 
-                            // Node 3: Storage
-                            <div class="absolute left-64 bottom-4 w-36 p-3 bg-ink-2 border border-rule rounded shadow-lg space-y-1">
-                                <div class="flex items-center justify-between text-[10px] font-mono text-dim">
-                                    <span>"STORAGE"</span>
-                                    <span class="w-1.5 h-1.5 rounded-full bg-dim"></span>
+                                // Node 3: Storage
+                                <div class="absolute left-64 bottom-4 w-36 p-3 bg-ink-2 border border-rule rounded shadow-lg space-y-1">
+                                    <div class="flex items-center justify-between text-[10px] font-mono text-dim">
+                                        <span>"STORAGE"</span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-dim"></span>
+                                    </div>
+                                    <div class="text-xs font-bold text-paper">"Audit Ledger"</div>
+                                    <div class="text-[10px] font-mono text-dim">"Append-only"</div>
                                 </div>
-                                <div class="text-xs font-bold text-paper">"Audit Ledger"</div>
-                                <div class="text-[10px] font-mono text-dim">"Append-only"</div>
-                            </div>
 
-                            // Node 4: Dispatch
-                            <div class="absolute right-6 top-16 w-36 p-3 bg-ink-2 border border-ok/80 rounded shadow-lg space-y-1">
-                                <div class="flex items-center justify-between text-[10px] font-mono text-dim">
-                                    <span>"DISPATCH"</span>
-                                    <span class="w-1.5 h-1.5 rounded-full bg-ok"></span>
+                                // Node 4: Dispatch
+                                <div class="absolute right-6 top-16 w-36 p-3 bg-ink-2 border border-ok/80 rounded shadow-lg space-y-1">
+                                    <div class="flex items-center justify-between text-[10px] font-mono text-dim">
+                                        <span>"DISPATCH"</span>
+                                        <span class="w-1.5 h-1.5 rounded-full bg-ok"></span>
+                                    </div>
+                                    <div class="text-xs font-bold text-paper">"Client SSE Stream"</div>
+                                    <div class="text-[10px] font-mono text-ok">"0ms latency"</div>
                                 </div>
-                                <div class="text-xs font-bold text-paper">"Client SSE Stream"</div>
-                                <div class="text-[10px] font-mono text-ok">"0ms latency"</div>
                             </div>
                         </div>
                     </div>

@@ -25,64 +25,67 @@ pub async fn faq(_req: Request) -> yav::server::HtmlPage {
 
                 // Matrix Comparison Table
                 <div class="space-y-4">
-                    <div class="text-paper font-semibold text-lg flex items-center gap-2">
+                    <div class="text-paper font-semibold text-lg flex items-center justify-between gap-2">
                         <span>"Architectural Comparison Matrix"</span>
+                        <span class="text-xs font-mono text-dim md:hidden">"Scroll horizontally →"</span>
                     </div>
-                    <table class="dtable">
-                        <thead>
-                            <tr>
-                                <th>"Dimension"</th>
-                                <th>"Yav.rs"</th>
-                                <th>"Leptos (WASM)"</th>
-                                <th>"Next.js (Node)"</th>
-                                <th>"Bare Axum"</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="us">
-                                <td class="text-paper font-semibold">"Runtime Tax"</td>
-                                <td class="text-ok font-bold">"0 kB JS / No WASM"</td>
-                                <td>"2 - 8 MB WASM bundle"</td>
-                                <td>"120 - 450 kB React JS"</td>
-                                <td>"0 kB (Manual HTML)"</td>
-                            </tr>
-                            <tr>
-                                <td class="text-paper font-semibold">"Hydration Cost"</td>
-                                <td class="text-ok font-bold">"Zero Hydration"</td>
-                                <td>"Heavy WASM startup"</td>
-                                <td>"Full V8 tree walk"</td>
-                                <td>"None"</td>
-                            </tr>
-                            <tr class="us">
-                                <td class="text-paper font-semibold">"Peak Req/Sec"</td>
-                                <td class="text-oxide font-bold">"124,500 req/s"</td>
-                                <td>"~45,000 req/s"</td>
-                                <td>"~8,500 req/s"</td>
-                                <td>"132,000 req/s"</td>
-                            </tr>
-                            <tr>
-                                <td class="text-paper font-semibold">"File-System Routing"</td>
-                                <td class="text-ok font-bold">"Built-in Radix Tree"</td>
-                                <td>"Router crate config"</td>
-                                <td>"App Router (heavy)"</td>
-                                <td>"Manual route matching"</td>
-                            </tr>
-                            <tr class="us">
-                                <td class="text-paper font-semibold">"Tailwind Compiler"</td>
-                                <td class="text-ok font-bold">"Native Standalone JIT"</td>
-                                <td>"npm / trunk setup"</td>
-                                <td>"Node.js toolchain"</td>
-                                <td>"None"</td>
-                            </tr>
-                            <tr>
-                                <td class="text-paper font-semibold">"Deployment Artifact"</td>
-                                <td class="text-ok font-bold">"< 30 MB Distroless"</td>
-                                <td>"Server + Static WASM"</td>
-                                <td>"150 MB+ Node image"</td>
-                                <td>"Static binary"</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-scroll pb-2">
+                        <table class="dtable min-w-[640px]">
+                            <thead>
+                                <tr>
+                                    <th>"Dimension"</th>
+                                    <th>"Yav.rs"</th>
+                                    <th>"Leptos (WASM)"</th>
+                                    <th>"Next.js (Node)"</th>
+                                    <th>"Bare Axum"</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="us">
+                                    <td class="text-paper font-semibold">"Runtime Tax"</td>
+                                    <td class="text-ok font-bold">"0 kB JS / No WASM"</td>
+                                    <td>"2 - 8 MB WASM bundle"</td>
+                                    <td>"120 - 450 kB React JS"</td>
+                                    <td>"0 kB (Manual HTML)"</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-paper font-semibold">"Hydration Cost"</td>
+                                    <td class="text-ok font-bold">"Zero Hydration"</td>
+                                    <td>"Heavy WASM startup"</td>
+                                    <td>"Full V8 tree walk"</td>
+                                    <td>"None"</td>
+                                </tr>
+                                <tr class="us">
+                                    <td class="text-paper font-semibold">"Peak Req/Sec"</td>
+                                    <td class="text-oxide font-bold">"124,500 req/s"</td>
+                                    <td>"~45,000 req/s"</td>
+                                    <td>"~8,500 req/s"</td>
+                                    <td>"132,000 req/s"</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-paper font-semibold">"File-System Routing"</td>
+                                    <td class="text-ok font-bold">"Built-in Radix Tree"</td>
+                                    <td>"Router crate config"</td>
+                                    <td>"App Router (heavy)"</td>
+                                    <td>"Manual route matching"</td>
+                                </tr>
+                                <tr class="us">
+                                    <td class="text-paper font-semibold">"Tailwind Compiler"</td>
+                                    <td class="text-ok font-bold">"Native Standalone JIT"</td>
+                                    <td>"npm / trunk setup"</td>
+                                    <td>"Node.js toolchain"</td>
+                                    <td>"None"</td>
+                                </tr>
+                                <tr>
+                                    <td class="text-paper font-semibold">"Deployment Artifact"</td>
+                                    <td class="text-ok font-bold">"< 30 MB Distroless"</td>
+                                    <td>"Server + Static WASM"</td>
+                                    <td>"150 MB+ Node image"</td>
+                                    <td>"Static binary"</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 // FAQ Accordion Cards

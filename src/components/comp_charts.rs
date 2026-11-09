@@ -5,7 +5,7 @@ use yav::icons::{render_icon, IconSize};
 
 fn render_52w_heatmap_svg() -> Node {
     let mut s = String::with_capacity(16384);
-    s.push_str("<svg viewBox=\"0 0 460 98\" class=\"w-full h-auto block select-none\" xmlns=\"http://www.w3.org/2000/svg\">");
+    s.push_str("<svg viewBox=\"0 0 460 98\" class=\"w-full min-w-[460px] h-auto block select-none\" xmlns=\"http://www.w3.org/2000/svg\">");
 
     // Months labels
     let months = [
@@ -291,7 +291,7 @@ pub fn ComponentCharts() -> Node {
                             </div>
 
                             // 52-Week SVG Heatmap
-                            <div class="overflow-x-auto pb-1">
+                            <div class="table-scroll pb-1">
                                 {render_52w_heatmap_svg()}
                             </div>
 
