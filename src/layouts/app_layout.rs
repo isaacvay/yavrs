@@ -147,7 +147,10 @@ window.copyText = function (btn, text) {
   #header-search-container {
     display: contents !important;
   }
-  #lang-switcher-container {
+  #header-search-btn,
+  #lang-switcher-container,
+  #header-github-link,
+  #header-cta {
     display: none !important;
   }
 }
@@ -157,6 +160,9 @@ window.copyText = function (btn, text) {
     display: flex !important;
     align-items: center !important;
     position: relative !important;
+  }
+  #header-cta {
+    display: inline-flex !important;
   }
 }
 
