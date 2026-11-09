@@ -11,7 +11,7 @@ pub fn CommandPalette() -> Node {
             <button
                 id="header-search-btn"
                 onclick="window.toggleCmdPalette(event)"
-                class="flex items-center gap-2 h-[34px] px-2.5 xl:pl-3 xl:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
+                class="hidden md:flex items-center gap-2 h-[34px] px-2.5 xl:pl-3 xl:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
                 title="Search documentation (Ctrl+K)"
                 aria-expanded="false"
                 aria-haspopup="true"

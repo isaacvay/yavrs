@@ -10,7 +10,7 @@ pub fn LangSwitcher() -> Node {
             <button
                 id="lang-btn"
                 onclick="window.toggleLangMenu(event)"
-                class="inline-flex items-center gap-1 sm:gap-1.5 h-[34px] px-2 sm:px-2.5 border border-rule hover:border-oxide/50 text-[12px] font-mono text-paper-2 hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
+                class="hidden md:inline-flex items-center gap-1 sm:gap-1.5 h-[34px] px-2 sm:px-2.5 border border-rule hover:border-oxide/50 text-[12px] font-mono text-paper-2 hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
                 title="Select Language"
                 aria-expanded="false"
                 aria-haspopup="true"
@@ -98,6 +98,10 @@ pub fn LangSwitcher() -> Node {
                     var currentLabel = document.getElementById('lang-current-label');
                     if (currentLabel) {
                         currentLabel.innerText = lang.toUpperCase();
+                    }
+                    var mobileLabel = document.getElementById('mobile-lang-current');
+                    if (mobileLabel) {
+                        mobileLabel.innerText = lang.toUpperCase();
                     }
                     document.documentElement.lang = lang;
 

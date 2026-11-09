@@ -620,7 +620,7 @@ window.copyText = function (btn, text) {
                             href="https://github.com/isaacvay/yav.rs"
                             target="_blank"
                             rel="noreferrer"
-                            class="hidden sm:inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors shrink-0"
+                            class="hidden md:inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors shrink-0"
                             title="GitHub"
                         >
                             {render_icon("minimal:github", IconSize::Sm, Some("w-4 h-4"), None)}
@@ -655,6 +655,16 @@ window.copyText = function (btn, text) {
                             </span>
                             <kbd class="kbd text-[10px]">"Ctrl K"</kbd>
                         </button>
+
+                        // Mobile Get Started CTA Button
+                        <a
+                            href="/docs"
+                            onclick="window.closeMobileNav()"
+                            class="btn btn-solid w-full justify-center h-12 text-[14.5px] font-semibold shadow-lg"
+                        >
+                            <span>"Get started with Yav"</span>
+                            <span class="arr">"→"</span>
+                        </a>
 
                         // Group 1: Core Framework
                         <div class="space-y-2">
@@ -739,64 +749,73 @@ window.copyText = function (btn, text) {
 
                         // Group 3: Language Selector in Mobile Menu
                         <div class="space-y-2">
-                            <div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2">
-                                "03 · Language / Locale"
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2 flex items-center justify-between">
+                                <span class="flex items-center gap-1.5">
+                                    {render_icon("globe", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
+                                    <span>"03 · Language / Locale"</span>
+                                </span>
+                                <span class="font-mono text-oxide font-bold text-[11px]" id="mobile-lang-current">"EN"</span>
                             </div>
-                            <div class="grid grid-cols-4 gap-2 text-xs font-mono">
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
                                 <button
                                     onclick="setLanguage('en'); window.closeMobileNav();"
-                                    class="py-2.5 px-2 plate bg-ink-2 hover:border-oxide/50 text-paper text-center transition-colors cursor-pointer flex flex-col items-center gap-0.5"
+                                    class="py-2.5 px-3 plate bg-ink-2 hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
                                     data-locale="en"
                                 >
-                                    <span class="font-bold text-[13px]">"EN"</span>
-                                    <span class="text-[9px] text-dim">"English"</span>
+                                    <span class="flex items-center gap-2">
+                                        <span class="font-bold text-oxide">"US"</span>
+                                        <span>"English"</span>
+                                    </span>
+                                    <span class="text-[10px] text-dim">"en"</span>
                                 </button>
                                 <button
                                     onclick="setLanguage('fr'); window.closeMobileNav();"
-                                    class="py-2.5 px-2 plate bg-ink-2 hover:border-oxide/50 text-paper text-center transition-colors cursor-pointer flex flex-col items-center gap-0.5"
+                                    class="py-2.5 px-3 plate bg-ink-2 hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
                                     data-locale="fr"
                                 >
-                                    <span class="font-bold text-[13px]">"FR"</span>
-                                    <span class="text-[9px] text-dim">"Français"</span>
+                                    <span class="flex items-center gap-2">
+                                        <span class="font-bold text-oxide">"FR"</span>
+                                        <span>"Français"</span>
+                                    </span>
+                                    <span class="text-[10px] text-dim">"fr"</span>
                                 </button>
                                 <button
                                     onclick="setLanguage('es'); window.closeMobileNav();"
-                                    class="py-2.5 px-2 plate bg-ink-2 hover:border-oxide/50 text-paper text-center transition-colors cursor-pointer flex flex-col items-center gap-0.5"
+                                    class="py-2.5 px-3 plate bg-ink-2 hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
                                     data-locale="es"
                                 >
-                                    <span class="font-bold text-[13px]">"ES"</span>
-                                    <span class="text-[9px] text-dim">"Español"</span>
+                                    <span class="flex items-center gap-2">
+                                        <span class="font-bold text-oxide">"ES"</span>
+                                        <span>"Español"</span>
+                                    </span>
+                                    <span class="text-[10px] text-dim">"es"</span>
                                 </button>
                                 <button
                                     onclick="setLanguage('de'); window.closeMobileNav();"
-                                    class="py-2.5 px-2 plate bg-ink-2 hover:border-oxide/50 text-paper text-center transition-colors cursor-pointer flex flex-col items-center gap-0.5"
+                                    class="py-2.5 px-3 plate bg-ink-2 hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
                                     data-locale="de"
                                 >
-                                    <span class="font-bold text-[13px]">"DE"</span>
-                                    <span class="text-[9px] text-dim">"Deutsch"</span>
+                                    <span class="flex items-center gap-2">
+                                        <span class="font-bold text-oxide">"DE"</span>
+                                        <span>"Deutsch"</span>
+                                    </span>
+                                    <span class="text-[10px] text-dim">"de"</span>
                                 </button>
                             </div>
                         </div>
 
-                        // Group 4: CTA & CLI Install
-                        <div class="space-y-2.5 pt-1">
-                            <a href="/docs" onclick="window.closeMobileNav()" class="btn btn-solid w-full justify-center h-11 text-sm font-semibold">
-                                <span>"Get started with Yav"</span>
-                                <span class="arr">"→"</span>
-                            </a>
-
-                            <div class="p-3.5 plate bg-ink-2 flex items-center justify-between text-xs font-mono">
-                                <div class="flex items-center gap-2 overflow-hidden truncate">
-                                    <span class="text-oxide font-bold shrink-0">"$"</span>
-                                    <span class="text-paper truncate">"cargo install yav-cli"</span>
-                                </div>
-                                <button
-                                    onclick="copyText(this, 'cargo install yav-cli')"
-                                    class="px-2.5 py-1 text-[11px] text-oxide hover:text-oxide-hi bg-sunk border border-rule hover:border-oxide/40 rounded cursor-pointer transition-colors shrink-0"
-                                >
-                                    <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
-                                </button>
+                        // Group 4: CLI Install Block
+                        <div class="p-3.5 plate bg-ink-2 flex items-center justify-between text-xs font-mono">
+                            <div class="flex items-center gap-2 overflow-hidden truncate">
+                                <span class="text-oxide font-bold shrink-0">"$"</span>
+                                <span class="text-paper truncate">"cargo install yav-cli"</span>
                             </div>
+                            <button
+                                onclick="copyText(this, 'cargo install yav-cli')"
+                                class="px-2.5 py-1 text-[11px] text-oxide hover:text-oxide-hi bg-sunk border border-rule hover:border-oxide/40 rounded cursor-pointer transition-colors shrink-0"
+                            >
+                                <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                            </button>
                         </div>
 
                         // Group 5: Mobile Bottom Links
