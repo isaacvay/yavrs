@@ -1,0 +1,4 @@
+# Cloudflare Pages Redirects
+# ==============================================================================
+/github   https://github.com/isaacvay/yav.rs   302
+/discord  https://discord.gg/yav               302

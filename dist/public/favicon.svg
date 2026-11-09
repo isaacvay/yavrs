@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Main fiery gradient: luminous yellow to deep orange/coral -->
+    <linearGradient id="yav-gold-fire" x1="85%" y1="0%" x2="15%" y2="100%">
+      <stop offset="0%" stop-color="#FFDD44" />
+      <stop offset="25%" stop-color="#FFA812" />
+      <stop offset="65%" stop-color="#FF6B00" />
+      <stop offset="90%" stop-color="#FF3800" />
+      <stop offset="100%" stop-color="#E01E00" />
+    </linearGradient>
+
+    <!-- Top-left wing warm ambient gradient -->
+    <linearGradient id="yav-left-wing" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#FFDD55" />
+      <stop offset="40%" stop-color="#FFAA15" />
+      <stop offset="100%" stop-color="#FF5D00" />
+    </linearGradient>
+
+    <!-- Lower wing gradient -->
+    <linearGradient id="yav-lower-wing" x1="90%" y1="10%" x2="10%" y2="90%">
+      <stop offset="0%" stop-color="#FF9E00" />
+      <stop offset="50%" stop-color="#FF5500" />
+      <stop offset="100%" stop-color="#DC1414" />
+    </linearGradient>
+
+    <!-- Subtle specularity overlay -->
+    <linearGradient id="yav-sheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35" />
+      <stop offset="35%" stop-color="#FFFFFF" stop-opacity="0.0" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0.25" />
+    </linearGradient>
+
+    <!-- Drop shadow for depth on dark or light interfaces -->
+    <filter id="yav-depth" x="-10%" y="-10%" width="125%" height="125%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#FF4500" flood-opacity="0.3" />
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.25" />
+    </filter>
+  </defs>
+
+  <g id="yav-monogram-gradient" filter="url(#yav-depth)">
+    <!-- Left Wing -->
+    <path d="M 56.4 69.4
+             L 57.0 73.9
+             L 179.0 249.2
+             L 181.2 248.7
+             L 238.6 176.7
+             L 178.4 90.2
+             C 170.5 81.5 159.0 73.0 144.7 70.5
+             Z"
+          fill="url(#yav-left-wing)" />
+    <!-- Left Wing Sheen -->
+    <path d="M 56.4 69.4
+             L 57.0 73.9
+             L 179.0 249.2
+             L 181.2 248.7
+             L 238.6 176.7
+             L 178.4 90.2
+             C 170.5 81.5 159.0 73.0 144.7 70.5
+             Z"
+          fill="url(#yav-sheen)" />
+
+    <!-- Center Main Diagonal Wing -->
+    <path d="M 442.1 49.1
+             C 418.0 48.0 380.0 51.5 360.6 60.4
+             L 118.3 356.6
+             C 112.5 363.8 108.7 372.9 108.7 372.9
+             L 163.2 371.8
+             L 188.0 360.0
+             L 442.1 49.1
+             Z"
+          fill="url(#yav-gold-fire)" />
+    <!-- Center Sheen -->
+    <path d="M 442.1 49.1
+             C 418.0 48.0 380.0 51.5 360.6 60.4
+             L 118.3 356.6
+             C 112.5 363.8 108.7 372.9 108.7 372.9
+             L 163.2 371.8
+             L 188.0 360.0
+             L 442.1 49.1
+             Z"
+          fill="url(#yav-sheen)" />
+
+    <!-- Lower Right Parallel Wing -->
+    <path d="M 454.4 152.6
+             C 430.0 151.5 394.0 156.0 374.0 165.5
+             L 132.9 461.8
+             L 183.5 462.9
+             C 194.5 459.5 208.0 452.0 216.7 447.1
+             Z"
+          fill="url(#yav-lower-wing)" />
+  </g>
+</svg>
