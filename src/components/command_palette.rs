@@ -10,15 +10,15 @@ pub fn CommandPalette() -> Node {
             // Trigger Button
             <button
                 id="header-search-btn"
-                onclick="window.toggleCmdPalette()"
-                class="flex items-center gap-2.5 h-[34px] px-2.5 md:pl-3 md:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2"
+                onclick="window.toggleCmdPalette(event)"
+                class="flex items-center gap-2 h-[34px] px-2.5 xl:pl-3 xl:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
                 title="Search documentation (Ctrl+K)"
                 aria-expanded="false"
                 aria-haspopup="true"
             >
                 {render_icon("search", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                <span class="hidden md:inline" data-i18n="nav.search">"Search"</span>
-                <kbd class="kbd hidden md:inline-flex text-[10px]">"Ctrl K"</kbd>
+                <span class="hidden xl:inline" data-i18n="nav.search">"Search"</span>
+                <kbd class="kbd hidden xl:inline-flex text-[10px]">"Ctrl K"</kbd>
             </button>
 
             // Popover Dropdown — opens strictly directly below the 64px navbar

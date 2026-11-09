@@ -167,6 +167,13 @@ window.copyText = function (btn, text) {
     width: auto !important;
     max-width: none !important;
   }
+  #lang-menu {
+    position: fixed !important;
+    top: 72px !important;
+    right: 12px !important;
+    width: 220px !important;
+    max-width: calc(100vw - 24px) !important;
+  }
 }
 
 @media (min-width: 640px) {
@@ -177,14 +184,13 @@ window.copyText = function (btn, text) {
     margin-top: 8px !important;
     width: 520px !important;
   }
-}
-
-#lang-menu {
-  position: absolute !important;
-  top: 100% !important;
-  right: 0 !important;
-  margin-top: 8px !important;
-  width: 208px !important;
+  #lang-menu {
+    position: absolute !important;
+    top: 100% !important;
+    right: 0 !important;
+    margin-top: 8px !important;
+    width: 208px !important;
+  }
 }
 
 /* Guaranteed Vivid Emerald Green on copied state */
@@ -263,30 +269,46 @@ button.is-copied:hover svg {
   var mOpenIcon = document.getElementById('menu-icon-open');
   var mCloseIcon = document.getElementById('menu-icon-close');
 
-  window.toggleMobileNav = function () {
+  window.toggleMobileNav = function (e) {
+    if (e && e.stopPropagation) e.stopPropagation();
+    if (!mNav) mNav = document.getElementById('mobile-nav');
+    if (!mBtn) mBtn = document.getElementById('mobile-menu-btn');
+    if (!mOpenIcon) mOpenIcon = document.getElementById('menu-icon-open');
+    if (!mCloseIcon) mCloseIcon = document.getElementById('menu-icon-close');
     if (!mNav) return;
+
+    if (window.closeCmdPalette) window.closeCmdPalette();
+    if (window.closeLangMenu) window.closeLangMenu();
+
     var isHidden = mNav.classList.contains('hidden');
     if (isHidden) {
       mNav.classList.remove('hidden');
+      document.body.classList.add('mobile-nav-open');
       if (mBtn) mBtn.setAttribute('aria-expanded', 'true');
-      if (mOpenIcon) mOpenIcon.classList.add('hidden');
-      if (mCloseIcon) mCloseIcon.classList.remove('hidden');
-      setTimeout(function () {
+      if (mOpenIcon) { mOpenIcon.classList.add('hidden'); mOpenIcon.classList.remove('inline-flex'); }
+      if (mCloseIcon) { mCloseIcon.classList.remove('hidden'); mCloseIcon.classList.add('inline-flex'); }
+      requestAnimationFrame(function () {
         mNav.classList.remove('opacity-0', '-translate-y-2');
         mNav.classList.add('opacity-100', 'translate-y-0');
-      }, 10);
+      });
     } else {
       window.closeMobileNav();
     }
   };
 
   window.closeMobileNav = function () {
+    if (!mNav) mNav = document.getElementById('mobile-nav');
+    if (!mBtn) mBtn = document.getElementById('mobile-menu-btn');
+    if (!mOpenIcon) mOpenIcon = document.getElementById('menu-icon-open');
+    if (!mCloseIcon) mCloseIcon = document.getElementById('menu-icon-close');
     if (!mNav || mNav.classList.contains('hidden')) return;
+
+    document.body.classList.remove('mobile-nav-open');
     mNav.classList.remove('opacity-100', 'translate-y-0');
     mNav.classList.add('opacity-0', '-translate-y-2');
     if (mBtn) mBtn.setAttribute('aria-expanded', 'false');
-    if (mOpenIcon) mOpenIcon.classList.remove('hidden');
-    if (mCloseIcon) mCloseIcon.classList.add('hidden');
+    if (mOpenIcon) { mOpenIcon.classList.remove('hidden'); mOpenIcon.classList.add('inline-flex'); }
+    if (mCloseIcon) { mCloseIcon.classList.add('hidden'); mCloseIcon.classList.remove('inline-flex'); }
     setTimeout(function () {
       mNav.classList.add('hidden');
     }, 180);
@@ -297,7 +319,8 @@ button.is-copied:hover svg {
   }
 
   // Command Palette Popover
-  window.toggleCmdPalette = function () {
+  window.toggleCmdPalette = function (e) {
+    if (e && e.stopPropagation) e.stopPropagation();
     var p = document.getElementById('cmd-palette-popover');
     if (!p) return;
     if (p.style.display === 'block' || p.classList.contains('is-open')) {
@@ -337,7 +360,8 @@ button.is-copied:hover svg {
   };
 
   // Language Menu Popover
-  window.toggleLangMenu = function () {
+  window.toggleLangMenu = function (e) {
+    if (e && e.stopPropagation) e.stopPropagation();
     var m = document.getElementById('lang-menu');
     if (!m) return;
     if (m.style.display === 'block' || m.classList.contains('is-open')) {
@@ -377,7 +401,7 @@ button.is-copied:hover svg {
     var sBtn = document.getElementById('header-search-btn');
     var sPop = document.getElementById('cmd-palette-popover');
     if (sPop && (sPop.style.display === 'block' || sPop.classList.contains('is-open'))) {
-      var insideSearch = (sBtn && sBtn.contains(e.target)) || (sPop && sPop.contains(e.target));
+      var insideSearch = (sBtn && (sBtn === e.target || sBtn.contains(e.target))) || (sPop && sPop.contains(e.target));
       if (!insideSearch) {
         window.closeCmdPalette();
       }
@@ -386,14 +410,20 @@ button.is-copied:hover svg {
     var lBtn = document.getElementById('lang-btn');
     var lPop = document.getElementById('lang-menu');
     if (lPop && (lPop.style.display === 'block' || lPop.classList.contains('is-open'))) {
-      var insideLang = (lBtn && lBtn.contains(e.target)) || (lPop && lPop.contains(e.target));
+      var insideLang = (lBtn && (lBtn === e.target || lBtn.contains(e.target))) || (lPop && lPop.contains(e.target));
       if (!insideLang) {
         window.closeLangMenu();
       }
     }
 
-    if (mNav && mBtn && !mNav.contains(e.target) && !mBtn.contains(e.target)) {
-      window.closeMobileNav();
+    var curNav = document.getElementById('mobile-nav');
+    var curBtn = document.getElementById('mobile-menu-btn');
+    if (curNav && !curNav.classList.contains('hidden')) {
+      var insideNavBtn = curBtn && (curBtn === e.target || curBtn.contains(e.target));
+      var insideNav = curNav && curNav.contains(e.target);
+      if (!insideNavBtn && !insideNav) {
+        window.closeMobileNav();
+      }
     }
   });
 
@@ -568,12 +598,13 @@ window.copyText = function (btn, text) {
 
             <header id="site-header" class="site-header sticky top-0 z-40 w-full">
                 <div class="wrap flex h-16 items-center justify-between gap-2 sm:gap-6">
-                    <a href="/" class="flex items-center gap-2.5 sm:gap-3 shrink-0" aria-label="Yav home">
-                        <img src="/public/favicon.svg" class="w-6 h-6" alt="" />
+                    <a href="/" class="flex items-center gap-2 sm:gap-2.5 shrink-0" aria-label="Yav home">
+                        <img src="/public/favicon.svg" class="w-6 h-6 shrink-0" alt="" />
                         <span class="text-[15px] sm:text-[16px] font-semibold tracking-[-0.03em] text-paper">"yav"<span class="text-dim font-normal">".rs"</span></span>
+                        <span class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-medium text-oxide bg-oxide/10 border border-oxide/20 rounded">"v0.1.5"</span>
                     </a>
 
-                    <nav class="hidden lg:flex items-center" aria-label="Primary">
+                    <nav class="hidden lg:flex items-center gap-0.5 xl:gap-2" aria-label="Primary">
                         <a href="/" data-nav="" class="nav-link"><span class="idx">"01"</span><span data-i18n="nav.overview">"Overview"</span></a>
                         <a href="/about" data-nav="" class="nav-link"><span class="idx">"02"</span><span data-i18n="nav.architecture">"Architecture"</span></a>
                         <a href="/docs" data-nav="" class="nav-link"><span class="idx">"03"</span><span data-i18n="nav.docs">"Docs"</span></a>
@@ -589,32 +620,33 @@ window.copyText = function (btn, text) {
                             href="https://github.com/isaacvay/yav.rs"
                             target="_blank"
                             rel="noreferrer"
-                            class="inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors shrink-0"
+                            class="hidden sm:inline-flex items-center justify-center w-[34px] h-[34px] text-mute hover:text-paper transition-colors shrink-0"
                             title="GitHub"
                         >
                             {render_icon("minimal:github", IconSize::Sm, Some("w-4 h-4"), None)}
                         </a>
-                        <a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden sm:inline-flex shrink-0">"Get started"<span class="arr">"→"</span></a>
+                        <a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden md:inline-flex shrink-0">"Get started"<span class="arr">"→"</span></a>
                         <button
                             id="mobile-menu-btn"
-                            class="lg:hidden inline-flex items-center justify-center w-[34px] h-[34px] text-paper border border-[rgba(236,233,227,0.14)] bg-ink-2 hover:border-oxide/50 transition-colors cursor-pointer shrink-0"
+                            onclick="window.toggleMobileNav(event)"
+                            class="lg:hidden inline-flex items-center justify-center w-[36px] h-[36px] text-paper border border-[rgba(236,233,227,0.14)] bg-ink-2 hover:border-oxide/50 hover:bg-ink-3 transition-colors cursor-pointer shrink-0"
                             aria-label="Toggle navigation menu"
                             aria-expanded="false"
                         >
-                            <span id="menu-icon-open">{render_icon("menu", IconSize::Sm, Some("w-4 h-4"), None)}</span>
-                            <span id="menu-icon-close" class="hidden">{render_icon("x", IconSize::Sm, Some("w-4 h-4 text-oxide"), None)}</span>
+                            <span id="menu-icon-open" class="inline-flex items-center justify-center">{render_icon("menu", IconSize::Sm, Some("w-4 h-4"), None)}</span>
+                            <span id="menu-icon-close" class="hidden items-center justify-center">{render_icon("x", IconSize::Sm, Some("w-4 h-4 text-oxide"), None)}</span>
                         </button>
                     </div>
                 </div>
                 <nav
                     id="mobile-nav"
-                    class="hidden lg:hidden border-t border-rule bg-ink/95 backdrop-blur-xl shadow-2xl transition-all duration-200 opacity-0 -translate-y-2"
+                    class="hidden lg:hidden fixed inset-x-0 top-16 bottom-0 z-50 bg-[#0b0b0d]/98 backdrop-blur-2xl border-t border-rule overflow-y-auto transition-all duration-200 opacity-0 -translate-y-2"
                     aria-label="Mobile Navigation"
                 >
-                    <div class="wrap py-6 space-y-6 max-h-[calc(100vh-4.5rem)] overflow-y-auto">
+                    <div class="wrap py-6 space-y-6 max-h-full">
                         // Mobile Search Trigger
                         <button
-                            onclick="closeMobileNav(); openCmdPalette();"
+                            onclick="window.closeMobileNav(); window.openCmdPalette();"
                             class="w-full flex items-center justify-between h-11 px-3.5 bg-ink-2 border border-rule text-dim text-xs font-mono cursor-pointer hover:border-oxide/50 transition-colors"
                         >
                             <span class="flex items-center gap-2.5">
@@ -630,38 +662,38 @@ window.copyText = function (btn, text) {
                                 "01 · Framework Architecture"
                             </div>
                             <div class="grid gap-1.5">
-                                <a href="/" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group">
+                                <a href="/" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"01"</span>
-                                        <span class="font-medium">"Overview"</span>
+                                        <span class="font-medium" data-i18n="nav.overview">"Overview"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
-                                <a href="/about" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group">
+                                <a href="/about" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"02"</span>
-                                        <span class="font-medium">"Architecture & Tokio Engine"</span>
+                                        <span class="font-medium" data-i18n="nav.architecture">"Architecture & Tokio Engine"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
-                                <a href="/docs" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group">
+                                <a href="/docs" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"03"</span>
-                                        <span class="font-medium">"Engineering Documentation"</span>
+                                        <span class="font-medium" data-i18n="nav.docs">"Engineering Documentation"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
-                                <a href="/benchmarks" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group">
+                                <a href="/benchmarks" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"04"</span>
-                                        <span class="font-medium">"Verified Benchmarks (124k req/s)"</span>
+                                        <span class="font-medium" data-i18n="nav.benchmarks">"Verified Benchmarks (124k req/s)"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
-                                <a href="/components" onclick="closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-2.5 rounded plate bg-ink-2 hover:border-oxide/50 text-[13.5px] text-paper transition-colors group">
+                                <a href="/components" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"05"</span>
-                                        <span class="font-medium">"UI Components & Icons"</span>
+                                        <span class="font-medium" data-i18n="nav.components">"UI Components & Icons"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
@@ -674,28 +706,28 @@ window.copyText = function (btn, text) {
                                 "02 · Ecosystem & Resources"
                             </div>
                             <div class="grid grid-cols-2 gap-2 text-xs">
-                                <a href="/showcase" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
+                                <a href="/showcase" onclick="window.closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-oxide transition-colors">
                                         {render_icon("award", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
                                         <span>"Showcase"</span>
                                     </div>
                                     <p class="text-[11px] text-mute">"Production systems"</p>
                                 </a>
-                                <a href="/faq" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
+                                <a href="/faq" onclick="window.closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-oxide transition-colors">
                                         {render_icon("help-circle", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
                                         <span>"Why Yav?"</span>
                                     </div>
                                     <p class="text-[11px] text-mute">"Matrix & FAQs"</p>
                                 </a>
-                                <a href="/releases" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
+                                <a href="/releases" onclick="window.closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-ok transition-colors">
                                         {render_icon("git-branch", IconSize::Sm, Some("w-3.5 h-3.5 text-ok"), None)}
                                         <span>"Changelog"</span>
                                     </div>
                                     <p class="text-[11px] text-mute">"v0.1.5 stable"</p>
                                 </a>
-                                <a href="/privacy" onclick="closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
+                                <a href="/privacy" onclick="window.closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-paper transition-colors">
                                         {render_icon("shield-check", IconSize::Sm, Some("w-3.5 h-3.5 text-dim"), None)}
                                         <span>"Security"</span>
@@ -705,22 +737,70 @@ window.copyText = function (btn, text) {
                             </div>
                         </div>
 
-                        // Mobile CLI Install Block
-                        <div class="p-3.5 plate bg-ink-2 flex items-center justify-between text-xs font-mono">
-                            <div class="flex items-center gap-2">
-                                <span class="text-oxide font-bold">"$"</span>
-                                <span class="text-paper">"cargo install yav-cli"</span>
+                        // Group 3: Language Selector in Mobile Menu
+                        <div class="space-y-2">
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2">
+                                "03 · Language / Locale"
                             </div>
-                            <button
-                                onclick="copyText(this, 'cargo install yav-cli')"
-                                class="px-2.5 py-1 text-[11px] text-oxide hover:text-oxide-hi bg-sunk border border-rule hover:border-oxide/40 rounded cursor-pointer transition-colors"
-                            >
-                                <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
-                            </button>
+                            <div class="grid grid-cols-4 gap-2 text-xs font-mono">
+                                <button
+                                    onclick="setLanguage('en'); window.closeMobileNav();"
+                                    class="py-2.5 px-2 plate bg-ink-2 hover:border-oxide/50 text-paper text-center transition-colors cursor-pointer flex flex-col items-center gap-0.5"
+                                    data-locale="en"
+                                >
+                                    <span class="font-bold text-[13px]">"EN"</span>
+                                    <span class="text-[9px] text-dim">"English"</span>
+                                </button>
+                                <button
+                                    onclick="setLanguage('fr'); window.closeMobileNav();"
+                                    class="py-2.5 px-2 plate bg-ink-2 hover:border-oxide/50 text-paper text-center transition-colors cursor-pointer flex flex-col items-center gap-0.5"
+                                    data-locale="fr"
+                                >
+                                    <span class="font-bold text-[13px]">"FR"</span>
+                                    <span class="text-[9px] text-dim">"Français"</span>
+                                </button>
+                                <button
+                                    onclick="setLanguage('es'); window.closeMobileNav();"
+                                    class="py-2.5 px-2 plate bg-ink-2 hover:border-oxide/50 text-paper text-center transition-colors cursor-pointer flex flex-col items-center gap-0.5"
+                                    data-locale="es"
+                                >
+                                    <span class="font-bold text-[13px]">"ES"</span>
+                                    <span class="text-[9px] text-dim">"Español"</span>
+                                </button>
+                                <button
+                                    onclick="setLanguage('de'); window.closeMobileNav();"
+                                    class="py-2.5 px-2 plate bg-ink-2 hover:border-oxide/50 text-paper text-center transition-colors cursor-pointer flex flex-col items-center gap-0.5"
+                                    data-locale="de"
+                                >
+                                    <span class="font-bold text-[13px]">"DE"</span>
+                                    <span class="text-[9px] text-dim">"Deutsch"</span>
+                                </button>
+                            </div>
                         </div>
 
-                        // Mobile Bottom Bar
-                        <div class="pt-2 border-t border-rule/50 flex items-center justify-between text-xs font-mono text-dim">
+                        // Group 4: CTA & CLI Install
+                        <div class="space-y-2.5 pt-1">
+                            <a href="/docs" onclick="window.closeMobileNav()" class="btn btn-solid w-full justify-center h-11 text-sm font-semibold">
+                                <span>"Get started with Yav"</span>
+                                <span class="arr">"→"</span>
+                            </a>
+
+                            <div class="p-3.5 plate bg-ink-2 flex items-center justify-between text-xs font-mono">
+                                <div class="flex items-center gap-2 overflow-hidden truncate">
+                                    <span class="text-oxide font-bold shrink-0">"$"</span>
+                                    <span class="text-paper truncate">"cargo install yav-cli"</span>
+                                </div>
+                                <button
+                                    onclick="copyText(this, 'cargo install yav-cli')"
+                                    class="px-2.5 py-1 text-[11px] text-oxide hover:text-oxide-hi bg-sunk border border-rule hover:border-oxide/40 rounded cursor-pointer transition-colors shrink-0"
+                                >
+                                    <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        // Group 5: Mobile Bottom Links
+                        <div class="pt-3 border-t border-rule/50 flex items-center justify-between text-xs font-mono text-dim">
                             <a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="flex items-center gap-1.5 hover:text-paper transition-colors">
                                 {render_icon("minimal:github", IconSize::Sm, Some("w-3.5 h-3.5"), None)}
                                 <span>"GitHub"</span>
@@ -730,7 +810,7 @@ window.copyText = function (btn, text) {
                             </a>
                             <span class="flex items-center gap-1.5 text-ok">
                                 <span class="dot dot-ok"></span>
-                                <span>"All systems operational"</span>
+                                <span>"Operational"</span>
                             </span>
                         </div>
                     </div>

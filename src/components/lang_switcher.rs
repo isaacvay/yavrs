@@ -9,8 +9,8 @@ pub fn LangSwitcher() -> Node {
         <div class="relative self-stretch flex items-center text-left" id="lang-switcher-container">
             <button
                 id="lang-btn"
-                onclick="window.toggleLangMenu()"
-                class="inline-flex items-center gap-1.5 h-[34px] px-2.5 border border-rule hover:border-oxide/50 text-[12px] font-mono text-paper-2 hover:text-paper transition-colors cursor-pointer bg-ink-2"
+                onclick="window.toggleLangMenu(event)"
+                class="inline-flex items-center gap-1 sm:gap-1.5 h-[34px] px-2 sm:px-2.5 border border-rule hover:border-oxide/50 text-[12px] font-mono text-paper-2 hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
                 title="Select Language"
                 aria-expanded="false"
                 aria-haspopup="true"
@@ -91,6 +91,8 @@ pub fn LangSwitcher() -> Node {
                     applyLanguage(lang);
                     if (window.closeLangMenu) window.closeLangMenu();
                 }
+                window.setLanguage = setLanguage;
+                window.applyLanguage = applyLanguage;
 
                 function applyLanguage(lang) {
                     var currentLabel = document.getElementById('lang-current-label');

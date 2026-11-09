@@ -212,6 +212,12 @@
 /* ---------------------------------------------------------------------
    HEADER
    --------------------------------------------------------------------- */
+/* Mobile body scroll lock when mobile navigation drawer is open */
+body.mobile-nav-open {
+  overflow: hidden !important;
+  touch-action: none;
+}
+
 .site-header {
   background: rgba(11, 11, 12, 0.7);
   backdrop-filter: blur(14px) saturate(130%);
@@ -229,12 +235,24 @@
   position: relative; display: inline-flex; align-items: center; gap: 6px;
   padding: 6px 12px; font-size: 13.5px; color: var(--mute);
   transition: color .2s ease;
+  white-space: nowrap;
 }
 .nav-link .idx { font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--faint); transition: color .2s ease; }
 .nav-link:hover { color: var(--paper); }
 .nav-link:hover .idx { color: var(--oxide); }
 .nav-link[aria-current="page"] { color: var(--paper); }
 .nav-link[aria-current="page"] .idx { color: var(--oxide); }
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .nav-link {
+    padding: 6px 8px;
+    font-size: 12.5px;
+    gap: 4px;
+  }
+  .nav-link .idx {
+    font-size: 9.5px;
+  }
+}
 
 /* Navigation Dropdown Menu (Desktop & Mobile) */
 .nav-dropdown {
