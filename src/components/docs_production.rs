@@ -13,41 +13,41 @@ pub fn DocsProduction() -> Node {
             <section id="asset-pipeline" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"5.1"</span>
-                    <span class="t">"Asset Pipeline & In-Memory Pre-Compression"</span>
+                    <span class="t" data-i18n="docs.prod.5_1_sec">"Asset Pipeline & In-Memory Pre-Compression"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"brotli + gzip"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Blake3 ETags and zero on-the-fly CPU compression tax."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.prod.5_1_title">"Blake3 ETags and zero on-the-fly CPU compression tax."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "During "
+                    <span data-i18n="docs.prod.5_1_p1">"During "</span>
                     <code class="inline">"yav build"</code>
-                    ", static assets are fingerprinted ("
+                    <span data-i18n="docs.prod.5_1_p2">", static assets are fingerprinted ("</span>
                     <code class="inline">"styles.[hash].css"</code>
-                    ") and pre-compressed into Brotli ("
+                    <span data-i18n="docs.prod.5_1_p3">") and pre-compressed into Brotli ("</span>
                     <code class="inline">".br"</code>
-                    ") and Gzip ("
+                    <span data-i18n="docs.prod.5_1_p4">") and Gzip ("</span>
                     <code class="inline">".gz"</code>
-                    ") archives in a single in-memory pass. The server streams pre-compressed buffers directly from memory matching the client's "
+                    <span data-i18n="docs.prod.5_1_p5">") archives in a single in-memory pass. The server streams pre-compressed buffers directly from memory matching the client's "</span>
                     <code class="inline">"Accept-Encoding"</code>
-                    " header."
+                    <span data-i18n="docs.prod.5_1_p6">" header."</span>
                 </p>
 
                 <div class="grid sm:grid-cols-2 gap-4 text-xs font-mono">
                     <div class="plate p-5 bg-ink-2 space-y-2">
                         <div class="text-oxide font-bold flex items-center gap-2">
                             {render_icon("zap", IconSize::Sm, Some("w-4 h-4 text-oxide"), None)}
-                            "Blake3 ETags & 304 Not Modified"
+                            <span data-i18n="docs.prod.c1_t">"Blake3 ETags & 304 Not Modified"</span>
                         </div>
-                        <p class="text-mute text-[12px] leading-relaxed">
+                        <p class="text-mute text-[12px] leading-relaxed" data-i18n="docs.prod.c1_d">
                             "All assets calculate ultra-fast Blake3 hashes. Repeat client visits receive 304 headers in microseconds without redundant byte transmissions."
                         </p>
                     </div>
                     <div class="plate p-5 bg-ink-2 space-y-2">
                         <div class="text-oxide font-bold flex items-center gap-2">
                             {render_icon("shield-check", IconSize::Sm, Some("w-4 h-4 text-ok"), None)}
-                            "Strict Path Traversal Hardening"
+                            <span data-i18n="docs.prod.c2_t">"Strict Path Traversal Hardening"</span>
                         </div>
-                        <p class="text-mute text-[12px] leading-relaxed">
+                        <p class="text-mute text-[12px] leading-relaxed" data-i18n="docs.prod.c2_d">
                             "Relative path escapes (../) and null bytes are rejected at the kernel interface; canonical paths are bounded strictly within public/."
                         </p>
                     </div>
@@ -60,37 +60,37 @@ pub fn DocsProduction() -> Node {
             <section id="ssg-export" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"5.2"</span>
-                    <span class="t">"Static Site Generation (SSG with yav export)"</span>
+                    <span class="t" data-i18n="docs.prod.5_2_sec">"Static Site Generation (SSG with yav export)"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"yav export"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Pre-render all routes to static HTML for zero-server hosting."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.prod.5_2_title">"Pre-render all routes to static HTML for zero-server hosting."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "If your project consists of documentation, marketing pages, or blogs, "
+                    <span data-i18n="docs.prod.5_2_p1">"If your project consists of documentation, marketing pages, or blogs, "</span>
                     <code class="inline">"yav export"</code>
-                    " crawls and renders all discovered static routes into standalone HTML files ready to deploy on Cloudflare Pages, GitHub Pages, Netlify, or AWS S3."
+                    <span data-i18n="docs.prod.5_2_p2">" crawls and renders all discovered static routes into standalone HTML files ready to deploy on Cloudflare Pages, GitHub Pages, Netlify, or AWS S3."</span>
                 </p>
 
                 <div class="term-window">
                     <div class="term-head">
                         <div class="flex items-center gap-2">
-                            <span class="text-[11px] text-paper font-mono font-medium">"SSG EXPORT"</span>
+                            <span class="text-[11px] text-paper font-mono font-medium" data-i18n="docs.prod.ssg_head">"SSG EXPORT"</span>
                             <span class="text-[10px] text-oxide font-mono">"yav export"</span>
                         </div>
                         <button data-copy="yav export --output dist --base-url https://yav.rs" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                            <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                         </button>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#070709]">
                         <div class="token-comment">"# Export all discovered static routes into dist/ directory"</div>
                         <div><span class="text-oxide">"$ "</span>"yav export"</div>
                         <div class="token-comment pt-2">"# Specify custom output path and production base URL for canonical tags"</div>
-                        <div><span class="text-oxide">"$ "</span>"yav export --output dist --base-url https://mon-site.com"</div>
+                        <div><span class="text-oxide">"$ "</span>"yav export --output dist --base-url https://example.com"</div>
                     </div>
                     <div class="ide-status">
-                        <span>"Generates directory-structured index.html files"</span>
-                        <span class="text-ok">"Zero-Server Static Output"</span>
+                        <span data-i18n="docs.prod.5_2_st_l">"Generates directory-structured index.html files"</span>
+                        <span class="text-ok" data-i18n="docs.prod.5_2_st_r">"Zero-Server Static Output"</span>
                     </div>
                 </div>
             </section>
@@ -101,28 +101,28 @@ pub fn DocsProduction() -> Node {
             <section id="docker-deployment" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"5.3"</span>
-                    <span class="t">"Distroless Docker & Multi-Cloud Deployment"</span>
+                    <span class="t" data-i18n="docs.prod.5_3_sec">"Distroless Docker & Multi-Cloud Deployment"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"sub-30MB"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Deploy anywhere. One statically-linked native binary."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.prod.5_3_title">"Deploy anywhere. One statically-linked native binary."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Run "
+                    <span data-i18n="docs.prod.5_3_p1">"Run "</span>
                     <code class="inline">"yav docker"</code>
-                    " to generate a hardened multi-stage Dockerfile that caches cargo dependencies and yields a production image under 30 MB running as an unprivileged user, or use "
+                    <span data-i18n="docs.prod.5_3_p2">" to generate a hardened multi-stage Dockerfile that caches cargo dependencies and yields a production image under 30 MB running as an unprivileged user, or use "</span>
                     <code class="inline">"yav deploy"</code>
-                    " for platform-specific configurations."
+                    <span data-i18n="docs.prod.5_3_p3">" for platform-specific configurations."</span>
                 </p>
 
                 <div class="term-window">
                     <div class="term-head">
                         <div class="flex items-center gap-2">
-                            <span class="text-[11px] text-paper font-mono font-medium">"CLOUD DEPLOY SCAFFOLDING"</span>
+                            <span class="text-[11px] text-paper font-mono font-medium" data-i18n="docs.prod.dep_head">"CLOUD DEPLOY SCAFFOLDING"</span>
                             <span class="text-[10px] text-oxide font-mono">"yav deploy"</span>
                         </div>
                         <button data-copy="yav deploy fly\nyav deploy shuttle\nyav deploy railway\nyav deploy systemd" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                            <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                         </button>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#070709]">
@@ -144,19 +144,19 @@ pub fn DocsProduction() -> Node {
             <section id="codegen-pwa" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"5.4"</span>
-                    <span class="t">"TypeScript / OpenAPI Codegen & PWA Offline"</span>
+                    <span class="t" data-i18n="docs.prod.5_4_sec">"TypeScript / OpenAPI Codegen & PWA Offline"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"codegen"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Cross-boundary type-safety and instant offline caching."</h2>
-                <p class="text-mute text-[15.5px] leading-relaxed">
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.prod.5_4_title">"Cross-boundary type-safety and instant offline caching."</h2>
+                <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="docs.prod.5_4_lede">
                     "Bridge backend models to frontend consumers effortlessly with automatic TypeScript type definitions or export full OpenAPI 3.1 specifications. One command scaffolds full PWA offline support."
                 </p>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="term-window">
                         <div class="term-head">
-                            <span class="text-[11px] text-paper font-mono font-medium">"CLIENT CODEGEN"</span>
+                            <span class="text-[11px] text-paper font-mono font-medium" data-i18n="docs.prod.cg_head">"CLIENT CODEGEN"</span>
                             <span class="text-[10px] text-oxide font-mono">"yav codegen"</span>
                         </div>
                         <div class="p-4 code overflow-x-auto text-[12.5px] space-y-1 bg-[#070709]">
@@ -169,13 +169,13 @@ pub fn DocsProduction() -> Node {
 
                     <div class="term-window">
                         <div class="term-head">
-                            <span class="text-[11px] text-paper font-mono font-medium">"PROGRESSIVE WEB APP"</span>
+                            <span class="text-[11px] text-paper font-mono font-medium" data-i18n="docs.prod.pwa_head">"PROGRESSIVE WEB APP"</span>
                             <span class="text-[10px] text-ok font-mono">"yav pwa"</span>
                         </div>
                         <div class="p-4 code overflow-x-auto text-[12.5px] space-y-1 bg-[#070709]">
                             <div class="token-comment">"# Scaffold manifest & service worker"</div>
                             <div><span class="text-oxide">"$ "</span>"yav pwa"</div>
-                            <div class="pt-2 text-mute text-[11px] leading-relaxed">
+                            <div class="pt-2 text-mute text-[11px] leading-relaxed" data-i18n="docs.prod.pwa_d">
                                 "Generates manifest.json, sw.js with cache-first static strategy, and offline fallback."
                             </div>
                         </div>
@@ -189,23 +189,23 @@ pub fn DocsProduction() -> Node {
             <section id="developer-diagnostics" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"5.5"</span>
-                    <span class="t">"Developer Diagnostics & Route Inspection"</span>
+                    <span class="t" data-i18n="docs.prod.5_5_sec">"Developer Diagnostics & Route Inspection"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"yav doctor"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Full system auditing and tabular route introspection."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.prod.5_5_title">"Full system auditing and tabular route introspection."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Diagnose toolchain discrepancies with "
+                    <span data-i18n="docs.prod.5_5_p1">"Diagnose toolchain discrepancies with "</span>
                     <code class="inline">"yav doctor"</code>
-                    " or inspect your entire file-based route hierarchy, handlers, and active layout chains with "
+                    <span data-i18n="docs.prod.5_5_p2">" or inspect your entire file-based route hierarchy, handlers, and active layout chains with "</span>
                     <code class="inline">"yav routes"</code>
-                    "."
+                    <span data-i18n="docs.prod.5_5_p3">"."</span>
                 </p>
 
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="term-window">
                         <div class="term-head">
-                            <span class="text-[11px] text-paper font-mono font-medium">"SYSTEM AUDIT"</span>
+                            <span class="text-[11px] text-paper font-mono font-medium" data-i18n="docs.prod.diag_head">"SYSTEM AUDIT"</span>
                             <span class="text-[10px] text-oxide font-mono">"yav doctor"</span>
                         </div>
                         <div class="p-4 code overflow-x-auto text-[12.5px] space-y-1 bg-[#070709]">
@@ -220,7 +220,7 @@ pub fn DocsProduction() -> Node {
 
                     <div class="term-window">
                         <div class="term-head">
-                            <span class="text-[11px] text-paper font-mono font-medium">"ROUTE INSPECTION"</span>
+                            <span class="text-[11px] text-paper font-mono font-medium" data-i18n="docs.prod.rte_head">"ROUTE INSPECTION"</span>
                             <span class="text-[10px] text-ok font-mono">"yav routes"</span>
                         </div>
                         <div class="p-4 code overflow-x-auto text-[12.5px] space-y-1 bg-[#070709]">
@@ -241,30 +241,30 @@ pub fn DocsProduction() -> Node {
             <section id="database-migrations" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"5.6"</span>
-                    <span class="t">"Database Migrations & SQL Scaffolding (yav db)"</span>
+                    <span class="t" data-i18n="docs.prod.5_6_sec">"Database Migrations & SQL Scaffolding (yav db)"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"yav db"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Deterministic SQL migrations with SHA-256 cryptographic journaling."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.prod.5_6_title">"Deterministic SQL migrations with SHA-256 cryptographic journaling."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "The "
+                    <span data-i18n="docs.prod.5_6_p1">"The "</span>
                     <code class="inline">"yav db"</code>
-                    " command provides an integrated migration runner for SQLite and PostgreSQL. It reads your database URL from "
+                    <span data-i18n="docs.prod.5_6_p2">" command provides an integrated migration runner for SQLite and PostgreSQL. It reads your database URL from "</span>
                     <code class="inline">".env"</code>
-                    ", applies forward migrations, enables one-command rollbacks, and verifies SHA-256 checksums in the "
+                    <span data-i18n="docs.prod.5_6_p3">", applies forward migrations, enables one-command rollbacks, and verifies SHA-256 checksums in the "</span>
                     <code class="inline">"_yav_migrations"</code>
-                    " journal to prevent migration drift across environments."
+                    <span data-i18n="docs.prod.5_6_p4">" journal to prevent migration drift across environments."</span>
                 </p>
 
                 <div class="term-window">
                     <div class="term-head">
                         <div class="flex items-center gap-2">
-                            <span class="text-[11px] text-paper font-mono font-medium">"DATABASE WORKFLOW"</span>
+                            <span class="text-[11px] text-paper font-mono font-medium" data-i18n="docs.prod.db_head">"DATABASE WORKFLOW"</span>
                             <span class="text-[10px] text-oxide font-mono">"yav db"</span>
                         </div>
                         <button data-copy="yav db init\nyav db new create_users\nyav db migrate\nyav db status\nyav db rollback" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                            <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                         </button>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#070709]">
@@ -280,8 +280,8 @@ pub fn DocsProduction() -> Node {
                         <div><span class="text-oxide">"$ "</span>"yav db rollback"</div>
                     </div>
                     <div class="ide-status">
-                        <span>"Native SQLite & PostgreSQL runners"</span>
-                        <span class="text-ok">"SHA-256 Journaled"</span>
+                        <span data-i18n="docs.prod.5_6_st_l">"Native SQLite & PostgreSQL runners"</span>
+                        <span class="text-ok" data-i18n="docs.prod.5_6_st_r">"SHA-256 Journaled"</span>
                     </div>
                 </div>
             </section>
@@ -293,20 +293,20 @@ pub fn DocsProduction() -> Node {
                 <a href="/about" class="plate p-6 bg-sunk hover:border-oxide/60 transition-colors group block space-y-2">
                     <div class="text-[11px] font-mono text-dim flex items-center gap-2 group-hover:text-oxide transition-colors">
                         {render_icon("arrow-left", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                        "Previous Architectural Guide"
+                        <span data-i18n="docs.prod.prev_k">"Previous Architectural Guide"</span>
                     </div>
-                    <div class="text-paper font-medium text-lg">"Architecture & Performance"</div>
-                    <p class="text-mute text-[13px] leading-relaxed">
+                    <div class="text-paper font-medium text-lg" data-i18n="docs.prod.prev_t">"Architecture & Performance"</div>
+                    <p class="text-mute text-[13px] leading-relaxed" data-i18n="docs.prod.prev_d">
                         "Explore the memory layout, Tokio thread allocation, and zero-lock runtime engine."
                     </p>
                 </a>
                 <a href="/components" class="plate p-6 bg-sunk hover:border-oxide/60 transition-colors group block space-y-2 text-right">
                     <div class="text-[11px] font-mono text-dim flex items-center justify-end gap-2 group-hover:text-oxide transition-colors">
-                        "Next Interactive Guide"
+                        <span data-i18n="docs.prod.next_k">"Next Interactive Guide"</span>
                         {render_icon("arrow-right", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
                     </div>
-                    <div class="text-paper font-medium text-lg">"UI Components & Icons"</div>
-                    <p class="text-mute text-[13px] leading-relaxed">
+                    <div class="text-paper font-medium text-lg" data-i18n="docs.prod.next_t">"UI Components & Icons"</div>
+                    <p class="text-mute text-[13px] leading-relaxed" data-i18n="docs.prod.next_d">
                         "Browse interactive widgets, form controls, copy-paste components, and icon search."
                     </p>
                 </a>

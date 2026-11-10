@@ -20,15 +20,15 @@ pub async fn docs(_req: Request) -> yav::server::HtmlPage {
                             <span>"yav"</span>
                         </a>
                         <span class="text-faint">"/"</span>
-                        <span class="text-paper font-semibold">"docs"</span>
+                        <span class="text-paper font-semibold" data-i18n="docs.bc.docs">"docs"</span>
                         <span class="text-faint">"/"</span>
-                        <span class="text-oxide">"engineering-manual"</span>
+                        <span class="text-oxide" data-i18n="docs.bc.manual">"engineering-manual"</span>
                     </div>
                     <div class="flex items-center gap-3">
                         <div class="flex items-center gap-2 px-2.5 py-1 rounded bg-sunk border border-rule text-dim text-[11px]">
                             <span class="dot dot-ok"></span>
                             <span class="text-paper font-semibold">"v0.1.5"</span>
-                            <span class="text-dim">"· stable"</span>
+                            <span class="text-dim" data-i18n="docs.bc.stable">"· stable"</span>
                         </div>
                         <a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-1.5 text-mute hover:text-paper transition-colors text-[11.5px]">
                             {render_icon("external-link", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
@@ -43,15 +43,15 @@ pub async fn docs(_req: Request) -> yav::server::HtmlPage {
                 // Mobile & Tablet Quick Docs Section Pill Bar
                 <div class="lg:hidden pb-6">
                     <div class="label pb-2 text-[10.5px] text-dim font-mono flex items-center justify-between">
-                        <span>"Documentation sections:"</span>
-                        <span class="text-oxide">"5 core chapters"</span>
+                        <span data-i18n="docs.mobile.secs">"Documentation sections:"</span>
+                        <span class="text-oxide" data-i18n="docs.mobile.chaps">"5 core chapters"</span>
                     </div>
                     <div class="flex items-center gap-2 overflow-x-auto pb-2 table-scroll text-xs font-mono">
-                        <a href="#installation" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"1. Getting Started"</a>
-                        <a href="#rsx-syntax" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"2. Components & RSX"</a>
-                        <a href="#filesystem-routing" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"3. Routing & Server"</a>
-                        <a href="#view-transitions" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"4. Interactivity & AI"</a>
-                        <a href="#asset-pipeline" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0">"5. Production & Deploy"</a>
+                        <a href="#installation" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0" data-i18n="docs.side.g1">"1. Getting Started"</a>
+                        <a href="#rsx-syntax" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0" data-i18n="docs.side.g2">"2. Components & RSX"</a>
+                        <a href="#filesystem-routing" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0" data-i18n="docs.side.g3">"3. Routing & Server"</a>
+                        <a href="#view-transitions" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0" data-i18n="docs.mobile.c4">"4. Interactivity & AI"</a>
+                        <a href="#asset-pipeline" class="px-3 py-1.5 rounded plate bg-ink-2 hover:border-oxide text-paper shrink-0" data-i18n="docs.mobile.c5">"5. Production & Deploy"</a>
                     </div>
                 </div>
 

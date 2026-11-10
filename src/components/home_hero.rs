@@ -104,11 +104,11 @@ window.runHeroSpecAnimation = function() {
                 <div class="fade flex flex-wrap items-center justify-between gap-4 pb-6 sm:pb-8" style="--d:0ms">
                     <div class="flex items-center gap-6 label">
                         <span class="label-oxide">"Fig. 00"</span>
-                        <span>"A web framework for Rust"</span>
+                        <span data-i18n="hero.tagline">"A web framework for Rust"</span>
                     </div>
                     <a href="/docs" class="chip hover:border-[rgba(236,233,227,0.24)] transition-colors">
                         <span class="dot pulse-dot text-[#e0592f]"></span>
-                        <span data-i18n="hero.pill.engine">"v0.1.4 — Axum 0.8 · 60+ UI Primitives · AI SDK & MCP"</span>
+                        <span data-i18n="hero.pill.engine">"v0.1.5 — Axum 0.8 · 60+ UI Primitives · AI SDK & MCP"</span>
                     </a>
                 </div>
 
@@ -130,9 +130,9 @@ window.runHeroSpecAnimation = function() {
 
                 <div class="grid lg:grid-cols-12 gap-10 pt-8 sm:pt-12 items-start">
                     <div class="lg:col-span-5 space-y-8 fade" style="--d:450ms">
-                        <p class="lede" data-i18n="hero.subtitle">
-                            <strong>"Compiled RSX templates, 60+ UI primitives, AI SDK & MCP, and Tailwind — in one native binary."</strong>
-                            " No Node. No npm. No hydration tax. Just Axum 0.8, Tokio and the Rust compiler doing what they do best."
+                        <p class="lede">
+                            <strong data-i18n="hero.subtitle.bold">"Compiled RSX templates, 60+ UI primitives, AI SDK & MCP, and Tailwind — in one native binary."</strong>
+                            <span data-i18n="hero.subtitle.rest">" No Node. No npm. No hydration tax. Just Axum 0.8, Tokio and the Rust compiler doing what they do best."</span>
                         </p>
                         <div class="flex flex-wrap items-center gap-3">
                             <a id="hero-cta-start" href="/docs" class="btn btn-oxide w-full sm:w-auto">
@@ -142,7 +142,7 @@ window.runHeroSpecAnimation = function() {
                             <button id="hero-copy-install" onclick="copyText(this, 'cargo install yav-cli')" class="btn btn-line font-mono !text-[12.5px] sm:!text-[13px] w-full sm:w-auto max-w-full justify-between sm:justify-center overflow-hidden">
                                 <span class="text-oxide">"$"</span>
                                 <span class="truncate">"cargo install yav-cli"</span>
-                                <span data-copy-label="" class="text-oxide font-medium text-[11px] pl-2.5 sm:pl-3 border-l border-[rgba(236,233,227,0.14)] shrink-0">"copy"</span>
+                                <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium text-[11px] pl-2.5 sm:pl-3 border-l border-[rgba(236,233,227,0.14)] shrink-0">"copy"</span>
                             </button>
                         </div>
                     </div>
@@ -152,11 +152,11 @@ window.runHeroSpecAnimation = function() {
                         <div class="plate bg-sunk">
                             <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
                             <div class="plate-head">
-                                <span>"FIG. 01 — REQUEST LIFECYCLE"</span>
+                                <span data-i18n="hero.fig1.title">"FIG. 01 — REQUEST LIFECYCLE"</span>
                                 <span class="text-oxide font-mono">"t = 0.28 ms p50"</span>
                             </div>
                             <div class="p-4 sm:p-6 overflow-hidden">
-                                <svg viewBox="0 0 640 250" class="w-full h-auto block" fill="none" aria-label="Request lifecycle schematic diagram">
+                                <svg viewBox="0 0 640 250" class="w-full h-auto block" fill="none" aria-label="Request lifecycle schematic diagram" data-i18n-aria-label="hero.fig1.aria">
                                     <g stroke="rgba(236,233,227,0.12)" stroke-width="1">
                                         // Box 1: Ingress
                                         <rect x="20" y="80" width="124" height="72" fill="rgba(236,233,227,0.03)" rx="3" stroke="rgba(236,233,227,0.24)" />
@@ -196,17 +196,17 @@ window.runHeroSpecAnimation = function() {
                                         <text x="242" y="128" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.45)">"radix O(k)"</text>
 
                                         <text x="402" y="108" text-anchor="middle" fill="#ece9e3" font-weight="500">"rsx! -> buf"</text>
-                                        <text x="402" y="128" text-anchor="middle" font-size="10" fill="#e0592f">"0 alloc · 0 vdom"</text>
+                                        <text x="402" y="128" text-anchor="middle" font-size="10" fill="#e0592f" data-i18n="hero.fig1.zero_alloc">"0 alloc · 0 vdom"</text>
 
                                         <text x="560" y="108" text-anchor="middle" fill="#ece9e3" font-weight="500">"HTTP 200"</text>
-                                        <text x="560" y="128" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.45)">"chunked wire"</text>
+                                        <text x="560" y="128" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.45)" data-i18n="hero.fig1.wire">"chunked wire"</text>
 
-                                        <text x="20" y="222" text-anchor="start" font-size="10" fill="rgba(236,233,227,0.4)">"0.00 ms (ingress)"</text>
-                                        <text x="242" y="222" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.4)">"0.04 ms (routed)"</text>
-                                        <text x="402" y="222" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.4)">"0.18 ms (rendered)"</text>
+                                        <text x="20" y="222" text-anchor="start" font-size="10" fill="rgba(236,233,227,0.4)" data-i18n="hero.fig1.t0">"0.00 ms (ingress)"</text>
+                                        <text x="242" y="222" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.4)" data-i18n="hero.fig1.t1">"0.04 ms (routed)"</text>
+                                        <text x="402" y="222" text-anchor="middle" font-size="10" fill="rgba(236,233,227,0.4)" data-i18n="hero.fig1.t2">"0.18 ms (rendered)"</text>
                                         <text x="620" y="222" text-anchor="end" font-size="10" fill="#e0592f" font-weight="500">"0.28 ms p50 TTFB"</text>
 
-                                        <text x="322" y="38" text-anchor="middle" font-size="9.5" fill="#e0592f" letter-spacing="0.5">"COMPILED DISPATCH — ZERO RUNTIME TAX"</text>
+                                        <text x="322" y="38" text-anchor="middle" font-size="9.5" fill="#e0592f" letter-spacing="0.5" data-i18n="hero.fig1.dispatch">"COMPILED DISPATCH — ZERO RUNTIME TAX"</text>
                                     </g>
 
                                     // Native vector animated pulse
@@ -222,7 +222,7 @@ window.runHeroSpecAnimation = function() {
             </div>
 
             // Spec strip
-            <div id="hero-spec-strip" class="border-y border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.015)] select-none hover:bg-[rgba(236,233,227,0.03)] transition-colors cursor-pointer" title="Click to replay spec metrics animation">
+            <div id="hero-spec-strip" class="border-y border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.015)] select-none hover:bg-[rgba(236,233,227,0.03)] transition-colors cursor-pointer" title="Click to replay spec metrics animation" data-i18n-title="hero.strip.title">
                 <div class="wrap grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 divide-[rgba(236,233,227,0.08)]">
                     <div class="py-6 sm:py-8 pr-4 sm:pr-6 border-r border-[rgba(236,233,227,0.08)] group">
                         <div class="label pb-2 sm:pb-3" data-i18n="metrics.throughput">"Throughput"</div>

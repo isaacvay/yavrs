@@ -28,9 +28,9 @@ pub async fn privacy(_req: Request) -> yav::server::HtmlPage {
                     <section class="plate p-6 bg-ink-2 space-y-3">
                         <div class="text-paper font-semibold text-lg flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-sm">"01."</span>
-                            "Zero Tracking Pixels & No Third-Party Telemetry"
+                            <span data-i18n="privacy.s1.title">"Zero Tracking Pixels & No Third-Party Telemetry"</span>
                         </div>
-                        <p>
+                        <p data-i18n="privacy.s1.body">
                             "This website does not load Google Analytics, Meta Pixel, Hotjar, Mixpanel, or any third-party marketing trackers. There are no external scripts or ad networks loaded into your browser context. When you inspect network traffic during page navigation, you will find 100% first-party requests served strictly from our edge binary."
                         </p>
                     </section>
@@ -39,16 +39,16 @@ pub async fn privacy(_req: Request) -> yav::server::HtmlPage {
                     <section class="plate p-6 bg-ink-2 space-y-3">
                         <div class="text-paper font-semibold text-lg flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-sm">"02."</span>
-                            "Cryptographic Sessions & Cookie Architecture"
+                            <span data-i18n="privacy.s2.title">"Cryptographic Sessions & Cookie Architecture"</span>
                         </div>
-                        <p>
+                        <p data-i18n="privacy.s2.intro">
                             "When interactive server sessions or authentication flows are engaged, Yav employs stateless HMAC-SHA256 cookies. Every cookie adheres strictly to modern web safety flags:"
                         </p>
                         <ul class="list-disc pl-5 space-y-1.5 font-mono text-xs text-paper/90">
-                            <li><strong class="text-oxide">"HttpOnly"</strong>" — Inaccessible to JavaScript, eliminating XSS token theft."</li>
-                            <li><strong class="text-oxide">"Secure"</strong>" — Transmitted strictly over encrypted TLS/HTTPS connections."</li>
-                            <li><strong class="text-oxide">"SameSite=Lax"</strong>" — Enforces cross-site request isolation against CSRF exploits."</li>
-                            <li><strong class="text-oxide">"CRLF Injection Guard"</strong>" — Cookie names and values are rejected if containing ;, \r, \n, or \0."</li>
+                            <li><strong class="text-oxide">"HttpOnly"</strong><span data-i18n="privacy.s2.b1">" — Inaccessible to JavaScript, eliminating XSS token theft."</span></li>
+                            <li><strong class="text-oxide">"Secure"</strong><span data-i18n="privacy.s2.b2">" — Transmitted strictly over encrypted TLS/HTTPS connections."</span></li>
+                            <li><strong class="text-oxide">"SameSite=Lax"</strong><span data-i18n="privacy.s2.b3">" — Enforces cross-site request isolation against CSRF exploits."</span></li>
+                            <li><strong class="text-oxide" data-i18n="privacy.s2.b4_lbl">"CRLF Injection Guard"</strong><span data-i18n="privacy.s2.b4">" — Cookie names and values are rejected if containing ;, \\r, \\n, or \\0."</span></li>
                         </ul>
                     </section>
 
@@ -56,9 +56,9 @@ pub async fn privacy(_req: Request) -> yav::server::HtmlPage {
                     <section class="plate p-6 bg-ink-2 space-y-3">
                         <div class="text-paper font-semibold text-lg flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-sm">"03."</span>
-                            "Flash Notifications & Replay Prevention"
+                            <span data-i18n="privacy.s3.title">"Flash Notifications & Replay Prevention"</span>
                         </div>
-                        <p>
+                        <p data-i18n="privacy.s3.body">
                             "One-time flash messages (e.g. form success notifications or error alerts) embed cryptographically signed 5-minute UNIX timestamps (DEFAULT_FLASH_TTL_SECS = 300). Expired or tampered flash tokens are discarded in constant time before rendering."
                         </p>
                     </section>
@@ -67,12 +67,12 @@ pub async fn privacy(_req: Request) -> yav::server::HtmlPage {
                     <section class="plate p-6 bg-ink-2 space-y-3">
                         <div class="text-paper font-semibold text-lg flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-sm">"04."</span>
-                            "Local Storage Usage"
+                            <span data-i18n="privacy.s4.title">"Local Storage Usage"</span>
                         </div>
                         <p>
-                            "Client-side storage is restricted strictly to user interface ergonomics: your preferred language locale (key: "
-                            <code class="inline">"yav-lang"</code>
-                            ") and system dark mode state. No personally identifiable information (PII) is ever written to localStorage."
+                            <span data-i18n="privacy.s4.body.a">"Client-side storage is restricted strictly to user interface ergonomics: your preferred language locale (key: "</span>
+                            <code class="inline">"yav_lang"</code>
+                            <span data-i18n="privacy.s4.body.b">") and system dark mode state. No personally identifiable information (PII) is ever written to localStorage."</span>
                         </p>
                     </section>
 
@@ -80,12 +80,12 @@ pub async fn privacy(_req: Request) -> yav::server::HtmlPage {
                     <section class="plate p-6 bg-ink-2 space-y-3">
                         <div class="text-paper font-semibold text-lg flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-sm">"05."</span>
-                            "Open-Source Licensing (MIT & Apache-2.0)"
+                            <span data-i18n="privacy.s5.title">"Open-Source Licensing (MIT & Apache-2.0)"</span>
                         </div>
-                        <p>
+                        <p data-i18n="privacy.s5.body">
                             "The Yav framework, its core crates, CLI toolbelt, and this documentation website are dual-licensed under MIT and Apache-2.0. You have complete legal freedom to inspect the source code, compile the binary locally, audit dependencies, self-host on private infrastructure, and verify runtime behavior."
                         </p>
-                        <div class="pt-2 text-xs font-mono text-dim">
+                        <div class="pt-2 text-xs font-mono text-dim" data-i18n="privacy.revised">
                             "Last revised: October 25, 2026 · Maintained by Isaac Yav and contributors."
                         </div>
                     </section>

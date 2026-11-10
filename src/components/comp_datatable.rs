@@ -8,23 +8,23 @@ pub fn ComponentDataTable() -> Node {
     rsx! {
         <section id="datatable" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
-                <span class="n">"5.4"</span>
-                <span class="t">"Radix Data Table"</span>
+                <span class="n">"5.5"</span>
+                <span class="t" data-i18n="comp.dt.badge">"Radix Data Table"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add data-table"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"Server-driven data table."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.dt.title">"Server-driven data table."</h2>
                 <button
                     onclick="copyText(this, 'yav add data-table')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add data-table"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.dt.lede">
                 "Engineered for high-volume logs, telemetry records, and administrative interfaces. Features sortable column headers, HTTP status badges, latency badges, and row-level quick actions with pure server-rendered markup."
             </p>
 
@@ -34,9 +34,9 @@ pub fn ComponentDataTable() -> Node {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "LIVE TELEMETRY TABLE — RADIX RADIX-GRID"
+                        <span data-i18n="comp.dt.preview_head">"LIVE TELEMETRY TABLE — RADIX RADIX-GRID"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"4 of 24 routes compiled"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.dt.preview_sub">"4 of 24 routes compiled"</span>
                 </div>
 
                 // Filter & Search Controls bar
@@ -48,15 +48,16 @@ pub fn ComponentDataTable() -> Node {
                         <input
                             type="text"
                             placeholder="Filter routes or methods..."
+                            data-i18n-placeholder="comp.dt.filter_ph"
                             class="w-full bg-sunk border border-rule rounded pl-9 pr-3 py-1.5 text-xs font-mono text-paper placeholder:text-dim outline-none focus:border-oxide transition-colors"
                         />
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
-                        <span class="text-[11px] font-mono text-dim">"Status:"</span>
+                        <span class="text-[11px] font-mono text-dim" data-i18n="comp.dt.status_lbl">"Status:"</span>
                         <div class="flex items-center border border-rule bg-sunk rounded text-xs font-mono">
-                            <button class="px-2.5 py-1 text-paper bg-ink border-r border-rule font-medium">"All"</button>
+                            <button class="px-2.5 py-1 text-paper bg-ink border-r border-rule font-medium" data-i18n="comp.dt.st_all">"All"</button>
                             <button class="px-2.5 py-1 text-dim hover:text-paper border-r border-rule">"2xx OK"</button>
-                            <button class="px-2.5 py-1 text-dim hover:text-paper">"Error"</button>
+                            <button class="px-2.5 py-1 text-dim hover:text-paper" data-i18n="comp.dt.st_err">"Error"</button>
                         </div>
                     </div>
                 </div>
@@ -66,12 +67,12 @@ pub fn ComponentDataTable() -> Node {
                     <table class="w-full min-w-[640px] text-left font-mono text-[12.5px] border-collapse">
                         <thead>
                             <tr class="border-b border-[rgba(236,233,227,0.08)] text-[11px] text-dim uppercase tracking-wider bg-ink-2/60">
-                                <th class="py-3 px-4 font-medium">"Route Endpoint"</th>
-                                <th class="py-3 px-4 font-medium">"Method"</th>
-                                <th class="py-3 px-4 font-medium">"Status"</th>
-                                <th class="py-3 px-4 font-medium">"p99 Latency"</th>
-                                <th class="py-3 px-4 font-medium">"Memory RSS"</th>
-                                <th class="py-3 px-4 font-medium text-right">"Action"</th>
+                                <th class="py-3 px-4 font-medium" data-i18n="comp.dt.col1">"Route Endpoint"</th>
+                                <th class="py-3 px-4 font-medium" data-i18n="comp.dt.col2">"Method"</th>
+                                <th class="py-3 px-4 font-medium" data-i18n="comp.dt.col3">"Status"</th>
+                                <th class="py-3 px-4 font-medium" data-i18n="comp.dt.col4">"p99 Latency"</th>
+                                <th class="py-3 px-4 font-medium" data-i18n="comp.dt.col5">"Memory RSS"</th>
+                                <th class="py-3 px-4 font-medium text-right" data-i18n="comp.dt.col6">"Action"</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-[rgba(236,233,227,0.06)]">
@@ -89,7 +90,7 @@ pub fn ComponentDataTable() -> Node {
                                 <td class="py-3 px-4 text-ok">"0.18 ms"</td>
                                 <td class="py-3 px-4 text-dim">"14 KB"</td>
                                 <td class="py-3 px-4 text-right">
-                                    <button class="btn btn-sm btn-line text-[11px] py-0.5 px-2">"Replay"</button>
+                                    <button class="btn btn-sm btn-line text-[11px] py-0.5 px-2" data-i18n="comp.dt.act_replay">"Replay"</button>
                                 </td>
                             </tr>
 
@@ -107,7 +108,7 @@ pub fn ComponentDataTable() -> Node {
                                 <td class="py-3 px-4 text-oxide">"0.42 ms"</td>
                                 <td class="py-3 px-4 text-dim">"32 KB"</td>
                                 <td class="py-3 px-4 text-right">
-                                    <button class="btn btn-sm btn-line text-[11px] py-0.5 px-2">"Inspect"</button>
+                                    <button class="btn btn-sm btn-line text-[11px] py-0.5 px-2" data-i18n="comp.dt.act_inspect">"Inspect"</button>
                                 </td>
                             </tr>
 
@@ -125,7 +126,7 @@ pub fn ComponentDataTable() -> Node {
                                 <td class="py-3 px-4 text-ok">"0.24 ms"</td>
                                 <td class="py-3 px-4 text-dim">"18 KB"</td>
                                 <td class="py-3 px-4 text-right">
-                                    <button class="btn btn-sm btn-line text-[11px] py-0.5 px-2">"Replay"</button>
+                                    <button class="btn btn-sm btn-line text-[11px] py-0.5 px-2" data-i18n="comp.dt.act_replay">"Replay"</button>
                                 </td>
                             </tr>
 
@@ -143,7 +144,7 @@ pub fn ComponentDataTable() -> Node {
                                 <td class="py-3 px-4 text-ok">"0.08 ms"</td>
                                 <td class="py-3 px-4 text-dim">"8 KB"</td>
                                 <td class="py-3 px-4 text-right">
-                                    <button class="btn btn-sm btn-line text-[11px] py-0.5 px-2">"Logs"</button>
+                                    <button class="btn btn-sm btn-line text-[11px] py-0.5 px-2" data-i18n="comp.dt.act_logs">"Logs"</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -152,13 +153,13 @@ pub fn ComponentDataTable() -> Node {
 
                 // Table Pagination Footer
                 <div class="p-3 bg-ink-2 border-t border-[rgba(236,233,227,0.08)] flex items-center justify-between text-xs font-mono">
-                    <span class="text-dim">"Showing 1–4 of 24 routes"</span>
+                    <span class="text-dim" data-i18n="comp.dt.showing">"Showing 1–4 of 24 routes"</span>
                     <div class="flex items-center gap-2">
-                        <button class="btn btn-sm btn-line text-[11px] py-1 px-2.5">"← Prev"</button>
+                        <button class="btn btn-sm btn-line text-[11px] py-1 px-2.5" data-i18n="comp.dt.prev">"← Prev"</button>
                         <span class="px-2 py-1 bg-ink border border-oxide text-paper font-semibold text-[11px]">"1"</span>
                         <span class="px-2 py-1 text-dim hover:text-paper cursor-pointer text-[11px]">"2"</span>
                         <span class="px-2 py-1 text-dim hover:text-paper cursor-pointer text-[11px]">"3"</span>
-                        <button class="btn btn-sm btn-line text-[11px] py-1 px-2.5">"Next →"</button>
+                        <button class="btn btn-sm btn-line text-[11px] py-1 px-2.5" data-i18n="comp.dt.next">"Next →"</button>
                     </div>
                 </div>
             </div>
@@ -175,7 +176,7 @@ pub fn ComponentDataTable() -> Node {
                         </div>
                         <button onclick="copyText(this, 'data_table(DataTableProps { columns: vec![\"Route\", \"Method\", \"p99\"], rows })')" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                            <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                         </button>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
@@ -193,8 +194,8 @@ pub fn ComponentDataTable() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"Zero client JS hydration · 100% SEO indexable markup"</span>
-                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span>"Streaming Compatible"</span>
+                        <span data-i18n="comp.dt.ide_l">"Zero client JS hydration · 100% SEO indexable markup"</span>
+                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span><span data-i18n="comp.dt.ide_r">"Streaming Compatible"</span></span>
                     </div>
                 </div>
 
@@ -207,11 +208,11 @@ pub fn ComponentDataTable() -> Node {
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/70 inline-block"></span>
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#22c55e]/70 inline-block"></span>
                             </div>
-                            <span class="text-faint text-[11px] ml-2">"bash — yav-cli scaffold"</span>
+                            <span class="text-faint text-[11px] ml-2" data-i18n="comp.common.term_head">"bash — yav-cli scaffold"</span>
                         </div>
                         <button onclick="copyText(this, 'yav add data-table')" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy command"</span>
+                            <span data-copy-label="" data-i18n="common.copy_cmd" class="text-oxide font-medium">"copy command"</span>
                         </button>
                     </div>
                     <div class="p-4 code space-y-1 text-[13px] bg-[#070709]">

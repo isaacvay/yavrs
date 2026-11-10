@@ -13,6 +13,7 @@ pub fn CommandPalette() -> Node {
                 onclick="window.toggleCmdPalette(event)"
                 class="hidden lg:flex items-center gap-2 h-[34px] px-2.5 xl:pl-3 xl:pr-2.5 border border-rule hover:border-oxide/50 text-[13px] text-dim hover:text-paper transition-colors cursor-pointer bg-ink-2 shrink-0"
                 title="Search documentation (Ctrl+K)"
+                data-i18n-title="cmd.trigger_title"
                 aria-expanded="false"
                 aria-haspopup="true"
             >
@@ -36,6 +37,7 @@ pub fn CommandPalette() -> Node {
                         id="cmd-palette-input"
                         type="text"
                         placeholder="Search documentation, routes, commands..."
+                        data-i18n-placeholder="cmd.placeholder"
                         class="w-full h-11 bg-transparent text-sm text-paper placeholder-dim focus:outline-none font-sans"
                         oninput="filterCommands(this.value)"
                         autocomplete="off"
@@ -44,6 +46,7 @@ pub fn CommandPalette() -> Node {
                         onclick="window.closeCmdPalette()"
                         class="text-dim hover:text-paper ml-2 text-xs font-mono p-1 cursor-pointer"
                         title="Close (ESC)"
+                        data-i18n-title="cmd.close_title"
                     >
                         <kbd class="kbd text-[10px]">"ESC"</kbd>
                     </button>
@@ -51,14 +54,14 @@ pub fn CommandPalette() -> Node {
 
                 // Navigation & Action Items
                 <div class="p-1.5 max-h-[340px] overflow-y-auto space-y-0.5 text-xs font-sans" id="cmd-palette-list">
-                    <div class="px-2.5 pt-2 pb-1 label text-[10px] text-dim font-mono">
+                    <div class="px-2.5 pt-2 pb-1 label text-[10px] text-dim font-mono" data-i18n="cmd.group.nav">
                         "01 Index Navigation"
                     </div>
 
                     <a href="/" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"01"</span>
-                            <span class="font-medium">"Overview / Homepage"</span>
+                            <span class="font-medium" data-i18n="cmd.item.overview">"Overview / Homepage"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/"</span>
                     </a>
@@ -66,7 +69,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/about" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"02"</span>
-                            <span class="font-medium">"Architecture & Tokio Engine"</span>
+                            <span class="font-medium" data-i18n="cmd.item.arch">"Architecture & Tokio Engine"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/about"</span>
                     </a>
@@ -74,7 +77,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/docs" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"03"</span>
-                            <span class="font-medium">"Documentation & Quickstart"</span>
+                            <span class="font-medium" data-i18n="cmd.item.docs">"Documentation & Quickstart"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/docs"</span>
                     </a>
@@ -82,7 +85,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/benchmarks" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"04"</span>
-                            <span class="font-medium">"Verified Benchmarks"</span>
+                            <span class="font-medium" data-i18n="cmd.item.benchmarks">"Verified Benchmarks"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/benchmarks"</span>
                     </a>
@@ -90,7 +93,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/components" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"05"</span>
-                            <span class="font-medium">"UI Components & Icons"</span>
+                            <span class="font-medium" data-i18n="cmd.item.components">"UI Components & Icons"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/components"</span>
                     </a>
@@ -98,7 +101,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/showcase" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"06"</span>
-                            <span class="font-medium">"Production Showcase"</span>
+                            <span class="font-medium" data-i18n="cmd.item.showcase">"Production Showcase"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/showcase"</span>
                     </a>
@@ -106,7 +109,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/faq" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"07"</span>
-                            <span class="font-medium">"Why Yav? / FAQ"</span>
+                            <span class="font-medium" data-i18n="cmd.item.faq">"Why Yav? / FAQ"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/faq"</span>
                     </a>
@@ -114,7 +117,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/releases" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"08"</span>
-                            <span class="font-medium">"Releases & Changelog"</span>
+                            <span class="font-medium" data-i18n="cmd.item.releases">"Releases & Changelog"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/releases"</span>
                     </a>
@@ -122,19 +125,19 @@ pub fn CommandPalette() -> Node {
                     <a href="/privacy" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="font-mono text-[11px] text-oxide group-hover:underline">"09"</span>
-                            <span class="font-medium">"Privacy & Security Model"</span>
+                            <span class="font-medium" data-i18n="cmd.item.privacy">"Privacy & Security Model"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/privacy"</span>
                     </a>
 
-                    <div class="px-2.5 pt-3 pb-1 label text-[10px] text-dim font-mono">
+                    <div class="px-2.5 pt-3 pb-1 label text-[10px] text-dim font-mono" data-i18n="cmd.group.enterprise">
                         "02 Enterprise Architecture & Protocols"
                     </div>
 
                     <a href="/docs#ai-mcp" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-[11px]">"✦"</span>
-                            <span class="font-medium">"AI SDK & Model Context Protocol (MCP)"</span>
+                            <span class="font-medium" data-i18n="cmd.item.ai_mcp">"AI SDK & Model Context Protocol (MCP)"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/docs#ai-mcp"</span>
                     </a>
@@ -142,7 +145,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/docs#passkeys-rebac" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-[11px]">"✦"</span>
-                            <span class="font-medium">"WebAuthn Passkeys & ReBAC Zanzibar"</span>
+                            <span class="font-medium" data-i18n="cmd.item.passkeys">"WebAuthn Passkeys & ReBAC Zanzibar"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/docs#passkeys-rebac"</span>
                     </a>
@@ -150,7 +153,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/docs#resilience" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-[11px]">"✦"</span>
-                            <span class="font-medium">"Resilience: Circuit Breaker & XFetch"</span>
+                            <span class="font-medium" data-i18n="cmd.item.resilience">"Resilience: Circuit Breaker & XFetch"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/docs#resilience"</span>
                     </a>
@@ -158,7 +161,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/docs#modern-protocols" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="text-oxide font-mono text-[11px]">"✦"</span>
-                            <span class="font-medium">"GraphQL, TurboStream & Tus Resumable"</span>
+                            <span class="font-medium" data-i18n="cmd.item.protocols">"GraphQL, TurboStream & Tus Resumable"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/docs#modern-protocols"</span>
                     </a>
@@ -166,7 +169,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/components#charts" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="text-ok font-mono text-[11px]">"⬡"</span>
-                            <span class="font-medium">"Enterprise SVG Charts & Heatmaps"</span>
+                            <span class="font-medium" data-i18n="cmd.item.charts">"Enterprise SVG Charts & Heatmaps"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/components#charts"</span>
                     </a>
@@ -174,7 +177,7 @@ pub fn CommandPalette() -> Node {
                     <a href="/components#enterprise" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="text-ok font-mono text-[11px]">"⬡"</span>
-                            <span class="font-medium">"DataGrid, Kanban (LexoRank) & FlowCanvas"</span>
+                            <span class="font-medium" data-i18n="cmd.item.enterprise">"DataGrid, Kanban (LexoRank) & FlowCanvas"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/components#enterprise"</span>
                     </a>
@@ -182,35 +185,35 @@ pub fn CommandPalette() -> Node {
                     <a href="/components#visual-widgets" onclick="window.closeCmdPalette()" class="cmd-item flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors group rounded">
                         <div class="flex items-center gap-2.5">
                             <span class="text-ok font-mono text-[11px]">"⬡"</span>
-                            <span class="font-medium">"3D Mesh Viewer & Reactive Spreadsheet"</span>
+                            <span class="font-medium" data-i18n="cmd.item.widgets">"3D Mesh Viewer & Reactive Spreadsheet"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"/components#visual-widgets"</span>
                     </a>
 
-                    <div class="px-2.5 pt-3 pb-1 label text-[10px] text-dim font-mono">
+                    <div class="px-2.5 pt-3 pb-1 label text-[10px] text-dim font-mono" data-i18n="cmd.group.actions">
                         "03 Developer Actions"
                     </div>
 
                     <button
-                        onclick="navigator.clipboard.writeText('cargo install yav-cli'); alertNotification('Copied: cargo install yav-cli'); window.closeCmdPalette();"
+                        onclick="if(navigator.clipboard) navigator.clipboard.writeText('cargo install yav-cli'); alertNotification((window.yavT ? window.yavT('cmd.toast.copied_prefix', 'Copied: ') : 'Copied: ') + 'cargo install yav-cli'); window.closeCmdPalette();"
                         class="cmd-item w-full flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono rounded"
                     >
                         <div class="flex items-center gap-2.5">
                             <span class="text-oxide">"$"</span>
                             <span class="text-[12px] text-paper">"cargo install yav-cli"</span>
                         </div>
-                        <span class="text-[10px] text-oxide font-medium">"copy"</span>
+                        <span class="text-[10px] text-oxide font-medium" data-i18n="common.copy">"copy"</span>
                     </button>
 
                     <button
-                        onclick="navigator.clipboard.writeText('yav new my-app'); alertNotification('Copied: yav new my-app'); window.closeCmdPalette();"
+                        onclick="if(navigator.clipboard) navigator.clipboard.writeText('yav new my-app'); alertNotification((window.yavT ? window.yavT('cmd.toast.copied_prefix', 'Copied: ') : 'Copied: ') + 'yav new my-app'); window.closeCmdPalette();"
                         class="cmd-item w-full flex items-center justify-between px-2.5 py-2 text-paper-2 hover:bg-[rgba(236,233,227,0.06)] hover:text-paper cursor-pointer transition-colors text-left font-mono rounded"
                     >
                         <div class="flex items-center gap-2.5">
                             <span class="text-oxide">"$"</span>
                             <span class="text-[12px] text-paper">"yav new my-app"</span>
                         </div>
-                        <span class="text-[10px] text-dim">"scaffold"</span>
+                        <span class="text-[10px] text-dim" data-i18n="cmd.action.scaffold">"scaffold"</span>
                     </button>
 
                     <a
@@ -221,12 +224,12 @@ pub fn CommandPalette() -> Node {
                     >
                         <div class="flex items-center gap-2.5">
                             {render_icon("minimal:github", IconSize::Sm, Some("w-4 h-4 text-dim"), None)}
-                            <span class="font-medium">"GitHub Repository"</span>
+                            <span class="font-medium" data-i18n="cmd.action.github">"GitHub Repository"</span>
                         </div>
                         <span class="font-mono text-[11px] text-dim">"↗"</span>
                     </a>
 
-                    <div id="cmd-no-results" class="hidden p-6 text-center text-dim font-mono text-xs">
+                    <div id="cmd-no-results" class="hidden p-6 text-center text-dim font-mono text-xs" data-i18n="cmd.empty">
                         "No matching routes or commands found."
                     </div>
                 </div>
@@ -235,9 +238,9 @@ pub fn CommandPalette() -> Node {
                 <div class="px-3.5 py-1.5 bg-sunk border-t border-rule flex items-center justify-between text-[11px] text-dim font-mono">
                     <span class="flex items-center gap-1.5">
                         <span class="text-oxide">"✦"</span>
-                        <span class="text-mute text-[10px]">"Editorial Command Bar"</span>
+                        <span class="text-mute text-[10px]" data-i18n="cmd.footer.brand">"Editorial Command Bar"</span>
                     </span>
-                    <span class="text-mute text-[10px]">"ESC to close"</span>
+                    <span class="text-mute text-[10px]" data-i18n="cmd.footer.esc">"ESC to close"</span>
                 </div>
             </div>
 
@@ -245,7 +248,7 @@ pub fn CommandPalette() -> Node {
             <div id="cmd-notification" class="fixed bottom-6 right-6 z-50 transform translate-y-12 opacity-0 transition-all duration-300 pointer-events-none">
                 <div class="px-4 py-2.5 plate bg-sunk text-paper text-xs font-mono flex items-center gap-2.5 border border-rule shadow-xl">
                     <span class="dot dot-ok"></span>
-                    <span id="cmd-notification-text">"Action complete"</span>
+                    <span id="cmd-notification-text" data-i18n="cmd.toast.done">"Action complete"</span>
                 </div>
             </div>
 

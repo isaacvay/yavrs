@@ -30,22 +30,22 @@ window.previewTheme = function(themeName, bg, fg, accent) {
         <section id="themes" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.12"</span>
-                <span class="t">"Multi-Theme System"</span>
+                <span class="t" data-i18n="comp.themes.sec">"Multi-Theme System"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add theme-selector"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"8 built-in themes with zero-FOUC persistence."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.themes.title">"8 built-in themes with zero-FOUC persistence."</h2>
                 <button
                     onclick="copyText(this, 'yav add theme-selector')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add theme-selector"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.themes.lede">
                 "Complete zero-dependency theme engine with 8 calibrated design systems, client-side persistence in localStorage and cookies, and an inline script that executes before HTML body parsing to guarantee zero flash of unstyled content (FOUC)."
             </p>
 
@@ -55,9 +55,9 @@ window.previewTheme = function(themeName, bg, fg, accent) {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "LIVE PREVIEW — 8 THEME PRESETS"
+                        <span data-i18n="comp.themes.preview_head">"LIVE PREVIEW — 8 THEME PRESETS"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"click to test palette"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.themes.preview_sub">"click to test palette"</span>
                 </div>
                 <div class="p-6 sm:p-8 space-y-6 bg-ink-2">
                     // Theme selector chips
@@ -98,12 +98,12 @@ window.previewTheme = function(themeName, bg, fg, accent) {
 
                     // Interactive theme preview canvas
                     <div id="theme-preview-canvas" class="p-6 rounded-xl border border-rule transition-all duration-300 space-y-4" style="background-color:#0b0b0c; color:#ece9e3;">
-                        <div class="flex items-center justify-between border-b border-rule/50 pb-3">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-rule/50 pb-3">
                             <div class="flex items-center gap-2 font-mono text-xs">
                                 <span class="font-bold text-oxide" id="theme-active-name">"Editorial Blueprint"</span>
-                                <span class="text-dim">"· active theme"</span>
+                                <span class="text-dim" data-i18n="comp.themes.active_lbl">"· active theme"</span>
                             </div>
-                            <div class="flex items-center gap-3 font-mono text-[11px] text-dim">
+                            <div class="flex flex-wrap items-center gap-3 font-mono text-[11px] text-dim">
                                 <span>"--bg: "<span id="theme-var-bg" class="text-paper">"#0b0b0c"</span></span>
                                 <span>"--fg: "<span id="theme-var-fg" class="text-paper">"#ece9e3"</span></span>
                                 <span>"--accent: "<span id="theme-var-accent" class="text-oxide font-bold">"#e0592f"</span></span>
@@ -112,19 +112,19 @@ window.previewTheme = function(themeName, bg, fg, accent) {
 
                         <div class="grid sm:grid-cols-3 gap-4 font-mono text-xs">
                             <div class="p-4 rounded-lg border border-rule/60 bg-sunk/50 space-y-2">
-                                <span class="text-dim text-[11px]">"Primary Card"</span>
+                                <span class="text-dim text-[11px]" data-i18n="comp.themes.card1_lbl">"Primary Card"</span>
                                 <div class="font-bold text-sm">"124,500 req/s"</div>
-                                <p class="text-[11px] text-dim">"High-concurrency Axum 0.8 engine"</p>
+                                <p class="text-[11px] text-dim" data-i18n="comp.themes.card1_sub">"High-concurrency Axum 0.8 engine"</p>
                             </div>
                             <div class="p-4 rounded-lg border border-rule/60 bg-sunk/50 space-y-2">
-                                <span class="text-dim text-[11px]">"Session Security"</span>
+                                <span class="text-dim text-[11px]" data-i18n="comp.themes.card2_lbl">"Session Security"</span>
                                 <div class="font-bold text-sm">"HMAC-SHA256"</div>
-                                <p class="text-[11px] text-dim">"Constant-time tamper-proof cookies"</p>
+                                <p class="text-[11px] text-dim" data-i18n="comp.themes.card2_sub">"Constant-time tamper-proof cookies"</p>
                             </div>
                             <div class="p-4 rounded-lg border border-rule/60 bg-sunk/50 space-y-2">
-                                <span class="text-dim text-[11px]">"Client Payload"</span>
-                                <div class="font-bold text-sm text-oxide">"0 KB JavaScript"</div>
-                                <p class="text-[11px] text-dim">"Zero hydration overhead"</p>
+                                <span class="text-dim text-[11px]" data-i18n="comp.themes.card3_lbl">"Client Payload"</span>
+                                <div class="font-bold text-sm text-oxide" data-i18n="comp.themes.card3_val">"0 KB JavaScript"</div>
+                                <p class="text-[11px] text-dim" data-i18n="comp.themes.card3_sub">"Zero hydration overhead"</p>
                             </div>
                         </div>
                     </div>
@@ -142,7 +142,7 @@ window.previewTheme = function(themeName, bg, fg, accent) {
                     </div>
                     <button data-copy="use yav::ui::{Theme, ThemeSelector};\n\nrsx! {\n    <head>\n        {Theme::inject_all_themes_css()}\n    </head>\n    <ThemeSelector default_theme=&quot;editorial-blueprint&quot; />\n}" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                         {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                        <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                        <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                     </button>
                 </div>
                 <div class="flex bg-[#0b0b0d]">
@@ -160,8 +160,8 @@ window.previewTheme = function(themeName, bg, fg, accent) {
                     </div>
                 </div>
                 <div class="ide-status">
-                    <span>"8 themes · localStorage & cookie sync"</span>
-                    <span class="text-ok">"Zero Flash of Unstyled Content"</span>
+                    <span data-i18n="comp.themes.ide_l">"8 themes · localStorage & cookie sync"</span>
+                    <span class="text-ok" data-i18n="comp.themes.ide_r">"Zero Flash of Unstyled Content"</span>
                 </div>
             </div>
 

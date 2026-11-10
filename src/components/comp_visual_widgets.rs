@@ -22,12 +22,12 @@ window.evalSpreadsheet = function() {
         <section id="visual-widgets" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.19"</span>
-                <span class="t">"Advanced Interactive Widgets"</span>
+                <span class="t" data-i18n="comp.vis.sec">"Advanced Interactive Widgets"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add widgets"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"3D Wireframes, Reactive Spreadsheet & Code Playground."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.vis.title">"3D Wireframes, Reactive Spreadsheet & Code Playground."</h2>
                 <button
                     data-copy="yav add model-viewer-3d code-playground spreadsheet diff-viewer signature-pad cookie-consent"
                     onclick="copyText(this)"
@@ -35,10 +35,10 @@ window.evalSpreadsheet = function() {
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add widgets"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.vis.lede">
                 "Specialized application widgets engineered in pure Rust: direct SVG 3D wireframe projections with mouse orbit, reactive Excel-like spreadsheets with formula engines (=SUM, =AVG), split-view code playgrounds, side-by-side git diff viewers, and GDPR consent centers."
             </p>
 
@@ -48,18 +48,18 @@ window.evalSpreadsheet = function() {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "LIVE PREVIEW — SPECIALIZED APPLICATION WIDGETS"
+                        <span data-i18n="comp.vis.preview_head">"LIVE PREVIEW — SPECIALIZED APPLICATION WIDGETS"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"Pure Rust · SVG Projections · Formula Engine"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.vis.preview_sub">"Pure Rust · SVG Projections · Formula Engine"</span>
                 </div>
                 <div class="p-6 sm:p-8 space-y-8 bg-ink-2">
                     // Grid 1: Pure Rust 3D Model Viewer & Reactive Spreadsheet
                     <div class="grid lg:grid-cols-12 gap-6">
                         // 1. 3D Model Viewer (6 cols)
                         <div class="lg:col-span-6 p-5 bg-sunk border border-rule rounded space-y-4">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-dim uppercase">"Pure-Rust 3D Wireframe Mesh (Euler Rotations)"</span>
-                                <span class="chip text-[11px]">"Zero Three.js"</span>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs font-mono text-dim uppercase" data-i18n="comp.vis.mesh_lbl">"Pure-Rust 3D Wireframe Mesh (Euler Rotations)"</span>
+                                <span class="chip text-[11px]" data-i18n="comp.vis.no_three">"Zero Three.js"</span>
                             </div>
                             
                             // SVG 3D Cube Projection
@@ -103,15 +103,15 @@ window.evalSpreadsheet = function() {
 
                             <div class="flex items-center justify-between text-xs font-mono text-dim pt-1 border-t border-rule">
                                 <span>"ModelViewer3D::isometric_cube()"</span>
-                                <span class="text-paper">"8 Vertices · 6 Faces"</span>
+                                <span class="text-paper" data-i18n="comp.vis.mesh_stat">"8 Vertices · 6 Faces"</span>
                             </div>
                         </div>
 
                         // 2. Reactive Spreadsheet (6 cols)
                         <div class="lg:col-span-6 p-5 bg-sunk border border-rule rounded space-y-4">
-                            <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-dim uppercase">"Reactive Spreadsheet (=SUM / =AVG)"</span>
-                                <span class="text-xs font-mono text-ok">"Live Formulas"</span>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs font-mono text-dim uppercase" data-i18n="comp.vis.sheet_lbl">"Reactive Spreadsheet (=SUM / =AVG)"</span>
+                                <span class="text-xs font-mono text-ok" data-i18n="comp.vis.sheet_live">"Live Formulas"</span>
                             </div>
 
                             <div class="border border-rule rounded overflow-hidden text-xs font-mono table-scroll">
@@ -119,28 +119,28 @@ window.evalSpreadsheet = function() {
                                     <thead class="bg-ink-2 text-dim border-b border-rule">
                                         <tr>
                                             <th class="w-8 py-1.5 px-2 text-center border-r border-rule">"#"</th>
-                                            <th class="py-1.5 px-3 text-left border-r border-rule">"A (Category)"</th>
-                                            <th class="py-1.5 px-3 text-right">"B (Budget)"</th>
+                                            <th class="py-1.5 px-3 text-left border-r border-rule" data-i18n="comp.vis.th_cat">"A (Category)"</th>
+                                            <th class="py-1.5 px-3 text-right" data-i18n="comp.vis.th_budget">"B (Budget)"</th>
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-rule bg-[#0b0b0d]">
                                         <tr>
                                             <td class="text-center text-dim bg-sunk/50 border-r border-rule">"1"</td>
-                                            <td class="px-3 py-1.5 text-paper border-r border-rule">"Infrastructure Server"</td>
+                                            <td class="px-3 py-1.5 text-paper border-r border-rule" data-i18n="comp.vis.r1">"Infrastructure Server"</td>
                                             <td class="px-2 py-1 text-right">
                                                 <input id="cell-a1" type="number" value="4500" oninput="window.evalSpreadsheet()" class="w-24 text-right bg-sunk border border-rule rounded px-1.5 py-0.5 text-paper focus:border-oxide outline-none" />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="text-center text-dim bg-sunk/50 border-r border-rule">"2"</td>
-                                            <td class="px-3 py-1.5 text-paper border-r border-rule">"Edge Network Bandwidth"</td>
+                                            <td class="px-3 py-1.5 text-paper border-r border-rule" data-i18n="comp.vis.r2">"Edge Network Bandwidth"</td>
                                             <td class="px-2 py-1 text-right">
                                                 <input id="cell-a2" type="number" value="1800" oninput="window.evalSpreadsheet()" class="w-24 text-right bg-sunk border border-rule rounded px-1.5 py-0.5 text-paper focus:border-oxide outline-none" />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="text-center text-dim bg-sunk/50 border-r border-rule">"3"</td>
-                                            <td class="px-3 py-1.5 text-paper border-r border-rule">"Security & Passkeys FIDO2"</td>
+                                            <td class="px-3 py-1.5 text-paper border-r border-rule" data-i18n="comp.vis.r3">"Security & Passkeys FIDO2"</td>
                                             <td class="px-2 py-1 text-right">
                                                 <input id="cell-a3" type="number" value="1200" oninput="window.evalSpreadsheet()" class="w-24 text-right bg-sunk border border-rule rounded px-1.5 py-0.5 text-paper focus:border-oxide outline-none" />
                                             </td>
@@ -166,7 +166,7 @@ window.evalSpreadsheet = function() {
                         // Git Diff Viewer (7 cols)
                         <div class="md:col-span-7 p-5 bg-sunk border border-rule rounded space-y-3 font-mono text-xs">
                             <div class="flex items-center justify-between">
-                                <span class="text-dim uppercase text-[11px]">"LCS Code Diff Viewer (<DiffViewer />)"</span>
+                                <span class="text-dim uppercase text-[11px]" data-i18n="comp.vis.diff_lbl">"LCS Code Diff Viewer (<DiffViewer />)"</span>
                                 <span class="text-dim">"commit 6a4f89d"</span>
                             </div>
                             <div class="border border-rule rounded overflow-hidden bg-[#070709] divide-y divide-rule/40 code-scroll">
@@ -185,18 +185,18 @@ window.evalSpreadsheet = function() {
                         // Cookie Consent Center (5 cols)
                         <div class="md:col-span-5 p-5 bg-sunk border border-rule rounded space-y-3 font-mono text-xs">
                             <div class="flex items-center justify-between">
-                                <span class="text-dim uppercase text-[11px]">"GDPR & ePrivacy Consent Center"</span>
-                                <span class="text-ok">"Compliant"</span>
+                                <span class="text-dim uppercase text-[11px]" data-i18n="comp.vis.gdpr_lbl">"GDPR & ePrivacy Consent Center"</span>
+                                <span class="text-ok" data-i18n="comp.vis.compliant">"Compliant"</span>
                             </div>
                             <div class="p-3 bg-ink-2 border border-rule rounded space-y-2.5">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-paper font-semibold">"Strictly Necessary"</span>
-                                    <span class="text-ok text-[11px]">"Always Active"</span>
+                                    <span class="text-paper font-semibold" data-i18n="comp.vis.strict">"Strictly Necessary"</span>
+                                    <span class="text-ok text-[11px]" data-i18n="comp.vis.always">"Always Active"</span>
                                 </div>
-                                <p class="text-[11px] text-mute">"Cryptographic HMAC sessions and CSRF token protection."</p>
+                                <p class="text-[11px] text-mute" data-i18n="comp.vis.strict_desc">"Cryptographic HMAC sessions and CSRF token protection."</p>
                                 <div class="flex items-center justify-between pt-2 border-t border-rule">
-                                    <span class="text-paper font-semibold">"Performance Telemetry"</span>
-                                    <span class="text-oxide text-[11px]">"Enabled"</span>
+                                    <span class="text-paper font-semibold" data-i18n="comp.vis.telemetry">"Performance Telemetry"</span>
+                                    <span class="text-oxide text-[11px]" data-i18n="comp.vis.enabled">"Enabled"</span>
                                 </div>
                             </div>
                         </div>
@@ -219,7 +219,7 @@ window.evalSpreadsheet = function() {
                         class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono mr-2"
                     >
                         {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                        <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                        <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                     </button>
                 </div>
                 <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#0b0b0d]">
@@ -234,8 +234,8 @@ window.evalSpreadsheet = function() {
                     <div>"}"</div>
                 </div>
                 <div class="ide-status">
-                    <span>"Direct Euler perspective projections into SVG vector streams"</span>
-                    <span class="text-ok">"Zero Node.js · Zero Canvas · Zero Native C Libs"</span>
+                    <span data-i18n="comp.vis.ide_l">"Direct Euler perspective projections into SVG vector streams"</span>
+                    <span class="text-ok" data-i18n="comp.vis.ide_r">"Zero Node.js · Zero Canvas · Zero Native C Libs"</span>
                 </div>
             </div>
             {script}

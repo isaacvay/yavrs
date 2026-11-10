@@ -13,15 +13,15 @@ pub fn DocsComponents() -> Node {
             <section id="rsx-syntax" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"2.1"</span>
-                    <span class="t">"RSX Macro & Markup Syntax"</span>
+                    <span class="t" data-i18n="docs.comp.2_1_sec">"RSX Macro & Markup Syntax"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"rsx!"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"JSX ergonomics. Direct buffer streaming."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.comp.2_1_title">"JSX ergonomics. Direct buffer streaming."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "The "
+                    <span data-i18n="docs.comp.2_1_p1">"The "</span>
                     <code class="inline">"rsx!"</code>
-                    " procedural macro translates declarative tags directly into zero-allocation buffer append instructions at build time. There is no Virtual DOM diffing, no synthetic event layer, and zero runtime template parsing overhead."
+                    <span data-i18n="docs.comp.2_1_p2">" procedural macro translates declarative tags directly into zero-allocation buffer append instructions at build time. There is no Virtual DOM diffing, no synthetic event layer, and zero runtime template parsing overhead."</span>
                 </p>
 
                 // IDE LOOK WINDOW
@@ -35,7 +35,7 @@ pub fn DocsComponents() -> Node {
                         </div>
                         <button data-copy="use yav::prelude::*;\n\n#[component]\npub fn ProjectCard(title: &str, stars: u32, is_featured: bool) -> Node {\n    rsx! {\n        <div class=&quot;p-6 border rounded-lg bg-surface&quot;>\n            <h3 class=&quot;text-xl font-bold&quot;>{title}</h3>\n            <p class=&quot;text-sm text-dim&quot;>Stars: {stars}</p>\n        </div>\n    }\n}" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                            <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                         </button>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
@@ -69,22 +69,22 @@ pub fn DocsComponents() -> Node {
                     </div>
                     <div class="ide-status">
                         <span>"Rust · UTF-8 · ProjectCard.rs"</span>
-                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span>"Compiled without runtime overhead"</span>
+                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span><span data-i18n="docs.comp.2_1_st_r">"Compiled without runtime overhead"</span></span>
                     </div>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-4 pt-2 font-mono text-[12px] text-mute">
                     <div class="p-4 plate bg-ink-2 space-y-1.5">
-                        <span class="text-oxide font-bold">"Automatic XSS Escaping"</span>
-                        <p class="text-[11.5px] leading-relaxed">"Dynamic text and attributes are escaped automatically (&, <, >, \", '). Only explicit Node::raw() bypasses escaping."</p>
+                        <span class="text-oxide font-bold" data-i18n="docs.comp.c1_t">"Automatic XSS Escaping"</span>
+                        <p class="text-[11.5px] leading-relaxed" data-i18n="docs.comp.c1_d">"Dynamic text and attributes are escaped automatically (&, <, >, \", '). Only explicit Node::raw() bypasses escaping."</p>
                     </div>
                     <div class="p-4 plate bg-ink-2 space-y-1.5">
-                        <span class="text-oxide font-bold">"No Quotes for Text"</span>
-                        <p class="text-[11.5px] leading-relaxed">"Just like in JSX, plain textual content does not require quotes: <p>Welcome to Yav</p> is valid RSX."</p>
+                        <span class="text-oxide font-bold" data-i18n="docs.comp.c2_t">"No Quotes for Text"</span>
+                        <p class="text-[11.5px] leading-relaxed" data-i18n="docs.comp.c2_d">"Just like in JSX, plain textual content does not require quotes: <p>Welcome to Yav</p> is valid RSX."</p>
                     </div>
                     <div class="p-4 plate bg-ink-2 space-y-1.5">
-                        <span class="text-oxide font-bold">"Fragments & Nesting"</span>
-                        <p class="text-[11.5px] leading-relaxed">"Group sibling nodes without introducing superfluous wrapper elements via empty fragments: <> ... </>."</p>
+                        <span class="text-oxide font-bold" data-i18n="docs.comp.c3_t">"Fragments & Nesting"</span>
+                        <p class="text-[11.5px] leading-relaxed" data-i18n="docs.comp.c3_d">"Group sibling nodes without introducing superfluous wrapper elements via empty fragments: <> ... </>."</p>
                     </div>
                 </div>
             </section>
@@ -95,12 +95,12 @@ pub fn DocsComponents() -> Node {
             <section id="component-patterns" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"2.2"</span>
-                    <span class="t">"Component Patterns: Functional & Props Structs"</span>
+                    <span class="t" data-i18n="docs.comp.2_2_sec">"Component Patterns: Functional & Props Structs"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"#[component]"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Two idiomatic patterns for maximum ergonomics."</h2>
-                <p class="text-mute text-[15.5px] leading-relaxed">
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.comp.2_2_title">"Two idiomatic patterns for maximum ergonomics."</h2>
+                <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="docs.comp.2_2_lede">
                     "Yav supports both auto-generated multi-argument props for everyday components and explicit typed structs for complex enterprise interfaces."
                 </p>
 
@@ -110,7 +110,7 @@ pub fn DocsComponents() -> Node {
                         <div class="ide-head">
                             <div class="ide-tab">
                                 {render_icon("file", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                "Pattern A: Auto Props"
+                                <span data-i18n="docs.comp.pat_a">"Pattern A: Auto Props"</span>
                             </div>
                             <span class="text-[10px] text-dim font-mono">"UserBadge.rs"</span>
                         </div>
@@ -137,7 +137,7 @@ pub fn DocsComponents() -> Node {
                         <div class="ide-head">
                             <div class="ide-tab">
                                 {render_icon("file", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                "Pattern B: Typed Struct"
+                                <span data-i18n="docs.comp.pat_b">"Pattern B: Typed Struct"</span>
                             </div>
                             <span class="text-[10px] text-dim font-mono">"StatCard.rs"</span>
                         </div>
@@ -164,15 +164,15 @@ pub fn DocsComponents() -> Node {
             <section id="component-children" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"2.3"</span>
-                    <span class="t">"Children & Shell Layouts"</span>
+                    <span class="t" data-i18n="docs.comp.2_3_sec">"Children & Shell Layouts"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"Vec<Node>"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"First-class slot composition with Vec<Node>."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.comp.2_3_title">"First-class slot composition with Vec<Node>."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Any component accepting a "
+                    <span data-i18n="docs.comp.2_3_p1">"Any component accepting a "</span>
                     <code class="inline">"children: Vec<Node>"</code>
-                    " property can directly wrap arbitrary nested RSX elements, enabling flexible layout hierarchies."
+                    <span data-i18n="docs.comp.2_3_p2">" property can directly wrap arbitrary nested RSX elements, enabling flexible layout hierarchies."</span>
                 </p>
 
                 // IDE LOOK WINDOW
@@ -184,7 +184,7 @@ pub fn DocsComponents() -> Node {
                                 "src/components/ModalDialog.rs"
                             </div>
                         </div>
-                        <span class="text-[11px] text-dim font-mono">"Slot Wrapper"</span>
+                        <span class="text-[11px] text-dim font-mono" data-i18n="docs.comp.slot_badge">"Slot Wrapper"</span>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
                         <div class="select-none text-right pr-4 text-faint border-r border-rule font-mono text-[12px] leading-[1.75] py-4 pl-4">
@@ -207,8 +207,8 @@ pub fn DocsComponents() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"Rust · Vec<Node> children slot"</span>
-                        <span>"Zero runtime overhead"</span>
+                        <span data-i18n="docs.comp.2_3_st_l">"Rust · Vec<Node> children slot"</span>
+                        <span data-i18n="docs.comp.zero_ovh">"Zero runtime overhead"</span>
                     </div>
                 </div>
             </section>
@@ -219,15 +219,15 @@ pub fn DocsComponents() -> Node {
             <section id="file-components" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"2.4"</span>
-                    <span class="t">"File-Based Components (.yavml / .yav)"</span>
+                    <span class="t" data-i18n="docs.comp.2_4_sec">"File-Based Components (.yavml / .yav)"</span>
                     <span class="sec-rule"></span>
-                    <span class="r">"ESM syntax"</span>
+                    <span class="r" data-i18n="docs.comp.2_4_r">"ESM syntax"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Separation of concerns with modern ESM-style markup."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.comp.2_4_title">"Separation of concerns with modern ESM-style markup."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "For frontend developers accustomed to JSX/TSX or Vue Single File Components, Yav allows authoring components in dedicated "
+                    <span data-i18n="docs.comp.2_4_p1">"For frontend developers accustomed to JSX/TSX or Vue Single File Components, Yav allows authoring components in dedicated "</span>
                     <code class="inline">".yavml"</code>
-                    " files with imports and default function exports."
+                    <span data-i18n="docs.comp.2_4_p2">" files with imports and default function exports."</span>
                 </p>
 
                 // IDE LOOK WINDOW
@@ -239,7 +239,7 @@ pub fn DocsComponents() -> Node {
                                 "src/components/ModernCard.yavml"
                             </div>
                         </div>
-                        <span class="text-[11px] text-oxide font-mono">"ESM Syntax"</span>
+                        <span class="text-[11px] text-oxide font-mono" data-i18n="docs.comp.2_4_badge">"ESM Syntax"</span>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
                         <div class="select-none text-right pr-4 text-faint border-r border-rule font-mono text-[12px] leading-[1.75] py-4 pl-4">
@@ -267,8 +267,8 @@ pub fn DocsComponents() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>".yavml ESM component · VS Code Extension supported"</span>
-                        <span>"Parsed by yav-build"</span>
+                        <span data-i18n="docs.comp.2_4_st_l">".yavml ESM component · VS Code Extension supported"</span>
+                        <span data-i18n="docs.comp.2_4_st_r">"Parsed by yav-build"</span>
                     </div>
                 </div>
             </section>
@@ -279,17 +279,17 @@ pub fn DocsComponents() -> Node {
             <section id="static-folding" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"2.5"</span>
-                    <span class="t">"Static Subtree Folding & Zero-Allocation Buffers"</span>
+                    <span class="t" data-i18n="docs.comp.2_5_sec">"Static Subtree Folding & Zero-Allocation Buffers"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"Node::Static"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Compile-time immutable subtree folding."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.comp.2_5_title">"Compile-time immutable subtree folding."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Unlike typical SSR engines that recursively allocate Node trees on every single HTTP request, the "
+                    <span data-i18n="docs.comp.2_5_p1">"Unlike typical SSR engines that recursively allocate Node trees on every single HTTP request, the "</span>
                     <code class="inline">"rsx!"</code>
-                    " proc-macro identifies immutable subtrees at compile-time and folds them into "
+                    <span data-i18n="docs.comp.2_5_p2">" proc-macro identifies immutable subtrees at compile-time and folds them into "</span>
                     <code class="inline">"Node::Static(&'static str)"</code>
-                    ". These branches bypass attribute serialization and write directly to contiguous buffer pools."
+                    <span data-i18n="docs.comp.2_5_p3">". These branches bypass attribute serialization and write directly to contiguous buffer pools."</span>
                 </p>
 
                 <div class="ide-window">
@@ -300,7 +300,7 @@ pub fn DocsComponents() -> Node {
                                 "crates/yav-core/src/node.rs"
                             </div>
                         </div>
-                        <span class="text-[11px] text-ok font-mono">"Zero Allocations"</span>
+                        <span class="text-[11px] text-ok font-mono" data-i18n="docs.comp.2_5_badge">"Zero Allocations"</span>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#0b0b0d]">
                         <div class="token-comment">"// Core zero-allocation enum with Cow<'static, str> slices"</div>
@@ -313,8 +313,8 @@ pub fn DocsComponents() -> Node {
                         <div>"}"</div>
                     </div>
                     <div class="ide-status">
-                        <span>"Zero heap overhead for static markup"</span>
-                        <span class="text-ok">"97% Bare-Metal Throughput"</span>
+                        <span data-i18n="docs.comp.2_5_st_l">"Zero heap overhead for static markup"</span>
+                        <span class="text-ok" data-i18n="docs.comp.2_5_st_r">"97% Bare-Metal Throughput"</span>
                     </div>
                 </div>
             </section>
@@ -325,19 +325,19 @@ pub fn DocsComponents() -> Node {
             <section id="native-control-flow" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"2.6"</span>
-                    <span class="t">"Native Control Flow in RSX"</span>
+                    <span class="t" data-i18n="docs.comp.2_6_sec">"Native Control Flow in RSX"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"if / else & for"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Write standard Rust loops directly inside RSX."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.comp.2_6_title">"Write standard Rust loops directly inside RSX."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "In Yav v0.1.5, you write standard Rust control flow directly inside "
+                    <span data-i18n="docs.comp.2_6_p1">"In Yav v0.1.5, you write standard Rust control flow directly inside "</span>
                     <code class="inline">"rsx!"</code>
-                    " without needing closure wrappers or "
+                    <span data-i18n="docs.comp.2_6_p2">" without needing closure wrappers or "</span>
                     <code class="inline">".iter().map(...)"</code>
-                    " boilerplate. Short boolean attributes and class directives ("
+                    <span data-i18n="docs.comp.2_6_p3">" boilerplate. Short boolean attributes and class directives ("</span>
                     <code class="inline">"class:active={is_active}"</code>
-                    ") are evaluated at compile time."
+                    <span data-i18n="docs.comp.2_6_p4">") are evaluated at compile time."</span>
                 </p>
 
                 <div class="ide-window">
@@ -348,7 +348,7 @@ pub fn DocsComponents() -> Node {
                                 "src/components/UserList.rs"
                             </div>
                         </div>
-                        <span class="text-[11px] text-ok font-mono">"Zero Closure Overhead"</span>
+                        <span class="text-[11px] text-ok font-mono" data-i18n="docs.comp.2_6_badge">"Zero Closure Overhead"</span>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#0b0b0d]">
                         <div class="token-comment">"// Direct Rust control flow inside rsx! without closure hacks"</div>
@@ -368,8 +368,8 @@ pub fn DocsComponents() -> Node {
                         <div>"}"</div>
                     </div>
                     <div class="ide-status">
-                        <span>"Transforms into straight buffer appends during compilation"</span>
-                        <span class="text-ok">"No closure allocation"</span>
+                        <span data-i18n="docs.comp.2_6_st_l">"Transforms into straight buffer appends during compilation"</span>
+                        <span class="text-ok" data-i18n="docs.comp.2_6_st_r">"No closure allocation"</span>
                     </div>
                 </div>
             </section>

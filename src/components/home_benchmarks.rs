@@ -158,33 +158,33 @@ window.runBenchmarkAnimation = function() {
             </div>
             <div class="grid lg:grid-cols-12 gap-12 pt-6">
                 <div class="lg:col-span-4 space-y-6 reveal">
-                    <h2 class="h-section text-paper" data-i18n="bench.title">
-                        "97% of raw metal, "<span class="serif text-oxide">"with a framework on top."</span>
+                    <h2 class="h-section text-paper">
+                        <span data-i18n="bench.title.lead">"97% of raw metal, "</span><span class="serif text-oxide" data-i18n="bench.title.accent">"with a framework on top."</span>
                     </h2>
                     <p class="text-[14.5px] text-mute leading-relaxed" data-i18n="bench.subtitle">
                         "Tested on identical 8 vCPU instances running wrk across 200 concurrent connections rendering dynamic templates with session validation."
                     </p>
                     <div class="pt-2 flex flex-col gap-3 font-mono text-[13px]">
-                        <a href="/benchmarks" class="ulink inline-block">"Full methodology & reproducible steps →"</a>
-                        <button id="btn-replay-bench" onclick="window.runBenchmarkAnimation()" class="inline-flex items-center gap-2 text-dim hover:text-oxide transition-colors cursor-pointer w-fit" title="Rejouer la simulation des benchmarks">
+                        <a href="/benchmarks" class="ulink inline-block" data-i18n="bench.link.methodology">"Full methodology & reproducible steps →"</a>
+                        <button id="btn-replay-bench" onclick="window.runBenchmarkAnimation()" class="inline-flex items-center gap-2 text-dim hover:text-oxide transition-colors cursor-pointer w-fit" title="Replay benchmark simulation" data-i18n-title="bench.replay.title">
                             {render_icon("refresh-cw", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                            <span>"Rerun benchmark simulation"</span>
+                            <span data-i18n="bench.replay">"Rerun benchmark simulation"</span>
                         </button>
                     </div>
                 </div>
                 <div class="lg:col-span-8 space-y-6 reveal" style="--d:120ms" id="benchmarks-bars-container">
                     // Top dimension line
                     <div class="dim-line pb-1">
-                        <span>"DELTA RATIO"</span>
+                        <span data-i18n="bench.delta.label">"DELTA RATIO"</span>
                         <div class="bar"></div>
-                        <span class="text-oxide font-mono text-[12px] font-semibold">"only 2.7% overhead vs raw metal"</span>
+                        <span class="text-oxide font-mono text-[12px] font-semibold" data-i18n="bench.delta.value">"only 2.7% overhead vs raw metal"</span>
                     </div>
 
                     // Row 1: Actix
                     <div class="space-y-2">
                         <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
-                            <span class="text-dim">"actix-web — raw metal, no HTML"</span>
-                            <span class="text-mute shrink-0"><span id="bench-val-actix" data-val="128000">"128,000"</span>" req/s"</span>
+                            <span class="text-dim" data-i18n="bench.row.actix">"actix-web — raw metal, no HTML"</span>
+                            <span class="text-mute shrink-0"><span id="bench-val-actix" data-val="128000">"128,000"</span>" "<span data-i18n="common.req_s">"req/s"</span></span>
                         </div>
                         <div class="hbar" style="--w:100%"><i id="bench-bar-actix" style="display:block;width:0%"></i></div>
                         <div class="bench-line" style="width:0%"></div>
@@ -195,10 +195,10 @@ window.runBenchmarkAnimation = function() {
                         <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
                             <span class="text-paper font-semibold flex items-center gap-2">
                                 <span class="dot dot-ok pulse-dot"></span>
-                                "yav.rs — compiled RSX + HMAC"
+                                <span data-i18n="bench.row.yav">"yav.rs — compiled RSX + HMAC"</span>
                             </span>
                             <span class="text-oxide font-bold shrink-0">
-                                <span id="bench-val-yav" data-val="124500">"124,500"</span>" req/s"
+                                <span id="bench-val-yav" data-val="124500">"124,500"</span>" "<span data-i18n="common.req_s">"req/s"</span>
                                 <span id="bench-pct-yav" class="text-[#f07448] font-mono text-[11px] sm:text-[11.5px] ml-1 font-normal">"(97.3%)"</span>
                             </span>
                         </div>
@@ -209,8 +209,8 @@ window.runBenchmarkAnimation = function() {
                     // Row 3: Go Gin
                     <div class="space-y-2">
                         <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
-                            <span class="text-dim">"go gin — SSR templates"</span>
-                            <span class="text-mute shrink-0"><span id="bench-val-gin" data-val="76200">"76,200"</span>" req/s"</span>
+                            <span class="text-dim" data-i18n="bench.row.gin">"go gin — SSR templates"</span>
+                            <span class="text-mute shrink-0"><span id="bench-val-gin" data-val="76200">"76,200"</span>" "<span data-i18n="common.req_s">"req/s"</span></span>
                         </div>
                         <div class="hbar" style="--w:59.5%"><i id="bench-bar-gin" style="display:block;width:0%"></i></div>
                         <div class="bench-line" style="width:0%"></div>
@@ -219,8 +219,8 @@ window.runBenchmarkAnimation = function() {
                     // Row 4: Fastify
                     <div class="space-y-2">
                         <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
-                            <span class="text-dim">"fastify — node 20"</span>
-                            <span class="text-mute shrink-0"><span id="bench-val-fastify" data-val="34100">"34,100"</span>" req/s"</span>
+                            <span class="text-dim" data-i18n="bench.row.fastify">"fastify — node 20"</span>
+                            <span class="text-mute shrink-0"><span id="bench-val-fastify" data-val="34100">"34,100"</span>" "<span data-i18n="common.req_s">"req/s"</span></span>
                         </div>
                         <div class="hbar" style="--w:26.6%"><i id="bench-bar-fastify" style="display:block;width:0%"></i></div>
                         <div class="bench-line" style="width:0%"></div>
@@ -229,8 +229,8 @@ window.runBenchmarkAnimation = function() {
                     // Row 5: Next.js 15
                     <div class="space-y-2">
                         <div class="flex flex-wrap sm:flex-nowrap items-baseline justify-between gap-1 font-mono text-[12px] sm:text-[13px]">
-                            <span class="text-dim">"next.js 15 — node SSR"</span>
-                            <span class="text-mute shrink-0"><span id="bench-val-next" data-val="8900">"8,900"</span>" req/s"</span>
+                            <span class="text-dim" data-i18n="bench.row.next">"next.js 15 — node SSR"</span>
+                            <span class="text-mute shrink-0"><span id="bench-val-next" data-val="8900">"8,900"</span>" "<span data-i18n="common.req_s">"req/s"</span></span>
                         </div>
                         <div class="hbar" style="--w:7%"><i id="bench-bar-next" style="display:block;width:0%"></i></div>
                     </div>
@@ -239,12 +239,12 @@ window.runBenchmarkAnimation = function() {
                     <div class="pt-2">
                         <div class="ruler opacity-80" style="width:0%"></div>
                         <div class="flex justify-between font-mono text-[10.5px] text-dim pt-2 select-none">
-                            <span>"0 req/s"</span>
+                            <span data-i18n="bench.ruler.zero">"0 req/s"</span>
                             <span class="hidden sm:inline">"32k"</span>
                             <span>"64k"</span>
                             <span class="hidden sm:inline">"96k"</span>
                             <span class="text-oxide font-semibold">"124.5k (Yav)"</span>
-                            <span>"128k (Max)"</span>
+                            <span data-i18n="bench.ruler.max">"128k (Max)"</span>
                         </div>
                     </div>
                 </div>
@@ -257,81 +257,81 @@ window.runBenchmarkAnimation = function() {
         <section class="wrap pt-12 sm:pt-16">
             <div class="sec-head reveal">
                 <span class="n">"05"</span>
-                <span class="t">"Compared"</span>
+                <span class="t" data-i18n="cmp.badge">"Compared"</span>
                 <span class="sec-rule"></span>
-                <span class="r">"same hardware"</span>
+                <span class="r" data-i18n="cmp.meta">"same hardware"</span>
             </div>
             <div class="pt-6 table-scroll reveal">
                 <table class="dtable min-w-[760px]">
                     <thead>
                         <tr>
-                            <th>"Metric / Capability"</th>
+                            <th data-i18n="cmp.th.metric">"Metric / Capability"</th>
                             <th class="col-us">"yav.rs"</th>
                             <th>"next.js 15"</th>
                             <th>"leptos"</th>
-                            <th>"bare axum"</th>
+                            <th data-i18n="cmp.th.bare_axum">"bare axum"</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-paper">"Throughput (req / s)"</td>
+                            <td class="text-paper" data-i18n="cmp.row.throughput">"Throughput (req / s)"</td>
                             <td class="col-us">"124,500"</td>
                             <td>"8,900"</td>
                             <td>"45,000"</td>
                             <td>"130,000*"</td>
                         </tr>
                         <tr>
-                            <td class="text-paper">"Client JS runtime"</td>
+                            <td class="text-paper" data-i18n="cmp.row.js">"Client JS runtime"</td>
                             <td class="col-us">"0 KB"</td>
                             <td>"350–800 KB"</td>
                             <td>"250–500 KB wasm"</td>
                             <td>"0 KB"</td>
                         </tr>
                         <tr>
-                            <td class="text-paper">"Median TTFB (p50)"</td>
+                            <td class="text-paper" data-i18n="cmp.row.ttfb">"Median TTFB (p50)"</td>
                             <td class="col-us">"0.28 ms"</td>
                             <td>"8.40 ms"</td>
                             <td>"1.20 ms"</td>
                             <td>"0.24 ms"</td>
                         </tr>
                         <tr>
-                            <td class="text-paper">"Idle memory (RSS)"</td>
+                            <td class="text-paper" data-i18n="cmp.row.memory">"Idle memory (RSS)"</td>
                             <td class="col-us">"8.2 MB"</td>
                             <td>"180–320 MB"</td>
                             <td>"24 MB"</td>
                             <td>"6.5 MB"</td>
                         </tr>
                         <tr>
-                            <td class="text-paper">"Node.js required"</td>
-                            <td class="col-us">"Never"</td>
-                            <td>"Yes"</td>
-                            <td>"Optional"</td>
-                            <td>"No"</td>
+                            <td class="text-paper" data-i18n="cmp.row.node">"Node.js required"</td>
+                            <td class="col-us" data-i18n="cmp.val.never">"Never"</td>
+                            <td data-i18n="cmp.val.yes">"Yes"</td>
+                            <td data-i18n="cmp.val.optional">"Optional"</td>
+                            <td data-i18n="cmp.val.no">"No"</td>
                         </tr>
                         <tr>
-                            <td class="text-paper">"Template engine"</td>
-                            <td class="col-us">"rsx! (checked)"</td>
+                            <td class="text-paper" data-i18n="cmp.row.template">"Template engine"</td>
+                            <td class="col-us" data-i18n="cmp.val.rsx_checked">"rsx! (checked)"</td>
                             <td>"JSX"</td>
                             <td>"view!"</td>
                             <td>"format!()"</td>
                         </tr>
                         <tr>
-                            <td class="text-paper">"Built-in icons"</td>
-                            <td class="col-us">"13,000+ native"</td>
-                            <td>"npm package"</td>
-                            <td>"crate"</td>
-                            <td>"none"</td>
+                            <td class="text-paper" data-i18n="cmp.row.icons">"Built-in icons"</td>
+                            <td class="col-us" data-i18n="cmp.val.icons_native">"13,000+ native"</td>
+                            <td data-i18n="cmp.val.npm_pkg">"npm package"</td>
+                            <td data-i18n="cmp.val.crate">"crate"</td>
+                            <td data-i18n="cmp.val.none">"none"</td>
                         </tr>
                         <tr>
-                            <td class="text-paper">"Asset pre-compression"</td>
+                            <td class="text-paper" data-i18n="cmp.row.compression">"Asset pre-compression"</td>
                             <td class="col-us">"Brotli + Gzip"</td>
-                            <td>"plugin / CDN"</td>
-                            <td>"manual"</td>
-                            <td>"Tower layer"</td>
+                            <td data-i18n="cmp.val.plugin_cdn">"plugin / CDN"</td>
+                            <td data-i18n="cmp.val.manual">"manual"</td>
+                            <td data-i18n="cmp.val.tower">"Tower layer"</td>
                         </tr>
                     </tbody>
                 </table>
-                <p class="font-mono text-[11px] text-dim pt-4">"* Bare Axum measured without template HTML rendering (JSON only)."</p>
+                <p class="font-mono text-[11px] text-dim pt-4" data-i18n="cmp.footnote">"* Bare Axum measured without template HTML rendering (JSON only)."</p>
             </div>
         </section>
 

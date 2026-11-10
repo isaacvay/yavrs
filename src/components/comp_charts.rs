@@ -9,30 +9,30 @@ fn render_52w_heatmap_svg() -> Node {
 
     // Months labels
     let months = [
-        ("Jan", 0),
-        ("Fév", 4),
-        ("Mar", 8),
-        ("Avr", 13),
-        ("Mai", 17),
-        ("Juin", 21),
-        ("Juil", 26),
-        ("Août", 30),
-        ("Sep", 35),
-        ("Oct", 39),
-        ("Nov", 43),
-        ("Déc", 48),
+        ("Jan", 0, "comp.charts.m0"),
+        ("Feb", 4, "comp.charts.m1"),
+        ("Mar", 8, "comp.charts.m2"),
+        ("Apr", 13, "comp.charts.m3"),
+        ("May", 17, "comp.charts.m4"),
+        ("Jun", 21, "comp.charts.m5"),
+        ("Jul", 26, "comp.charts.m6"),
+        ("Aug", 30, "comp.charts.m7"),
+        ("Sep", 35, "comp.charts.m8"),
+        ("Oct", 39, "comp.charts.m9"),
+        ("Nov", 43, "comp.charts.m10"),
+        ("Dec", 48, "comp.charts.m11"),
     ];
-    for (name, wk) in months {
+    for (name, wk, key) in months {
         let x = 20.0 + (wk as f64) * 8.2;
         s.push_str(&format!(
-            "<text x=\"{x:.1}\" y=\"10\" font-size=\"8.5\" fill=\"rgba(236,233,227,0.4)\" font-family=\"monospace\">{name}</text>"
+            "<text x=\"{x:.1}\" y=\"10\" font-size=\"8.5\" fill=\"rgba(236,233,227,0.4)\" font-family=\"monospace\" data-i18n=\"{key}\">{name}</text>"
         ));
     }
 
     // Day labels (Mon, Wed, Fri)
-    s.push_str("<text x=\"4\" y=\"29.5\" font-size=\"8\" fill=\"rgba(236,233,227,0.35)\" font-family=\"monospace\">L</text>");
-    s.push_str("<text x=\"4\" y=\"46.0\" font-size=\"8\" fill=\"rgba(236,233,227,0.35)\" font-family=\"monospace\">M</text>");
-    s.push_str("<text x=\"4\" y=\"62.5\" font-size=\"8\" fill=\"rgba(236,233,227,0.35)\" font-family=\"monospace\">V</text>");
+    s.push_str("<text x=\"4\" y=\"29.5\" font-size=\"8\" fill=\"rgba(236,233,227,0.35)\" font-family=\"monospace\" data-i18n=\"comp.charts.d_mon\">M</text>");
+    s.push_str("<text x=\"4\" y=\"46.0\" font-size=\"8\" fill=\"rgba(236,233,227,0.35)\" font-family=\"monospace\" data-i18n=\"comp.charts.d_wed\">W</text>");
+    s.push_str("<text x=\"4\" y=\"62.5\" font-size=\"8\" fill=\"rgba(236,233,227,0.35)\" font-family=\"monospace\" data-i18n=\"comp.charts.d_fri\">F</text>");
 
     // 52 columns x 7 rows
     let colors = [
@@ -69,7 +69,7 @@ fn render_52w_heatmap_svg() -> Node {
             };
 
             s.push_str(&format!(
-                "<rect x=\"{x:.1}\" y=\"{y:.1}\" width=\"6\" height=\"6\" rx=\"1.2\" fill=\"{color}\"><title>Semaine {w_num}, Jour {d_num}: {count} d&#233;ploiements</title></rect>",
+                "<rect x=\"{x:.1}\" y=\"{y:.1}\" width=\"6\" height=\"6\" rx=\"1.2\" fill=\"{color}\"><title>Week {w_num}, Day {d_num}: {count} deploys</title></rect>",
                 w_num = w + 1,
                 d_num = d + 1,
             ));
@@ -77,17 +77,17 @@ fn render_52w_heatmap_svg() -> Node {
     }
 
     // Bottom info and legend
-    s.push_str("<text x=\"20\" y=\"91\" font-size=\"8\" fill=\"rgba(236,233,227,0.4)\" font-family=\"monospace\">1 482 d&#233;ploiements &#183; 0 &#233;chec p99</text>");
+    s.push_str("<text x=\"20\" y=\"91\" font-size=\"8\" fill=\"rgba(236,233,227,0.4)\" font-family=\"monospace\" data-i18n=\"comp.charts.hm_summary\">1,482 deploys · 0 p99 failures</text>");
 
     s.push_str("<g transform=\"translate(315, 84)\">");
-    s.push_str("<text x=\"-30\" y=\"7\" font-size=\"8\" fill=\"rgba(236,233,227,0.4)\" font-family=\"monospace\">Moins</text>");
+    s.push_str("<text x=\"-30\" y=\"7\" font-size=\"8\" fill=\"rgba(236,233,227,0.4)\" font-family=\"monospace\" data-i18n=\"comp.charts.hm_less\">Less</text>");
     s.push_str("<rect x=\"0\" y=\"0\" width=\"7\" height=\"7\" rx=\"1.2\" fill=\"rgba(236,233,227,0.06)\" />");
     s.push_str("<rect x=\"10\" y=\"0\" width=\"7\" height=\"7\" rx=\"1.2\" fill=\"rgba(224,89,47,0.28)\" />");
     s.push_str("<rect x=\"20\" y=\"0\" width=\"7\" height=\"7\" rx=\"1.2\" fill=\"rgba(224,89,47,0.52)\" />");
     s.push_str("<rect x=\"30\" y=\"0\" width=\"7\" height=\"7\" rx=\"1.2\" fill=\"rgba(224,89,47,0.78)\" />");
     s.push_str("<rect x=\"40\" y=\"0\" width=\"7\" height=\"7\" rx=\"1.2\" fill=\"#e0592f\" />");
     s.push_str("<rect x=\"50\" y=\"0\" width=\"7\" height=\"7\" rx=\"1.2\" fill=\"#22c55e\" />");
-    s.push_str("<text x=\"62\" y=\"7\" font-size=\"8\" fill=\"rgba(236,233,227,0.4)\" font-family=\"monospace\">Plus</text>");
+    s.push_str("<text x=\"62\" y=\"7\" font-size=\"8\" fill=\"rgba(236,233,227,0.4)\" font-family=\"monospace\" data-i18n=\"comp.charts.hm_more\">More</text>");
     s.push_str("</g>");
 
     s.push_str("</svg>");
@@ -100,12 +100,12 @@ pub fn ComponentCharts() -> Node {
         <section id="charts" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.17"</span>
-                <span class="t">"Enterprise SVG Charts"</span>
+                <span class="t" data-i18n="comp.charts.sec">"Enterprise SVG Charts"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add charts"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"Server-rendered vector charts. Zero client JS."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.charts.title">"Server-rendered vector charts. Zero client JS."</h2>
                 <button
                     data-copy="yav add charts"
                     onclick="copyText(this)"
@@ -113,10 +113,10 @@ pub fn ComponentCharts() -> Node {
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add charts"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.charts.lede">
                 "Pure Rust SVG visualizations computed on the server: smooth cubic Bézier splines, categorical grouped bar charts, proportional donut segments, calendar heatmaps, and multi-axis radar charts. Lightweight, responsive, and completely immune to client-side charting library bloat."
             </p>
 
@@ -126,28 +126,28 @@ pub fn ComponentCharts() -> Node {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "LIVE PREVIEW — SERVER-RENDERED VECTOR CHARTS"
+                        <span data-i18n="comp.charts.preview_head">"LIVE PREVIEW — SERVER-RENDERED VECTOR CHARTS"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"100% SVG · Zero Canvas · Zero npm"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.charts.preview_sub">"100% SVG · Zero Canvas · Zero npm"</span>
                 </div>
                 <div class="p-6 sm:p-8 space-y-8 bg-ink-2">
                     // Grid 1: Line Chart & Donut Chart
                     <div class="grid lg:grid-cols-12 gap-6">
                         // Line Chart (8 cols)
                         <div class="lg:col-span-8 p-5 bg-sunk border border-rule rounded space-y-4">
-                            <div class="flex items-center justify-between">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
                                 <div>
-                                    <span class="text-xs font-mono text-dim block">"HTTP THROUGHPUT (24H)"</span>
+                                    <span class="text-xs font-mono text-dim block" data-i18n="comp.charts.tp_lbl">"HTTP THROUGHPUT (24H)"</span>
                                     <span class="text-xl font-bold font-mono text-paper">"124,500 req/s"</span>
                                 </div>
                                 <div class="flex items-center gap-4 text-xs font-mono">
                                     <span class="flex items-center gap-1.5 text-oxide">
                                         <span class="w-2.5 h-2.5 rounded-sm bg-oxide inline-block"></span>
-                                        "Edge Cluster"
+                                        <span data-i18n="comp.charts.edge_cluster">"Edge Cluster"</span>
                                     </span>
                                     <span class="flex items-center gap-1.5 text-ok">
                                         <span class="w-2.5 h-2.5 rounded-sm bg-ok inline-block"></span>
-                                        "Primary DB"
+                                        <span data-i18n="comp.charts.primary_db">"Primary DB"</span>
                                     </span>
                                 </div>
                             </div>
@@ -193,7 +193,7 @@ pub fn ComponentCharts() -> Node {
                                     <text x="165" y="160" text-anchor="middle" font-size="9" fill="rgba(236,233,227,0.4)" font-family="monospace">"06:00"</text>
                                     <text x="280" y="160" text-anchor="middle" font-size="9" fill="rgba(236,233,227,0.4)" font-family="monospace">"12:00"</text>
                                     <text x="395" y="160" text-anchor="middle" font-size="9" fill="rgba(236,233,227,0.4)" font-family="monospace">"18:00"</text>
-                                    <text x="510" y="160" text-anchor="middle" font-size="9" fill="rgba(236,233,227,0.4)" font-family="monospace">"Now"</text>
+                                    <text x="510" y="160" text-anchor="middle" font-size="9" fill="rgba(236,233,227,0.4)" font-family="monospace" data-i18n="comp.charts.now">"Now"</text>
                                 </svg>
                             </div>
                         </div>
@@ -201,8 +201,8 @@ pub fn ComponentCharts() -> Node {
                         // Donut Chart (4 cols)
                         <div class="lg:col-span-4 p-5 bg-sunk border border-rule rounded space-y-4 flex flex-col justify-between">
                             <div>
-                                <span class="text-xs font-mono text-dim block">"CACHE EFFICIENCY"</span>
-                                <span class="text-xl font-bold font-mono text-paper">"98.4% Hit Rate"</span>
+                                <span class="text-xs font-mono text-dim block" data-i18n="comp.charts.cache_lbl">"CACHE EFFICIENCY"</span>
+                                <span class="text-xl font-bold font-mono text-paper" data-i18n="comp.charts.cache_val">"98.4% Hit Rate"</span>
                             </div>
 
                             <div class="flex items-center justify-center py-2">
@@ -220,15 +220,15 @@ pub fn ComponentCharts() -> Node {
 
                             <div class="space-y-1.5 text-xs font-mono pt-2 border-t border-rule">
                                 <div class="flex items-center justify-between">
-                                    <span class="flex items-center gap-1.5 text-dim"><span class="w-2 h-2 rounded-full bg-oxide"></span>"In-Memory L1 (ETag)"</span>
+                                    <span class="flex items-center gap-1.5 text-dim"><span class="w-2 h-2 rounded-full bg-oxide"></span><span data-i18n="comp.charts.c1">"In-Memory L1 (ETag)"</span></span>
                                     <span class="text-paper">"74%"</span>
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <span class="flex items-center gap-1.5 text-dim"><span class="w-2 h-2 rounded-full bg-ok"></span>"XFetch Distributed"</span>
+                                    <span class="flex items-center gap-1.5 text-dim"><span class="w-2 h-2 rounded-full bg-ok"></span><span data-i18n="comp.charts.c2">"XFetch Distributed"</span></span>
                                     <span class="text-paper">"21%"</span>
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <span class="flex items-center gap-1.5 text-dim"><span class="w-2 h-2 rounded-full bg-[#6366f1]"></span>"Origin Render"</span>
+                                    <span class="flex items-center gap-1.5 text-dim"><span class="w-2 h-2 rounded-full bg-[#6366f1]"></span><span data-i18n="comp.charts.c3">"Origin Render"</span></span>
                                     <span class="text-paper">"5%"</span>
                                 </div>
                             </div>
@@ -240,8 +240,8 @@ pub fn ComponentCharts() -> Node {
                         // Categorical Bar Chart (6 cols)
                         <div class="md:col-span-6 p-5 bg-sunk border border-rule rounded space-y-4">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs font-mono text-dim">"SSR LATENCY DISTRIBUTION (P50/P95/P99)"</span>
-                                <span class="text-xs font-mono text-oxide">"µs scale"</span>
+                                <span class="text-xs font-mono text-dim" data-i18n="comp.charts.lat_lbl">"SSR LATENCY DISTRIBUTION (P50/P95/P99)"</span>
+                                <span class="text-xs font-mono text-oxide" data-i18n="comp.charts.us_scale">"µs scale"</span>
                             </div>
                             <svg viewBox="0 0 320 120" class="w-full h-32 block">
                                 <line x1="20" y1="100" x2="310" y2="100" stroke="rgba(236,233,227,0.12)" />
@@ -276,17 +276,17 @@ pub fn ComponentCharts() -> Node {
                                         {render_icon("git-commit", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
                                     </span>
                                     <div>
-                                        <div class="text-[11.5px] font-mono text-paper font-bold tracking-wider">
+                                        <div class="text-[11.5px] font-mono text-paper font-bold tracking-wider" data-i18n="comp.charts.hm_title">
                                             "COMMIT DEPLOYMENT HEATMAP"
                                         </div>
-                                        <div class="text-[10px] font-mono text-dim">
-                                            "52 Semaines · Traçabilité CI/CD"
+                                        <div class="text-[10px] font-mono text-dim" data-i18n="comp.charts.hm_sub">
+                                            "52 Weeks · CI/CD Traceability"
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#22c55e]/10 border border-[#22c55e]/25">
                                     <span class="w-2 h-2 rounded-full bg-[#22c55e] inline-block animate-pulse"></span>
-                                    <span class="text-[11px] font-mono text-ok font-semibold">"99.99% Up"</span>
+                                    <span class="text-[11px] font-mono text-ok font-semibold" data-i18n="comp.charts.hm_up">"99.99% Up"</span>
                                 </div>
                             </div>
 
@@ -298,7 +298,7 @@ pub fn ComponentCharts() -> Node {
                             // Micro-Trend Sparkline
                             <div class="pt-2.5 flex flex-wrap items-center justify-between text-[11px] font-mono text-dim border-t border-rule gap-2">
                                 <div class="flex items-center gap-1.5">
-                                    <span class="text-mute">"Cadence 7j :"</span>
+                                    <span class="text-mute" data-i18n="comp.charts.hm_cadence">"7d Cadence:"</span>
                                     <span class="text-ok font-bold flex items-center gap-1">
                                         {render_icon("trending-up", IconSize::Sm, Some("w-3 h-3 text-ok"), None)}
                                         "+24.2%"
@@ -315,7 +315,7 @@ pub fn ComponentCharts() -> Node {
                                         <polygon points="0,15 15,12 30,16 45,8 60,10 75,4 90,6 100,2 100,20 0,20" fill="url(#heat-spark)" />
                                         <path d="M 0 15 L 15 12 L 30 16 L 45 8 L 60 10 L 75 4 L 90 6 L 100 2" fill="none" stroke="#22c55e" stroke-width="1.8" stroke-linecap="round" />
                                     </svg>
-                                    <span class="text-[10px] text-faint">"14.2s / run"</span>
+                                    <span class="text-[10px] text-faint" data-i18n="comp.charts.hm_run">"14.2s / run"</span>
                                 </div>
                             </div>
                         </div>
@@ -338,7 +338,7 @@ pub fn ComponentCharts() -> Node {
                         class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono mr-2"
                     >
                         {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                        <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                        <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                     </button>
                 </div>
                 <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#0b0b0d]">
@@ -355,8 +355,8 @@ pub fn ComponentCharts() -> Node {
                     <div>"    .render();"</div>
                 </div>
                 <div class="ide-status">
-                    <span>"Emits compact vector SVG markup into response stream"</span>
-                    <span class="text-ok">"Zero Canvas / Zero WebGL / Zero WASM"</span>
+                    <span data-i18n="comp.charts.ide_l">"Emits compact vector SVG markup into response stream"</span>
+                    <span class="text-ok" data-i18n="comp.charts.ide_r">"Zero Canvas / Zero WebGL / Zero WASM"</span>
                 </div>
             </div>
         </section>

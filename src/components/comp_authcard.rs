@@ -1,4 +1,4 @@
-//! 5.5 Auth Card & Credentials Component Showroom.
+//! 5.6 Auth Card & Credentials Component Showroom.
 
 use yav::prelude::*;
 use yav::icons::{render_icon, IconSize};
@@ -8,23 +8,23 @@ pub fn ComponentAuthCard() -> Node {
     rsx! {
         <section id="authcard" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
-                <span class="n">"5.5"</span>
-                <span class="t">"Auth Card & Credentials"</span>
+                <span class="n">"5.6"</span>
+                <span class="t" data-i18n="comp.auth.sec">"Auth Card & Credentials"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add auth-card"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"Security-first auth card."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.auth.title">"Security-first auth card."</h2>
                 <button
                     onclick="copyText(this, 'yav add auth-card')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add auth-card"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.auth.lede">
                 "Complete authentication panel for engineering consoles and SaaS dashboards. Integrates single-sign-on OAuth providers, Argon2 password hashing hooks, and strict HMAC CSRF tokens right out of the box."
             </p>
 
@@ -34,21 +34,21 @@ pub fn ComponentAuthCard() -> Node {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-ok"></span>
-                        "AUTH CARD PREVIEW"
+                        <span data-i18n="comp.auth.preview_head">"AUTH CARD PREVIEW"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"HMAC verified"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.auth.preview_sub">"HMAC verified"</span>
                 </div>
                 <div class="p-8 space-y-6 bg-ink-2">
                     // Card Title
                     <div class="space-y-1 text-center">
-                        <div class="text-[20px] font-semibold text-paper">"Sign in to Console"</div>
-                        <p class="text-xs text-mute">"Enter your engineer credentials to access the cluster"</p>
+                        <div class="text-[20px] font-semibold text-paper" data-i18n="comp.auth.card_title">"Sign in to Console"</div>
+                        <p class="text-xs text-mute" data-i18n="comp.auth.card_sub">"Enter your engineer credentials to access the cluster"</p>
                     </div>
 
                     // OAuth Button
                     <button class="w-full btn btn-line flex items-center justify-center gap-2.5 py-2.5 text-xs font-mono">
                         {render_icon("git-branch", IconSize::Sm, Some("w-4 h-4 text-paper"), None)}
-                        <span>"Continue with GitHub OAuth"</span>
+                        <span data-i18n="comp.auth.oauth">"Continue with GitHub OAuth"</span>
                     </button>
 
                     // Divider
@@ -56,7 +56,7 @@ pub fn ComponentAuthCard() -> Node {
                         <div class="absolute inset-0 flex items-center">
                             <div class="w-full border-t border-[rgba(236,233,227,0.08)]"></div>
                         </div>
-                        <span class="relative px-3 bg-ink-2 text-[10px] font-mono uppercase tracking-widest text-dim">
+                        <span class="relative px-3 bg-ink-2 text-[10px] font-mono uppercase tracking-widest text-dim" data-i18n="comp.auth.or">
                             "or credentials"
                         </span>
                     </div>
@@ -64,7 +64,7 @@ pub fn ComponentAuthCard() -> Node {
                     // Form inputs
                     <form class="space-y-4" onsubmit="event.preventDefault();">
                         <div class="space-y-1.5">
-                            <label class="label block text-[11px]">"Email Address"</label>
+                            <label class="label block text-[11px]" data-i18n="comp.auth.email">"Email Address"</label>
                             <input
                                 type="email"
                                 class="input-field text-xs font-mono"
@@ -75,8 +75,8 @@ pub fn ComponentAuthCard() -> Node {
 
                         <div class="space-y-1.5">
                             <div class="flex items-center justify-between">
-                                <label class="label text-[11px]">"Password"</label>
-                                <a href="#authcard" class="text-[11px] font-mono text-oxide hover:underline">"Forgot?"</a>
+                                <label class="label text-[11px]" data-i18n="comp.auth.pw">"Password"</label>
+                                <a href="#authcard" class="text-[11px] font-mono text-oxide hover:underline" data-i18n="comp.auth.forgot">"Forgot?"</a>
                             </div>
                             <div class="relative flex items-center">
                                 <input
@@ -87,7 +87,9 @@ pub fn ComponentAuthCard() -> Node {
                                 />
                                 <button
                                     type="button"
-                                    onclick="let input = document.getElementById('demo-password-field'); input.type = input.type === 'password' ? 'text' : 'password'; this.textContent = input.type === 'password' ? 'Show' : 'Hide';"
+                                    id="demo-pw-toggle"
+                                    data-i18n="comp.auth.show"
+                                    onclick="toggleDemoPassword(this)"
                                     class="absolute right-3 font-mono text-[10px] text-dim hover:text-paper uppercase tracking-wider"
                                 >
                                     "Show"
@@ -98,24 +100,24 @@ pub fn ComponentAuthCard() -> Node {
                         <div class="flex items-center justify-between pt-1">
                             <label class="flex items-center gap-2 cursor-pointer text-xs font-mono text-dim">
                                 <input type="checkbox" checked="" class="accent-[#e0592f]" />
-                                <span>"Remember 30 days"</span>
+                                <span data-i18n="comp.auth.remember">"Remember 30 days"</span>
                             </label>
                             <span class="text-[10px] font-mono text-ok flex items-center gap-1">
                                 <span class="dot dot-ok"></span>
-                                "256-bit AES"
+                                <span data-i18n="comp.auth.aes">"256-bit AES"</span>
                             </span>
                         </div>
 
                         <button type="submit" class="w-full btn btn-oxide justify-center py-2.5 mt-2">
-                            <span>"Authenticate Session"</span>
+                            <span data-i18n="comp.auth.submit">"Authenticate Session"</span>
                             <span class="arr">"→"</span>
                         </button>
                     </form>
 
                     // Security Footer Note
                     <div class="pt-3 border-t border-[rgba(236,233,227,0.08)] flex items-center justify-between text-[11px] font-mono text-dim">
-                        <span>"Strict SameSite=Lax"</span>
-                        <span class="text-faint">"CSRF token active"</span>
+                        <span data-i18n="comp.auth.samesite">"Strict SameSite=Lax"</span>
+                        <span class="text-faint" data-i18n="comp.auth.csrf">"CSRF token active"</span>
                     </div>
                 </div>
             </div>
@@ -132,7 +134,7 @@ pub fn ComponentAuthCard() -> Node {
                         </div>
                         <button onclick="copyText(this, 'auth_card(AuthCardProps { oauth_github: true, csrf_token })')" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                            <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                         </button>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
@@ -150,7 +152,7 @@ pub fn ComponentAuthCard() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"Strict compile-time template · Zero runtime eval"</span>
+                        <span data-i18n="comp.auth.ide_l">"Strict compile-time template · Zero runtime eval"</span>
                         <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span>"Argon2id"</span>
                     </div>
                 </div>
@@ -164,11 +166,11 @@ pub fn ComponentAuthCard() -> Node {
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/70 inline-block"></span>
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#22c55e]/70 inline-block"></span>
                             </div>
-                            <span class="text-faint text-[11px] ml-2">"bash — yav-cli scaffold"</span>
+                            <span class="text-faint text-[11px] ml-2" data-i18n="comp.common.term_head">"bash — yav-cli scaffold"</span>
                         </div>
                         <button onclick="copyText(this, 'yav add auth-card')" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy command"</span>
+                            <span data-copy-label="" data-i18n="common.copy_cmd" class="text-oxide font-medium">"copy command"</span>
                         </button>
                     </div>
                     <div class="p-4 code space-y-1 text-[13px] bg-[#070709]">
@@ -177,6 +179,21 @@ pub fn ComponentAuthCard() -> Node {
                     </div>
                 </div>
             </div>
+
+            <script>
+                {r#"
+                function toggleDemoPassword(btn) {
+                    var input = document.getElementById('demo-password-field');
+                    if (!input || !btn) return;
+                    input.type = input.type === 'password' ? 'text' : 'password';
+                    var isHidden = input.type === 'password';
+                    var key = isHidden ? 'comp.auth.show' : 'comp.auth.hide';
+                    var fb = isHidden ? 'Show' : 'Hide';
+                    btn.setAttribute('data-i18n', key);
+                    btn.textContent = window.yavT ? window.yavT(key, fb) : fb;
+                }
+                "#}
+            </script>
         </section>
     }
 }

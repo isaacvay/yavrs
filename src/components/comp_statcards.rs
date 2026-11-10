@@ -8,23 +8,23 @@ pub fn ComponentStatCards() -> Node {
     rsx! {
         <section id="statcards" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
-                <span class="n">"5.3"</span>
-                <span class="t">"KPI & Data Display"</span>
+                <span class="n">"5.4"</span>
+                <span class="t" data-i18n="comp.stat.badge">"KPI & Data Display"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add stat-card"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"High-density StatCards."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.stat.title">"High-density StatCards."</h2>
                 <button
                     onclick="copyText(this, 'yav add stat-card')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add stat-card"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.stat.lede">
                 "Engineered for telemetry dashboards, infrastructure monitoring, and analytical consoles. Displays primary metrics, relative trend deltas, baseline ratios, and auxiliary sparkline progress indicators."
             </p>
 
@@ -33,7 +33,7 @@ pub fn ComponentStatCards() -> Node {
                 <div class="plate p-6 space-y-4 bg-ink-2">
                     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
                     <div class="flex items-center justify-between text-[11px] font-mono text-dim">
-                        <span>"THROUGHPUT"</span>
+                        <span data-i18n="comp.stat.c1.lbl">"THROUGHPUT"</span>
                         <span class="text-ok flex items-center gap-1 font-semibold">
                             "↑ +18.4%"
                         </span>
@@ -43,7 +43,7 @@ pub fn ComponentStatCards() -> Node {
                     </div>
                     <div class="space-y-1.5 pt-2 border-t border-[rgba(236,233,227,0.08)]">
                         <div class="flex justify-between text-[11px] font-mono text-dim">
-                            <span>"Requests / sec"</span>
+                            <span data-i18n="comp.stat.c1.sub">"Requests / sec"</span>
                             <span class="text-paper">"p99: 0.28ms"</span>
                         </div>
                         <div class="hbar us" style="--w: 94%"><i></i></div>
@@ -53,7 +53,7 @@ pub fn ComponentStatCards() -> Node {
                 <div class="plate p-6 space-y-4 bg-ink-2">
                     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
                     <div class="flex items-center justify-between text-[11px] font-mono text-dim">
-                        <span>"BINARY FOOTPRINT"</span>
+                        <span data-i18n="comp.stat.c2.lbl">"BINARY FOOTPRINT"</span>
                         <span class="text-oxide flex items-center gap-1 font-semibold">
                             "↓ -94%"
                         </span>
@@ -63,8 +63,8 @@ pub fn ComponentStatCards() -> Node {
                     </div>
                     <div class="space-y-1.5 pt-2 border-t border-[rgba(236,233,227,0.08)]">
                         <div class="flex justify-between text-[11px] font-mono text-dim">
-                            <span>"Distroless ELF"</span>
-                            <span class="text-paper">"18 MB RAM"</span>
+                            <span data-i18n="comp.stat.c2.sub">"Distroless ELF"</span>
+                            <span class="text-paper" data-i18n="comp.stat.c2.val">"18 MB RAM"</span>
                         </div>
                         <div class="hbar us" style="--w: 14%"><i></i></div>
                     </div>
@@ -73,7 +73,7 @@ pub fn ComponentStatCards() -> Node {
                 <div class="plate p-6 space-y-4 bg-ink-2">
                     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
                     <div class="flex items-center justify-between text-[11px] font-mono text-dim">
-                        <span>"CLIENT HYDRATION"</span>
+                        <span data-i18n="comp.stat.c3.lbl">"CLIENT HYDRATION"</span>
                         <span class="text-ok flex items-center gap-1 font-semibold">
                             "0 KB"
                         </span>
@@ -83,8 +83,8 @@ pub fn ComponentStatCards() -> Node {
                     </div>
                     <div class="space-y-1.5 pt-2 border-t border-[rgba(236,233,227,0.08)]">
                         <div class="flex justify-between text-[11px] font-mono text-dim">
-                            <span>"JavaScript Runtime"</span>
-                            <span class="text-ok">"Instant TTI"</span>
+                            <span data-i18n="comp.stat.c3.sub">"JavaScript Runtime"</span>
+                            <span class="text-ok" data-i18n="comp.stat.c3.val">"Instant TTI"</span>
                         </div>
                         <div class="hbar us" style="--w: 0%"><i></i></div>
                     </div>
@@ -103,7 +103,7 @@ pub fn ComponentStatCards() -> Node {
                         </div>
                         <button onclick="copyText(this, 'stat_card(StatCardProps { title: \"Throughput\".into(), value: \"142,500 req/s\".into(), trend: Some(18.4), ..Default::default() })')" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                            <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                         </button>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
@@ -137,8 +137,8 @@ pub fn ComponentStatCards() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"Responsive 3-column grid · Pure CSS progress bar"</span>
-                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span>"Zero Hydration"</span>
+                        <span data-i18n="comp.stat.ide_l">"Responsive 3-column grid · Pure CSS progress bar"</span>
+                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span><span data-i18n="comp.stat.ide_r">"Zero Hydration"</span></span>
                     </div>
                 </div>
 
@@ -151,11 +151,11 @@ pub fn ComponentStatCards() -> Node {
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/70 inline-block"></span>
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#22c55e]/70 inline-block"></span>
                             </div>
-                            <span class="text-faint text-[11px] ml-2">"bash — yav-cli scaffold"</span>
+                            <span class="text-faint text-[11px] ml-2" data-i18n="comp.common.term_head">"bash — yav-cli scaffold"</span>
                         </div>
                         <button onclick="copyText(this, 'yav add stat-card')" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy command"</span>
+                            <span data-copy-label="" data-i18n="common.copy_cmd" class="text-oxide font-medium">"copy command"</span>
                         </button>
                     </div>
                     <div class="p-4 code space-y-1 text-[13px] bg-[#070709]">

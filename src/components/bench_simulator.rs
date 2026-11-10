@@ -53,8 +53,13 @@ pub fn BenchSimulator() -> Node {
         var cpuVal = document.getElementById('bench-sim-cpu-val');
         if (cpuVal) cpuVal.textContent = cpuSat + '%';
         var sockVal = document.getElementById('bench-sim-sock-val');
-        if (sockVal) sockVal.textContent = c + ' active sockets';
+        var sockSuffix = window.yavT ? window.yavT('bench.sim.sock_suffix', ' active sockets') : ' active sockets';
+        if (sockVal) sockVal.textContent = c + sockSuffix;
     };
+    window.addEventListener('yav:langchange', function() {
+        var slider = document.getElementById('bench-concurrency-slider');
+        if (slider) window.updateBenchSim(slider.value);
+    });
     </script>"#);
 
     rsx! {
@@ -62,9 +67,9 @@ pub fn BenchSimulator() -> Node {
             {script}
             <div class="sec-head">
                 <span class="n">"4.2"</span>
-                <span class="t">"Interactive Load & Stress Simulator"</span>
+                <span class="t" data-i18n="bench.sim.badge">"Interactive Load & Stress Simulator"</span>
                 <span class="sec-rule"></span>
-                <span class="r">"drag slider to test"</span>
+                <span class="r" data-i18n="bench.sim.meta">"drag slider to test"</span>
             </div>
 
             <div class="plate bg-ink-2 mt-8">
@@ -74,18 +79,18 @@ pub fn BenchSimulator() -> Node {
                     // Top: Scenario Selector Buttons
                     <div class="flex flex-wrap items-center justify-between gap-4 border-b border-rule pb-6">
                         <div>
-                            <div class="label pb-1">"Workload Scenario"</div>
-                            <div class="text-[14px] text-paper font-medium">"Simulate real production architectures under concurrent traffic"</div>
+                            <div class="label pb-1" data-i18n="bench.sim.scen_lbl">"Workload Scenario"</div>
+                            <div class="text-[14px] text-paper font-medium" data-i18n="bench.sim.scen_sub">"Simulate real production architectures under concurrent traffic"</div>
                         </div>
                         <div class="table-scroll pb-1 w-full sm:w-auto">
                             <div class="btn-group font-mono text-xs min-w-max">
-                                <button data-scen="static" onclick="switchBenchScenario('static')" class="btn tab-btn bench-scen-btn active">
+                                <button data-scen="static" onclick="switchBenchScenario('static')" class="btn tab-btn bench-scen-btn active" data-i18n="bench.sim.sc1">
                                     "Static Compiled RSX"
                                 </button>
-                                <button data-scen="session" onclick="switchBenchScenario('session')" class="btn tab-btn bench-scen-btn">
+                                <button data-scen="session" onclick="switchBenchScenario('session')" class="btn tab-btn bench-scen-btn" data-i18n="bench.sim.sc2">
                                     "RSX + HMAC Session"
                                 </button>
-                                <button data-scen="json" onclick="switchBenchScenario('json')" class="btn tab-btn bench-scen-btn">
+                                <button data-scen="json" onclick="switchBenchScenario('json')" class="btn tab-btn bench-scen-btn" data-i18n="bench.sim.sc3">
                                     "REST API (JSON)"
                                 </button>
                             </div>
@@ -96,15 +101,15 @@ pub fn BenchSimulator() -> Node {
                     <div class="space-y-4">
                         <div class="flex flex-wrap items-end justify-between gap-4">
                             <div>
-                                <div class="label pb-2 text-dim">"Concurrent Persistent Connections"</div>
+                                <div class="label pb-2 text-dim" data-i18n="bench.sim.slider_lbl">"Concurrent Persistent Connections"</div>
                                 <div class="flex flex-wrap items-baseline gap-2 sm:gap-3">
                                     <span id="bench-sim-c-val" class="font-mono text-[clamp(32px,5vw,56px)] leading-none tracking-[-0.04em] text-paper font-bold">
                                         "200"
                                     </span>
-                                    <span class="font-mono text-[12px] sm:text-[13px] text-oxide">"active HTTP/1.1 keep-alive sockets"</span>
+                                    <span class="font-mono text-[12px] sm:text-[13px] text-oxide" data-i18n="bench.sim.sockets_desc">"active HTTP/1.1 keep-alive sockets"</span>
                                 </div>
                             </div>
-                            <span class="font-mono text-[11px] sm:text-[12px] text-dim">"Range: 20 — 2,000 connections"</span>
+                            <span class="font-mono text-[11px] sm:text-[12px] text-dim" data-i18n="bench.sim.range">"Range: 20 — 2,000 connections"</span>
                         </div>
                         <input 
                             id="bench-concurrency-slider" 
@@ -116,6 +121,7 @@ pub fn BenchSimulator() -> Node {
                             oninput="updateBenchSim(this.value)" 
                             class="range" 
                             aria-label="Concurrent persistent connections" 
+                            data-i18n-aria-label="bench.sim.slider_aria"
                         />
                     </div>
 
@@ -123,7 +129,7 @@ pub fn BenchSimulator() -> Node {
                     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 border-t border-l border-rule">
                         // Metric 1: Throughput
                         <div class="p-4 sm:p-5 border-r border-b border-rule bg-sunk">
-                            <div class="label pb-2 text-[10.5px]">"Throughput"</div>
+                            <div class="label pb-2 text-[10.5px]" data-i18n="bench.sim.m1">"Throughput"</div>
                             <div id="bench-sim-req" class="font-mono text-[22px] sm:text-[24px] text-paper font-bold">"124,500"</div>
                             <span class="text-[11px] text-dim font-mono">"req/s"</span>
                         </div>
@@ -135,42 +141,42 @@ pub fn BenchSimulator() -> Node {
                                 <span id="bench-sim-p50" class="font-mono text-[22px] sm:text-[24px] text-oxide font-bold">"0.28"</span>
                                 <span class="text-[11px] text-dim font-mono ml-1">"ms"</span>
                             </div>
-                            <span class="text-[11px] text-dim font-mono">"median"</span>
+                            <span class="text-[11px] text-dim font-mono" data-i18n="bench.sim.m2_sub">"median"</span>
                         </div>
 
                         // Metric 3: p95 Latency
                         <div class="p-4 sm:p-5 border-r border-b border-rule bg-sunk">
-                            <div class="label pb-2 text-[10.5px]">"p95 Latency"</div>
+                            <div class="label pb-2 text-[10.5px]" data-i18n="bench.sim.m3">"p95 Latency"</div>
                             <div class="flex items-baseline">
                                 <span id="bench-sim-p95" class="font-mono text-[22px] sm:text-[24px] text-paper font-bold">"0.76"</span>
                                 <span class="text-[11px] text-dim font-mono ml-1">"ms"</span>
                             </div>
-                            <span class="text-[11px] text-dim font-mono">"95th percentile"</span>
+                            <span class="text-[11px] text-dim font-mono" data-i18n="bench.sim.m3_sub">"95th percentile"</span>
                         </div>
 
                         // Metric 4: p99 Latency
                         <div class="p-4 sm:p-5 border-r border-b border-rule bg-sunk">
-                            <div class="label pb-2 text-[10.5px]">"p99 Tail"</div>
+                            <div class="label pb-2 text-[10.5px]" data-i18n="bench.sim.m4">"p99 Tail"</div>
                             <div class="flex items-baseline">
                                 <span id="bench-sim-p99" class="font-mono text-[22px] sm:text-[24px] text-paper font-bold">"1.12"</span>
                                 <span class="text-[11px] text-dim font-mono ml-1">"ms"</span>
                             </div>
-                            <span class="text-[11px] text-dim font-mono">"worst 1%"</span>
+                            <span class="text-[11px] text-dim font-mono" data-i18n="bench.sim.m4_sub">"worst 1%"</span>
                         </div>
 
                         // Metric 5: Resident RAM
                         <div class="p-4 sm:p-5 border-r border-b border-rule bg-sunk">
-                            <div class="label pb-2 text-[10.5px]">"RSS Memory"</div>
+                            <div class="label pb-2 text-[10.5px]" data-i18n="bench.sim.m5">"RSS Memory"</div>
                             <div class="flex items-baseline">
                                 <span id="bench-sim-mem" class="font-mono text-[22px] sm:text-[24px] text-paper font-bold">"24.0"</span>
                                 <span class="text-[11px] text-dim font-mono ml-1">"MB"</span>
                             </div>
-                            <span class="text-[11px] text-dim font-mono">"total RAM"</span>
+                            <span class="text-[11px] text-dim font-mono" data-i18n="bench.sim.m5_sub">"total RAM"</span>
                         </div>
 
                         // Metric 6: CPU Utilization
                         <div class="p-4 sm:p-5 border-r border-b border-rule bg-sunk">
-                            <div class="label pb-2 text-[10.5px]">"CPU Saturation"</div>
+                            <div class="label pb-2 text-[10.5px]" data-i18n="bench.sim.m6">"CPU Saturation"</div>
                             <div id="bench-sim-cpu-val" class="font-mono text-[22px] sm:text-[24px] text-ok font-bold">"26%"</div>
                             <div class="w-full bg-[rgba(236,233,227,0.06)] h-1.5 rounded-full mt-2 overflow-hidden">
                                 <div id="bench-sim-cpu-bar" class="h-full bg-ok transition-all duration-300" style="width:26%"></div>
@@ -183,14 +189,14 @@ pub fn BenchSimulator() -> Node {
                         <div class="flex items-center gap-3">
                             <span class="flex items-center gap-1.5 text-paper">
                                 <span class="dot dot-ok"></span>
-                                "8/8 Tokio Workers Active"
+                                <span data-i18n="bench.sim.workers">"8/8 Tokio Workers Active"</span>
                             </span>
                             <span>"·"</span>
-                            <span id="bench-sim-sock-val">"200 active sockets"</span>
+                            <span id="bench-sim-sock-val">"200"<span data-i18n="bench.sim.sock_suffix">" active sockets"</span></span>
                             <span>"·"</span>
-                            <span class="text-ok">"Zero Lock Contention"</span>
+                            <span class="text-ok" data-i18n="bench.sim.no_lock">"Zero Lock Contention"</span>
                         </div>
-                        <div class="text-mute">
+                        <div class="text-mute" data-i18n="bench.sim.verified">
                             "Model verified with empirical wrk telemetry curve"
                         </div>
                     </div>

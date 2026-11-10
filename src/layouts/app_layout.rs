@@ -112,10 +112,13 @@ window.copyText = function (btn, text) {
   var el = btn.querySelector ? btn.querySelector('[data-copy-label]') : null;
   if (!el) el = btn;
   var svg = btn.querySelector ? btn.querySelector('svg') : null;
-  var prev = el.getAttribute('data-prev-text') || el.textContent;
-  el.setAttribute('data-prev-text', prev);
+  var prev = el.getAttribute('data-prev-text');
+  if (!prev) {
+    prev = el.textContent;
+    el.setAttribute('data-prev-text', prev);
+  }
 
-  el.textContent = 'copied ✓';
+  el.textContent = (window.yavT ? window.yavT('common.copied', 'copied ✓') : 'copied ✓');
   el.classList.add('copied');
   btn.classList.add('is-copied');
   el.style.setProperty('color', '#22c55e', 'important');
@@ -128,7 +131,13 @@ window.copyText = function (btn, text) {
 
   clearTimeout(btn._copyTimer);
   btn._copyTimer = setTimeout(function () { 
-    el.textContent = prev; 
+    var key = el.getAttribute('data-i18n');
+    if (key && window.yavT) {
+      el.textContent = window.yavT(key, prev);
+    } else {
+      el.textContent = prev;
+    }
+    el.removeAttribute('data-prev-text');
     el.classList.remove('copied');
     btn.classList.remove('is-copied');
     el.style.removeProperty('color');
@@ -566,79 +575,6 @@ button.is-copied:hover svg {
     }
   }
 })();
-
-window.copyText = function (btn, text) {
-  var str = text;
-  if (!str || typeof str !== 'string') {
-    str = btn.getAttribute('data-copy');
-  }
-  if (!str) {
-    var win = btn.closest ? btn.closest('.ide-window, .term-window, .plate') : null;
-    if (win) {
-      var c = win.querySelector('.code');
-      if (c) str = c.innerText || c.textContent;
-    }
-  }
-  if (!str && btn.parentElement) {
-    var codeEl = btn.parentElement.querySelector('code');
-    if (codeEl) str = codeEl.innerText || codeEl.textContent;
-  }
-  if (!str) str = '';
-
-  function fallback(t) {
-    var ta = document.createElement('textarea');
-    ta.value = t;
-    ta.style.position = 'fixed';
-    ta.style.left = '-9999px';
-    ta.style.opacity = '0';
-    document.body.appendChild(ta);
-    ta.focus();
-    ta.select();
-    try { document.execCommand('copy'); } catch (e) {}
-    document.body.removeChild(ta);
-  }
-
-  try {
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(str).catch(function () { fallback(str); });
-    } else {
-      fallback(str);
-    }
-  } catch (err) {
-    fallback(str);
-  }
-
-  var el = btn.querySelector ? btn.querySelector('[data-copy-label]') : null;
-  if (!el) el = btn;
-  var svg = btn.querySelector ? btn.querySelector('svg') : null;
-  var prev = el.getAttribute('data-prev-text') || el.textContent;
-  el.setAttribute('data-prev-text', prev);
-
-  el.textContent = 'copied ✓';
-  el.classList.add('copied');
-  btn.classList.add('is-copied');
-  el.style.setProperty('color', '#22c55e', 'important');
-  el.style.fontWeight = '600';
-  btn.style.setProperty('border-color', 'rgba(34, 197, 94, 0.6)', 'important');
-  if (svg) {
-    svg.style.setProperty('color', '#22c55e', 'important');
-    svg.style.setProperty('stroke', '#22c55e', 'important');
-  }
-
-  clearTimeout(btn._copyTimer);
-  btn._copyTimer = setTimeout(function () { 
-    el.textContent = prev; 
-    el.classList.remove('copied');
-    btn.classList.remove('is-copied');
-    el.style.removeProperty('color');
-    el.style.fontWeight = '';
-    btn.style.removeProperty('border-color');
-    if (svg) {
-      svg.style.removeProperty('color');
-      svg.style.removeProperty('stroke');
-    }
-  }, 1600);
-};
 </script>"##);
 
     rsx! {
@@ -652,13 +588,13 @@ window.copyText = function (btn, text) {
 
             <header id="site-header" class="site-header sticky top-0 z-50 w-full">
                 <div class="wrap flex h-16 items-center justify-between gap-2 sm:gap-6">
-                    <a href="/" class="flex items-center gap-2 sm:gap-2.5 shrink-0" aria-label="Yav home">
+                    <a href="/" class="flex items-center gap-2 sm:gap-2.5 shrink-0" aria-label="Yav home" data-i18n-aria-label="header.home_aria">
                         <img src="/public/favicon.svg" class="w-6 h-6 shrink-0" alt="" />
                         <span class="text-[15px] sm:text-[16px] font-semibold tracking-[-0.03em] text-paper">"yav"<span class="text-dim font-normal">".rs"</span></span>
                         <span class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono font-medium text-oxide bg-oxide/10 border border-oxide/20 rounded">"v0.1.5"</span>
                     </a>
 
-                    <nav class="hidden lg:flex items-center gap-0.5 xl:gap-2" aria-label="Primary">
+                    <nav class="hidden lg:flex items-center gap-0.5 xl:gap-2" aria-label="Primary" data-i18n-aria-label="header.nav_aria">
                         <a href="/" data-nav="" class="nav-link"><span class="idx">"01"</span><span data-i18n="nav.overview">"Overview"</span></a>
                         <a href="/about" data-nav="" class="nav-link"><span class="idx">"02"</span><span data-i18n="nav.architecture">"Architecture"</span></a>
                         <a href="/docs" data-nav="" class="nav-link"><span class="idx">"03"</span><span data-i18n="nav.docs">"Docs"</span></a>
@@ -679,12 +615,13 @@ window.copyText = function (btn, text) {
                         >
                             {render_icon("minimal:github", IconSize::Sm, Some("w-4 h-4"), None)}
                         </a>
-                        <a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden lg:inline-flex shrink-0">"Get started"<span class="arr">"→"</span></a>
+                        <a id="header-cta" href="/docs" class="btn btn-solid btn-sm hidden lg:inline-flex shrink-0"><span data-i18n="nav.get_started">"Get started"</span><span class="arr">"→"</span></a>
                         <button
                             id="mobile-menu-btn"
                             onclick="window.toggleMobileNav(event)"
                             class="lg:hidden inline-flex items-center justify-center w-[36px] h-[36px] text-paper border border-[rgba(236,233,227,0.14)] bg-ink-2 hover:border-oxide/50 hover:bg-ink-3 transition-colors cursor-pointer shrink-0"
                             aria-label="Toggle navigation menu"
+                            data-i18n-aria-label="mobile.menu_toggle"
                             aria-expanded="false"
                         >
                             <span id="menu-icon-open" class="inline-flex items-center justify-center">{render_icon("menu", IconSize::Sm, Some("w-4 h-4"), None)}</span>
@@ -699,6 +636,7 @@ window.copyText = function (btn, text) {
                 id="mobile-nav"
                 class="hidden lg:hidden fixed inset-x-0 top-16 bottom-0 z-40 bg-[#0b0b0c] border-t border-rule overflow-y-auto transition-all duration-200 opacity-0 -translate-y-2"
                 aria-label="Mobile Navigation"
+                data-i18n-aria-label="mobile.nav_aria"
             >
                     <div class="wrap py-6 pb-20 space-y-6 min-h-full">
                         // Mobile Search Trigger
@@ -708,7 +646,7 @@ window.copyText = function (btn, text) {
                         >
                             <span class="flex items-center gap-2.5">
                                 {render_icon("search", IconSize::Sm, Some("w-4 h-4 text-oxide"), None)}
-                                <span class="text-mute">"Search documentation & symbols..."</span>
+                                <span class="text-mute" data-i18n="mobile.search">"Search documentation & symbols..."</span>
                             </span>
                             <kbd class="kbd text-[10px]">"Ctrl K"</kbd>
                         </button>
@@ -719,13 +657,13 @@ window.copyText = function (btn, text) {
                             onclick="window.closeMobileNav()"
                             class="btn btn-solid w-full justify-center h-12 text-[14.5px] font-semibold shadow-lg"
                         >
-                            <span>"Get started with Yav"</span>
+                            <span data-i18n="mobile.get_started">"Get started with Yav"</span>
                             <span class="arr">"→"</span>
                         </a>
 
                         // Group 1: Core Framework
                         <div class="space-y-2">
-                            <div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2">
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2" data-i18n="mobile.group.arch">
                                 "01 · Framework Architecture"
                             </div>
                             <div class="grid gap-1.5">
@@ -739,28 +677,28 @@ window.copyText = function (btn, text) {
                                 <a href="/about" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"02"</span>
-                                        <span class="font-medium" data-i18n="nav.architecture">"Architecture & Tokio Engine"</span>
+                                        <span class="font-medium" data-i18n="mobile.nav.architecture">"Architecture & Tokio Engine"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
                                 <a href="/docs" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"03"</span>
-                                        <span class="font-medium" data-i18n="nav.docs">"Engineering Documentation"</span>
+                                        <span class="font-medium" data-i18n="mobile.nav.docs">"Engineering Documentation"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
                                 <a href="/benchmarks" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"04"</span>
-                                        <span class="font-medium" data-i18n="nav.benchmarks">"Verified Benchmarks (124k req/s)"</span>
+                                        <span class="font-medium" data-i18n="mobile.nav.benchmarks">"Verified Benchmarks (124k req/s)"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
                                 <a href="/components" onclick="window.closeMobileNav()" data-nav="" class="flex items-center justify-between px-3.5 py-3 rounded plate bg-ink-2 hover:border-oxide/50 text-[14px] text-paper transition-colors group">
                                     <span class="flex items-center gap-3">
                                         <span class="font-mono text-[11px] text-oxide">"05"</span>
-                                        <span class="font-medium" data-i18n="nav.components">"UI Components & Icons"</span>
+                                        <span class="font-medium" data-i18n="mobile.nav.components">"UI Components & Icons"</span>
                                     </span>
                                     <span class="text-dim text-xs group-hover:text-oxide transition-colors">"→"</span>
                                 </a>
@@ -769,37 +707,37 @@ window.copyText = function (btn, text) {
 
                         // Group 2: Ecosystem & Resources
                         <div class="space-y-2">
-                            <div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2">
+                            <div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2" data-i18n="mobile.group.eco">
                                 "02 · Ecosystem & Resources"
                             </div>
                             <div class="grid grid-cols-2 gap-2 text-xs">
                                 <a href="/showcase" onclick="window.closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-oxide transition-colors">
                                         {render_icon("award", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                        <span>"Showcase"</span>
+                                        <span data-i18n="mobile.card.showcase.title">"Showcase"</span>
                                     </div>
-                                    <p class="text-[11px] text-mute">"Production systems"</p>
+                                    <p class="text-[11px] text-mute" data-i18n="mobile.card.showcase.desc">"Production systems"</p>
                                 </a>
                                 <a href="/faq" onclick="window.closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-oxide transition-colors">
                                         {render_icon("help-circle", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                        <span>"Why Yav?"</span>
+                                        <span data-i18n="mobile.card.faq.title">"Why Yav?"</span>
                                     </div>
-                                    <p class="text-[11px] text-mute">"Matrix & FAQs"</p>
+                                    <p class="text-[11px] text-mute" data-i18n="mobile.card.faq.desc">"Matrix & FAQs"</p>
                                 </a>
                                 <a href="/releases" onclick="window.closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-ok transition-colors">
                                         {render_icon("git-branch", IconSize::Sm, Some("w-3.5 h-3.5 text-ok"), None)}
-                                        <span>"Changelog"</span>
+                                        <span data-i18n="mobile.card.releases.title">"Changelog"</span>
                                     </div>
-                                    <p class="text-[11px] text-mute">"v0.1.5 stable"</p>
+                                    <p class="text-[11px] text-mute" data-i18n="mobile.card.releases.desc">"v0.1.5 stable"</p>
                                 </a>
                                 <a href="/privacy" onclick="window.closeMobileNav()" class="p-3 plate bg-ink-2 hover:border-oxide/50 block space-y-1 transition-colors group">
                                     <div class="flex items-center gap-2 text-paper font-semibold group-hover:text-paper transition-colors">
                                         {render_icon("shield-check", IconSize::Sm, Some("w-3.5 h-3.5 text-dim"), None)}
-                                        <span>"Security"</span>
+                                        <span data-i18n="mobile.card.privacy.title">"Security"</span>
                                     </div>
-                                    <p class="text-[11px] text-mute">"Zero tracking"</p>
+                                    <p class="text-[11px] text-mute" data-i18n="mobile.card.privacy.desc">"Zero tracking"</p>
                                 </a>
                             </div>
                         </div>
@@ -809,14 +747,14 @@ window.copyText = function (btn, text) {
                             <div class="text-[10px] font-mono uppercase tracking-wider text-dim px-2 flex items-center justify-between">
                                 <span class="flex items-center gap-1.5">
                                     {render_icon("globe", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                    <span>"03 · Language / Locale"</span>
+                                    <span data-i18n="mobile.group.lang">"03 · Language / Locale"</span>
                                 </span>
                                 <span class="font-mono text-oxide font-bold text-[11px]" id="mobile-lang-current">"EN"</span>
                             </div>
                             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
                                 <button
                                     onclick="setLanguage('en'); window.closeMobileNav();"
-                                    class="py-2.5 px-3 plate bg-ink-2 hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
+                                    class="py-2.5 px-3 plate bg-ink-2 border border-transparent hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
                                     data-locale="en"
                                 >
                                     <span class="flex items-center gap-2">
@@ -827,7 +765,7 @@ window.copyText = function (btn, text) {
                                 </button>
                                 <button
                                     onclick="setLanguage('fr'); window.closeMobileNav();"
-                                    class="py-2.5 px-3 plate bg-ink-2 hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
+                                    class="py-2.5 px-3 plate bg-ink-2 border border-transparent hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
                                     data-locale="fr"
                                 >
                                     <span class="flex items-center gap-2">
@@ -838,7 +776,7 @@ window.copyText = function (btn, text) {
                                 </button>
                                 <button
                                     onclick="setLanguage('es'); window.closeMobileNav();"
-                                    class="py-2.5 px-3 plate bg-ink-2 hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
+                                    class="py-2.5 px-3 plate bg-ink-2 border border-transparent hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
                                     data-locale="es"
                                 >
                                     <span class="flex items-center gap-2">
@@ -849,7 +787,7 @@ window.copyText = function (btn, text) {
                                 </button>
                                 <button
                                     onclick="setLanguage('de'); window.closeMobileNav();"
-                                    class="py-2.5 px-3 plate bg-ink-2 hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
+                                    class="py-2.5 px-3 plate bg-ink-2 border border-transparent hover:border-oxide/50 text-paper text-left transition-colors cursor-pointer flex items-center justify-between"
                                     data-locale="de"
                                 >
                                     <span class="flex items-center gap-2">
@@ -871,7 +809,7 @@ window.copyText = function (btn, text) {
                                 onclick="copyText(this, 'cargo install yav-cli')"
                                 class="px-2.5 py-1 text-[11px] text-oxide hover:text-oxide-hi bg-sunk border border-rule hover:border-oxide/40 rounded cursor-pointer transition-colors shrink-0"
                             >
-                                <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                                <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                             </button>
                         </div>
 
@@ -886,7 +824,7 @@ window.copyText = function (btn, text) {
                             </a>
                             <span class="flex items-center gap-1.5 text-ok">
                                 <span class="dot dot-ok"></span>
-                                <span>"Operational"</span>
+                                <span data-i18n="mobile.status">"Operational"</span>
                             </span>
                         </div>
                     </div>
@@ -901,7 +839,7 @@ window.copyText = function (btn, text) {
                     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-8 py-8">
                         <div class="col-span-1 sm:col-span-2 md:col-span-5 space-y-6">
                             <p class="text-[20px] sm:text-[22px] leading-[1.3] tracking-[-0.025em] text-paper max-w-sm">
-                                "A web framework for people who read the "<span class="serif text-[1.1em]">"assembly"</span>"."
+                                <span data-i18n="footer.tagline.lead">"A web framework for people who read the "</span><span class="serif text-[1.1em]" data-i18n="footer.tagline.accent">"assembly"</span><span data-i18n="footer.tagline.end">"."</span>
                             </p>
                             <button
                                 id="footer-copy-install"
@@ -910,24 +848,24 @@ window.copyText = function (btn, text) {
                             >
                                 <span class="text-oxide">"$"</span>
                                 <span class="truncate">"cargo install yav-cli"</span>
-                                <span data-copy-label="" class="text-oxide font-medium text-[11px] pl-2.5 sm:pl-3 border-l border-[rgba(236,233,227,0.14)] shrink-0">"copy"</span>
+                                <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium text-[11px] pl-2.5 sm:pl-3 border-l border-[rgba(236,233,227,0.14)] shrink-0">"copy"</span>
                             </button>
                         </div>
                         <div class="sm:col-span-1 md:col-span-2 md:col-start-7 space-y-4">
-                            <div class="label">"Framework"</div>
+                            <div class="label" data-i18n="footer.col.framework">"Framework"</div>
                             <ul class="space-y-2.5 text-[14px]">
                                 <li><a href="/" class="ulink" data-i18n="nav.overview">"Overview"</a></li>
                                 <li><a href="/about" class="ulink" data-i18n="nav.architecture">"Architecture"</a></li>
                                 <li><a href="/docs" class="ulink" data-i18n="nav.docs">"Docs"</a></li>
                                 <li><a href="/benchmarks" class="ulink" data-i18n="nav.benchmarks">"Benchmarks"</a></li>
                                 <li><a href="/components" class="ulink" data-i18n="nav.components">"Components"</a></li>
-                                <li><a href="/showcase" class="ulink">"Showcase"</a></li>
-                                <li><a href="/faq" class="ulink">"Why Yav / FAQ"</a></li>
-                                <li><a href="/releases" class="ulink">"Changelog"</a></li>
+                                <li><a href="/showcase" class="ulink" data-i18n="footer.link.showcase">"Showcase"</a></li>
+                                <li><a href="/faq" class="ulink" data-i18n="footer.link.faq">"Why Yav / FAQ"</a></li>
+                                <li><a href="/releases" class="ulink" data-i18n="footer.link.releases">"Changelog"</a></li>
                             </ul>
                         </div>
                         <div class="sm:col-span-1 md:col-span-2 space-y-4">
-                            <div class="label">"Crates"</div>
+                            <div class="label" data-i18n="footer.col.crates">"Crates"</div>
                             <ul class="space-y-2.5 font-mono text-[13px]">
                                 <li><a href="https://crates.io/crates/yav" target="_blank" rel="noreferrer" class="ulink">"yav"</a></li>
                                 <li><a href="https://crates.io/crates/yav-core" target="_blank" rel="noreferrer" class="ulink">"yav-core"</a></li>
@@ -937,11 +875,11 @@ window.copyText = function (btn, text) {
                             </ul>
                         </div>
                         <div class="sm:col-span-1 md:col-span-2 space-y-4">
-                            <div class="label">"Elsewhere"</div>
+                            <div class="label" data-i18n="footer.col.elsewhere">"Elsewhere"</div>
                             <ul class="space-y-2.5 text-[14px]">
                                 <li><a href="https://github.com/isaacvay/yav.rs" target="_blank" rel="noreferrer" class="ulink">"GitHub"</a></li>
                                 <li><a href="https://docs.rs/yav" target="_blank" rel="noreferrer" class="ulink">"docs.rs"</a></li>
-                                <li><a href="https://github.com/isaacvay/yav.rs/issues" target="_blank" rel="noreferrer" class="ulink">"Issues"</a></li>
+                                <li><a href="https://github.com/isaacvay/yav.rs/issues" target="_blank" rel="noreferrer" class="ulink" data-i18n="footer.link.issues">"Issues"</a></li>
                             </ul>
                         </div>
                     </div>
@@ -952,9 +890,9 @@ window.copyText = function (btn, text) {
                 <div class="border-t border-[rgba(236,233,227,0.08)]">
                     <div class="wrap min-h-14 py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 font-mono text-[11.5px] text-dim">
                         <span>
-                            "© 2026 Isaac Yav & contributors — "
-                            <a href="/privacy" class="hover:text-paper transition-colors underline underline-offset-2">"Privacy & Security"</a>
-                            " — MIT / Apache-2.0"
+                            <span data-i18n="footer.copyright_prefix">"© 2026 Isaac Yav & contributors — "</span>
+                            <a href="/privacy" class="hover:text-paper transition-colors underline underline-offset-2" data-i18n="footer.privacy">"Privacy & Security"</a>
+                            <span data-i18n="footer.license_suffix">" — MIT / Apache-2.0"</span>
                         </span>
                         <span class="flex items-center gap-2 shrink-0"><span class="dot dot-ok"></span><span data-i18n="footer.status">"All systems operational"</span></span>
                     </div>

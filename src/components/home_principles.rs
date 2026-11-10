@@ -10,13 +10,13 @@ pub fn HomePrinciples() -> Node {
                 <span class="n">"02"</span>
                 <span class="t" data-i18n="bento.badge">"Principles"</span>
                 <span class="sec-rule"></span>
-                <span class="r">"six decisions"</span>
+                <span class="r" data-i18n="bento.meta">"six decisions"</span>
             </div>
             <div class="grid lg:grid-cols-12 gap-12 pt-6 pb-6">
-                <h2 class="lg:col-span-8 h-section text-paper reveal" data-i18n="bento.title">
-                    "Everything you need. "<span class="text-dim">"Nothing that ships to the browser by accident."</span>
+                <h2 class="lg:col-span-8 h-section text-paper reveal">
+                    <span data-i18n="bento.title.lead">"Everything you need. "</span><span class="text-dim" data-i18n="bento.title.dim">"Nothing that ships to the browser by accident."</span>
                 </h2>
-                <p class="lg:col-span-4 text-mute text-[14.5px] leading-relaxed self-end reveal">
+                <p class="lg:col-span-4 text-mute text-[14.5px] leading-relaxed self-end reveal" data-i18n="bento.subtitle">
                     "Built from the ground up for teams who care about real latency, memory safety and eliminating frontend toolchain churn."
                 </p>
             </div>
@@ -37,15 +37,15 @@ pub fn HomePrinciples() -> Node {
                 </article>
                 <article class="cell">
                     <div class="cn pb-8">"2.3"</div>
-                    <h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card4.title">"File-system routes"</h3>
-                    <p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card4.desc">
+                    <h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card3.title">"File-system routes"</h3>
+                    <p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card3.desc">
                         "Drop [id].rs in src/routes. It compiles to an O(k) radix tree with instant matchit lookups."
                     </p>
                 </article>
                 <article class="cell">
                     <div class="cn pb-8">"2.4"</div>
-                    <h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card3.title">"Tailwind, managed"</h3>
-                    <p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card3.desc">
+                    <h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card4.title">"Tailwind, managed"</h3>
+                    <p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card4.desc">
                         "The standalone compiler is downloaded, watched and fingerprinted for you. No Node toolchain in sight."
                     </p>
                 </article>
@@ -58,8 +58,8 @@ pub fn HomePrinciples() -> Node {
                 </article>
                 <article class="cell">
                     <div class="cn pb-8">"2.6"</div>
-                    <h3 class="text-[22px] text-paper pb-3">"Secure defaults"</h3>
-                    <p class="text-[14.5px] leading-relaxed text-mute">
+                    <h3 class="text-[22px] text-paper pb-3" data-i18n="bento.card6.title">"Secure defaults"</h3>
+                    <p class="text-[14.5px] leading-relaxed text-mute" data-i18n="bento.card6.desc">
                         "CSRF tokens, HMAC-signed sessions and automatic context-aware escaping are on before you write a single line."
                     </p>
                 </article>

@@ -23,13 +23,17 @@ pub fn ComponentCursor() -> Node {
         plate.style.setProperty('--spotlight-x', x + 'px');
         plate.style.setProperty('--spotlight-y', y + 'px');
         if (coords) {
+            coords.removeAttribute('data-i18n');
             coords.textContent = 'x: ' + Math.round(x) + 'px · y: ' + Math.round(y) + 'px · rx: ' + rx.toFixed(2);
         }
     });
 
     plate.addEventListener('mouseleave', function() {
         plate.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
-        if (coords) coords.textContent = 'x: 0px · y: 0px (idle)';
+        if (coords) {
+            coords.setAttribute('data-i18n', 'comp.cursor.idle_coords');
+            coords.textContent = window.yavT ? window.yavT('comp.cursor.idle_coords', 'x: 0px · y: 0px (idle)') : 'x: 0px · y: 0px (idle)';
+        }
     });
 
     // Magnetic button demo
@@ -52,22 +56,22 @@ pub fn ComponentCursor() -> Node {
         <section id="cursor" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.13"</span>
-                <span class="t">"Cursor & 3D Tilt"</span>
+                <span class="t" data-i18n="comp.cursor.sec">"Cursor & 3D Tilt"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add cursor-spotlight"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"Reactive 3D tilt & cursor spotlights."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.cursor.title">"Reactive 3D tilt & cursor spotlights."</h2>
                 <button
                     onclick="copyText(this, 'yav add cursor-spotlight')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add cursor-spotlight"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.cursor.lede">
                 "Hardware-accelerated mouse coordinate injection publishing CSS variables (--yav-mouse-x, --yav-mouse-y, --yav-mouse-rx, --yav-mouse-ry). Powers 3D elastic tilt perspectives, radial spotlight glows, and magnetic buttons in ~1.3 KB."
             </p>
 
@@ -77,9 +81,9 @@ pub fn ComponentCursor() -> Node {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "LIVE PREVIEW — 3D TILT & SPOTLIGHT"
+                        <span data-i18n="comp.cursor.preview_head">"LIVE PREVIEW — 3D TILT & SPOTLIGHT"</span>
                     </span>
-                    <span id="demo-mouse-coords" class="text-oxide font-mono text-[11px]">"hover card to test 3D tilt"</span>
+                    <span id="demo-mouse-coords" data-i18n="comp.cursor.hover_hint" class="text-oxide font-mono text-[11px]">"hover card to test 3D tilt"</span>
                 </div>
                 <div class="p-8 space-y-8 bg-ink-2">
                     <div class="grid md:grid-cols-2 gap-8 items-center">
@@ -93,28 +97,28 @@ pub fn ComponentCursor() -> Node {
                                 <span class="font-mono text-xs text-oxide font-bold">"TiltPlate max_deg=14"</span>
                                 <span class="dot dot-ok"></span>
                             </div>
-                            <h3 class="text-2xl font-bold text-paper">"Interactive 3D Surface"</h3>
-                            <p class="text-sm text-mute leading-relaxed">
+                            <h3 class="text-2xl font-bold text-paper" data-i18n="comp.cursor.surface_title">"Interactive 3D Surface"</h3>
+                            <p class="text-sm text-mute leading-relaxed" data-i18n="comp.cursor.surface_desc">
                                 "Move your pointer across this card. High-precision normalized mouse vectors compute fluid 3D perspective pitch and yaw."
                             </p>
                             <div class="pt-4 border-t border-rule flex items-center justify-between text-xs font-mono text-dim">
                                 <span>"--yav-mouse-rx / ry"</span>
-                                <span class="text-paper">"GPU Composited"</span>
+                                <span class="text-paper" data-i18n="comp.cursor.gpu">"GPU Composited"</span>
                             </div>
                         </div>
 
                         // Magnetic Button Showcase
                         <div class="p-8 rounded-2xl border border-rule bg-sunk/40 space-y-6 flex flex-col items-center justify-center text-center">
-                            <span class="font-mono text-xs text-dim">"MAGNETIC BUTTON ATTRACTION"</span>
+                            <span class="font-mono text-xs text-dim" data-i18n="comp.cursor.mag_head">"MAGNETIC BUTTON ATTRACTION"</span>
                             <button
                                 id="demo-mag-btn"
                                 class="btn btn-oxide px-8 py-3 rounded-xl font-medium shadow-lg transition-transform duration-100 ease-out cursor-pointer"
                                 style="will-change: transform;"
                             >
                                 {render_icon("zap", IconSize::Sm, Some("w-4 h-4 mr-2"), None)}
-                                <span>"Magnetic Button"</span>
+                                <span data-i18n="comp.cursor.mag_btn">"Magnetic Button"</span>
                             </button>
-                            <p class="text-xs text-dim max-w-xs font-mono">
+                            <p class="text-xs text-dim max-w-xs font-mono" data-i18n="comp.cursor.mag_desc">
                                 "Pulls subtly toward cursor coordinates within activation radius."
                             </p>
                         </div>
@@ -133,7 +137,7 @@ pub fn ComponentCursor() -> Node {
                     </div>
                     <button data-copy="use yav::ui::{CursorSpotlight, TiltPlate, Magnetic};\n\nrsx! {\n    <CursorSpotlight radius_px={450}>\n        <TiltPlate max_deg={12.0} glare=true class=&quot;p-8 border rounded-2xl&quot;>\n            <h3>&quot;3D Interactive Card&quot;</h3>\n            <Magnetic strength={0.35}>\n                <button class=&quot;btn btn-oxide&quot;>&quot;Magnetic&quot;</button>\n            </Magnetic>\n        </TiltPlate>\n    </CursorSpotlight>\n}" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                         {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                        <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                        <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                     </button>
                 </div>
                 <div class="flex bg-[#0b0b0d]">
@@ -156,8 +160,8 @@ pub fn ComponentCursor() -> Node {
                     </div>
                 </div>
                 <div class="ide-status">
-                    <span>"Passive rAF coordinate loop · ~1.3 KB runtime"</span>
-                    <span class="text-ok">"GPU Perspective Matrix"</span>
+                    <span data-i18n="comp.cursor.ide_l">"Passive rAF coordinate loop · ~1.3 KB runtime"</span>
+                    <span class="text-ok" data-i18n="comp.cursor.ide_r">"GPU Perspective Matrix"</span>
                 </div>
             </div>
 

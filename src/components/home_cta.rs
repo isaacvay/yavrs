@@ -11,7 +11,7 @@ pub fn HomeCta() -> Node {
                 <span class="n">"08"</span>
                 <span class="t" data-i18n="cta.badge">"Next steps"</span>
                 <span class="sec-rule"></span>
-                <span class="r">"production binary"</span>
+                <span class="r" data-i18n="cta.meta">"production binary"</span>
             </div>
             <div class="reveal grid lg:grid-cols-12 gap-10 items-end pt-6">
                 <div class="lg:col-span-8 space-y-4">

@@ -9,22 +9,22 @@ pub fn ComponentIcons() -> Node {
         <section id="icons" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.10"</span>
-                <span class="t">"Vector Icon Explorer"</span>
+                <span class="t" data-i18n="comp.ico.sec">"Vector Icon Explorer"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav::icons"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"Compiled vector catalog."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.ico.title">"Compiled vector catalog."</h2>
                 <button
                     onclick="copyText(this, 'cargo add yav-icons')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"cargo add yav-icons"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.ico.lede">
                 "Over 13,000 clean vector icons compiled directly into your native binary via Lucide, MynaUI, and Phosphor. Zero network roundtrips, zero external SVG layout shifts. Click any icon to inspect and copy its exact RSX invocation snippet."
             </p>
 
@@ -34,9 +34,9 @@ pub fn ComponentIcons() -> Node {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "VECTOR ICON EXPLORER (36 OF 13,000+)"
+                        <span data-i18n="comp.ico.preview_head">"VECTOR ICON EXPLORER (36 OF 13,000+)"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"Click any icon to inspect"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.ico.preview_sub">"Click any icon to inspect"</span>
                 </div>
 
                 // Search & Filter Category Bar
@@ -50,6 +50,7 @@ pub fn ComponentIcons() -> Node {
                                 type="text"
                                 id="icon-search-field"
                                 placeholder="Filter icons (e.g. terminal, server, shield)..."
+                                data-i18n-placeholder="comp.ico.ph"
                                 oninput="filterIconCatalog(this.value)"
                                 class="w-full bg-sunk border border-rule rounded pl-9 pr-3 py-1.5 text-xs font-mono text-paper placeholder:text-dim outline-none focus:border-oxide transition-colors"
                             />
@@ -57,11 +58,11 @@ pub fn ComponentIcons() -> Node {
 
                         // Category Pills
                         <div class="flex flex-wrap items-center gap-1.5 w-full sm:w-auto text-[11px] font-mono">
-                            <button class="px-2.5 py-1 bg-ink border border-oxide text-paper font-medium rounded" onclick="filterIconCategory('all')">"All (36)"</button>
-                            <button class="px-2.5 py-1 bg-sunk border border-rule text-dim hover:text-paper rounded" onclick="filterIconCategory('compute')">"Compute"</button>
-                            <button class="px-2.5 py-1 bg-sunk border border-rule text-dim hover:text-paper rounded" onclick="filterIconCategory('security')">"Security"</button>
-                            <button class="px-2.5 py-1 bg-sunk border border-rule text-dim hover:text-paper rounded" onclick="filterIconCategory('dev')">"Dev & Git"</button>
-                            <button class="px-2.5 py-1 bg-sunk border border-rule text-dim hover:text-paper rounded" onclick="filterIconCategory('ui')">"UI Controls"</button>
+                            <button class="px-2.5 py-1 bg-ink border border-oxide text-paper font-medium rounded" data-i18n="comp.ico.c_all" onclick="filterIconCategory('all')">"All (36)"</button>
+                            <button class="px-2.5 py-1 bg-sunk border border-rule text-dim hover:text-paper rounded" data-i18n="comp.ico.c_compute" onclick="filterIconCategory('compute')">"Compute"</button>
+                            <button class="px-2.5 py-1 bg-sunk border border-rule text-dim hover:text-paper rounded" data-i18n="comp.ico.c_sec" onclick="filterIconCategory('security')">"Security"</button>
+                            <button class="px-2.5 py-1 bg-sunk border border-rule text-dim hover:text-paper rounded" data-i18n="comp.ico.c_dev" onclick="filterIconCategory('dev')">"Dev & Git"</button>
+                            <button class="px-2.5 py-1 bg-sunk border border-rule text-dim hover:text-paper rounded" data-i18n="comp.ico.c_ui" onclick="filterIconCategory('ui')">"UI Controls"</button>
                         </div>
                     </div>
                 </div>
@@ -89,7 +90,7 @@ pub fn ComponentIcons() -> Node {
                         class="btn btn-sm btn-line self-stretch sm:self-auto justify-center flex items-center gap-2 text-[11px] hover:border-oxide/40"
                     >
                         {render_icon("copy", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                        <span data-copy-label="" class="text-oxide font-medium">"Copy RSX Snippet"</span>
+                        <span data-copy-label="" data-i18n="comp.ico.copy_snip" class="text-oxide font-medium">"Copy RSX Snippet"</span>
                     </button>
                 </div>
 
@@ -215,7 +216,7 @@ pub fn ComponentIcons() -> Node {
                         </div>
                         <button data-copy="use yav::icons::{render_icon, IconSize};\n{render_icon(&quot;terminal&quot;, IconSize::Sm, Some(&quot;w-4 h-4 text-oxide&quot;), None)}" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                            <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                         </button>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
@@ -246,8 +247,8 @@ pub fn ComponentIcons() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"Zero network requests · Inlined SVG output · 13,000+ icons"</span>
-                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span>"Fast Compilation"</span>
+                        <span data-i18n="comp.ico.ide_l">"Zero network requests · Inlined SVG output · 13,000+ icons"</span>
+                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span><span data-i18n="comp.ico.ide_r">"Fast Compilation"</span></span>
                     </div>
                 </div>
 
@@ -264,7 +265,7 @@ pub fn ComponentIcons() -> Node {
                         </div>
                         <button onclick="copyText(this, 'yav icon search terminal')" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy command"</span>
+                            <span data-copy-label="" data-i18n="common.copy_cmd" class="text-oxide font-medium">"copy command"</span>
                         </button>
                     </div>
                     <div class="p-4 code space-y-1 text-[13px] bg-[#070709]">

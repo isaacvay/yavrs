@@ -13,15 +13,15 @@ pub fn DocsInteractivity() -> Node {
             <section id="zero-js-microactions" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.1"</span>
-                    <span class="t">"Zero-JS Micro-Actions & HTML5 Attributes"</span>
+                    <span class="t" data-i18n="docs.int.4_1_sec">"Zero-JS Micro-Actions & HTML5 Attributes"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"yav:* attrs"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Rich client interactivity without writing a line of JavaScript."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_1_title">"Rich client interactivity without writing a line of JavaScript."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Yav v0.1.5 introduces declarative "
+                    <span data-i18n="docs.int.4_1_p1">"Yav v0.1.5 introduces declarative "</span>
                     <code class="inline">"yav:*"</code>
-                    " attributes that wire accessible dialogs, drawers, copy buttons, synchronized tabs, global keyboard shortcuts, and live search filters powered by an ultra-compact (< 2.1 KB) micro-runtime."
+                    <span data-i18n="docs.int.4_1_p2">" attributes that wire accessible dialogs, drawers, copy buttons, synchronized tabs, global keyboard shortcuts, and live search filters powered by an ultra-compact (< 2.1 KB) micro-runtime."</span>
                 </p>
 
                 // IDE LOOK WINDOW: MICRO-ACTIONS
@@ -42,7 +42,7 @@ pub fn DocsInteractivity() -> Node {
                         <div class="pt-2 token-comment">"// 2. Global Hotkey (Cmd+K / Ctrl+K) binding"</div>
                         <div><span class="token-tag">"<button "</span><span class="token-attr">"yav:toggle="</span><span class="token-string">"\"search-modal\" "</span><span class="token-attr">"yav:hotkey="</span><span class="token-string">"\"cmd+k\""</span><span class="token-tag">">"</span>"Search (Cmd+K)"<span class="token-tag">"</button>"</span></div>
                         <div class="pt-2 token-comment">"// 3. Clipboard copy with 2-second label swap and toast notification"</div>
-                        <div><span class="token-tag">"<button "</span><span class="token-attr">"yav:copy="</span><span class="token-string">"\"cargo install yav-cli\" "</span><span class="token-attr">"yav:copy-label="</span><span class="token-string">"\"Copié !\""</span><span class="token-tag">">"</span>"Copy Command"<span class="token-tag">"</button>"</span></div>
+                        <div><span class="token-tag">"<button "</span><span class="token-attr">"yav:copy="</span><span class="token-string">"\"cargo install yav-cli\" "</span><span class="token-attr">"yav:copy-label="</span><span class="token-string">"\"Copied!\""</span><span class="token-tag">">"</span>"Copy Command"<span class="token-tag">"</button>"</span></div>
                         <div class="pt-2 token-comment">"// 4. Synchronized multi-pane tab group"</div>
                         <div><span class="token-tag">"<div "</span><span class="token-attr">"yav:tab-group="</span><span class="token-string">"\"install-tabs\""</span><span class="token-tag">">"</span></div>
                         <div>"    "<span class="token-tag">"<button "</span><span class="token-attr">"yav:tab="</span><span class="token-string">"\"cargo\""</span><span class="token-tag">">"</span>"Cargo"<span class="token-tag">"</button>"</span>" "<span class="token-tag">"<button "</span><span class="token-attr">"yav:tab="</span><span class="token-string">"\"curl\""</span><span class="token-tag">">"</span>"cURL"<span class="token-tag">"</button>"</span></div>
@@ -51,8 +51,8 @@ pub fn DocsInteractivity() -> Node {
                         <div><span class="token-tag">"</div>"</span></div>
                     </div>
                     <div class="ide-status">
-                        <span>"~2.1 KB micro-runtime · Tree-shaken on static pages"</span>
-                        <span class="text-ok">"Zero JS boilerplate"</span>
+                        <span data-i18n="docs.int.4_1_st_l">"~2.1 KB micro-runtime · Tree-shaken on static pages"</span>
+                        <span class="text-ok" data-i18n="docs.int.4_1_st_r">"Zero JS boilerplate"</span>
                     </div>
                 </div>
 
@@ -60,61 +60,61 @@ pub fn DocsInteractivity() -> Node {
                     <table class="dtable min-w-[620px]">
                         <thead>
                             <tr>
-                                <th>"Attribute"</th>
-                                <th>"Value Example"</th>
-                                <th>"Behavior & Accessibility"</th>
+                                <th data-i18n="docs.int.th_attr">"Attribute"</th>
+                                <th data-i18n="docs.int.th_ex">"Value Example"</th>
+                                <th data-i18n="docs.int.th_beh">"Behavior & Accessibility"</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="us">
                                 <td class="text-paper font-semibold">"yav:toggle"</td>
                                 <td class="text-oxide">"\"modal-id\""</td>
-                                <td>"Toggles [open] or [hidden] state, manages aria-expanded, ESC key closes"</td>
+                                <td data-i18n="docs.int.r1">"Toggles [open] or [hidden] state, manages aria-expanded, ESC key closes"</td>
                             </tr>
                             <tr>
                                 <td class="text-paper font-semibold">"yav:click-outside"</td>
                                 <td class="text-oxide">"\"close\""</td>
-                                <td>"Dismisses dialog or popover when clicking anywhere outside target"</td>
+                                <td data-i18n="docs.int.r2">"Dismisses dialog or popover when clicking anywhere outside target"</td>
                             </tr>
                             <tr class="us">
                                 <td class="text-paper font-semibold">"yav:group"</td>
                                 <td class="text-oxide">"\"nav-menus\""</td>
-                                <td>"Exclusive popover group: opening one closes all other elements in the group"</td>
+                                <td data-i18n="docs.int.r3">"Exclusive popover group: opening one closes all other elements in the group"</td>
                             </tr>
                             <tr>
                                 <td class="text-paper font-semibold">"yav:close-on-resize"</td>
                                 <td class="text-oxide">"\"1024\""</td>
-                                <td>"Closes mobile drawers when browser viewport width exceeds threshold"</td>
+                                <td data-i18n="docs.int.r4">"Closes mobile drawers when browser viewport width exceeds threshold"</td>
                             </tr>
                             <tr class="us">
                                 <td class="text-paper font-semibold">"yav:hotkey"</td>
                                 <td class="text-oxide">"\"cmd+k\""</td>
-                                <td>"Binds global keyboard shortcut with cross-platform Cmd / Ctrl normalisation"</td>
+                                <td data-i18n="docs.int.r5">"Binds global keyboard shortcut with cross-platform Cmd / Ctrl normalisation"</td>
                             </tr>
                             <tr>
                                 <td class="text-paper font-semibold">"yav:copy"</td>
                                 <td class="text-oxide">"\"text to copy\""</td>
-                                <td>"Copies string to clipboard; yav:copy-label swaps button text for 2 seconds"</td>
+                                <td data-i18n="docs.int.r6">"Copies string to clipboard; yav:copy-label swaps button text for 2 seconds"</td>
                             </tr>
                             <tr class="us">
                                 <td class="text-paper font-semibold">"yav:filter"</td>
                                 <td class="text-oxide">"\"input\""</td>
-                                <td>"Client-side search filter targeting selectors (yav:filter-target=\".card\")"</td>
+                                <td data-i18n="docs.int.r7">"Client-side search filter targeting selectors (yav:filter-target=\".card\")"</td>
                             </tr>
                             <tr>
                                 <td class="text-paper font-semibold">"yav:optimistic"</td>
                                 <td class="text-oxide">"\"like-btn\""</td>
-                                <td>"Applies instant UI mutations before server response with auto-rollback on network failure"</td>
+                                <td data-i18n="docs.int.r8">"Applies instant UI mutations before server response with auto-rollback on network failure"</td>
                             </tr>
                             <tr class="us">
                                 <td class="text-paper font-semibold">"yav:presence-room"</td>
                                 <td class="text-oxide">"\"doc:42\""</td>
-                                <td>"Wires collaborative live presence beacons, cursor tracks, and member count over SSE/WS"</td>
+                                <td data-i18n="docs.int.r9">"Wires collaborative live presence beacons, cursor tracks, and member count over SSE/WS"</td>
                             </tr>
                             <tr>
                                 <td class="text-paper font-semibold">"yav:offline-queue"</td>
                                 <td class="text-oxide">"\"sync-orders\""</td>
-                                <td>"Local-First IndexedDB mutation buffer: auto-drains and merges with CRDT on reconnect"</td>
+                                <td data-i18n="docs.int.r10">"Local-First IndexedDB mutation buffer: auto-drains and merges with CRDT on reconnect"</td>
                             </tr>
                         </tbody>
                     </table>
@@ -127,19 +127,19 @@ pub fn DocsInteractivity() -> Node {
             <section id="cursor-tracking" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.2"</span>
-                    <span class="t">"Cursor Tracking & Reactive 3D Effects"</span>
+                    <span class="t" data-i18n="docs.int.4_2_sec">"Cursor Tracking & Reactive 3D Effects"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"yav:cursor"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Hardware-accelerated mouse coordinates & 3D perspective."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_2_title">"Hardware-accelerated mouse coordinates & 3D perspective."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "The cursor runtime (~1.3 KB) tracks pointer position using passive "
+                    <span data-i18n="docs.int.4_2_p1">"The cursor runtime (~1.3 KB) tracks pointer position using passive "</span>
                     <code class="inline">"requestAnimationFrame"</code>
-                    " loops and publishes high-precision reactive CSS variables onto elements: "
+                    <span data-i18n="docs.int.4_2_p2">" loops and publishes high-precision reactive CSS variables onto elements: "</span>
                     <code class="inline">"--yav-mouse-x"</code>
                     ", "
                     <code class="inline">"--yav-mouse-y"</code>
-                    ", and normalized coordinates."
+                    <span data-i18n="docs.int.4_2_p3">", and normalized coordinates."</span>
                 </p>
 
                 <div class="grid md:grid-cols-2 gap-6">
@@ -147,7 +147,7 @@ pub fn DocsInteractivity() -> Node {
                         <div class="ide-head">
                             <div class="ide-tab">
                                 {render_icon("box", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                "Declarative Attributes"
+                                <span data-i18n="docs.int.4_2_tab1">"Declarative Attributes"</span>
                             </div>
                             <span class="text-[10px] text-oxide font-mono">"HTML5 Attrs"</span>
                         </div>
@@ -158,7 +158,7 @@ pub fn DocsInteractivity() -> Node {
                             <div><span class="token-tag">"</div>"</span></div>
                             <div class="pt-2 token-comment">"// Magnetic button attraction to cursor"</div>
                             <div><span class="token-tag">"<button "</span><span class="token-attr">"yav:cursor="</span><span class="token-string">"\"magnetic\" "</span><span class="token-attr">"yav:magnetic-strength="</span><span class="token-string">"\"0.35\""</span><span class="token-tag">">"</span></div>
-                            <div>"    \"Bouton Aimanté\""</div>
+                            <div>"    \"Magnetic Button\""</div>
                             <div><span class="token-tag">"</button>"</span></div>
                         </div>
                     </div>
@@ -167,7 +167,7 @@ pub fn DocsInteractivity() -> Node {
                         <div class="ide-head">
                             <div class="ide-tab">
                                 {render_icon("code", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                "Type-Safe Rust Components"
+                                <span data-i18n="docs.int.4_2_tab2">"Type-Safe Rust Components"</span>
                             </div>
                             <span class="text-[10px] text-ok font-mono">"yav::ui::cursor"</span>
                         </div>
@@ -194,21 +194,21 @@ pub fn DocsInteractivity() -> Node {
             <section id="motion-springs" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.3"</span>
-                    <span class="t">"Spring Physics & WAAPI Motion Engine"</span>
+                    <span class="t" data-i18n="docs.int.4_3_sec">"Spring Physics & WAAPI Motion Engine"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"solveSpring"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Mechanical mass, stiffness, and damping physics."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_3_title">"Mechanical mass, stiffness, and damping physics."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Motion in Yav is defined using physical harmonic oscillator equations ("
+                    <span data-i18n="docs.int.4_3_p1">"Motion in Yav is defined using physical harmonic oscillator equations ("</span>
                     <code class="inline">"stiffness"</code>
                     ", "
                     <code class="inline">"damping"</code>
                     ", "
                     <code class="inline">"mass"</code>
-                    ") solved into exact analytical sine/cosine curves and fed directly to "
+                    <span data-i18n="docs.int.4_3_p2">") solved into exact analytical sine/cosine curves and fed directly to "</span>
                     <code class="inline">"Element.animate()"</code>
-                    ". Initial states are pre-compiled into inline CSS during SSR for guaranteed zero-FOUC."
+                    <span data-i18n="docs.int.4_3_p3">". Initial states are pre-compiled into inline CSS during SSR for guaranteed zero-FOUC."</span>
                 </p>
 
                 <div class="ide-window">
@@ -219,7 +219,7 @@ pub fn DocsInteractivity() -> Node {
                                 "src/components/MotionShowcase.rs"
                             </div>
                         </div>
-                        <span class="text-[11px] text-ok font-mono">"< 1.8 KB WAAPI Runtime"</span>
+                        <span class="text-[11px] text-ok font-mono" data-i18n="docs.int.4_3_badge">"< 1.8 KB WAAPI Runtime"</span>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#0b0b0d]">
                         <div class="token-comment">"// 1. Declarative motion element with hover and tap recoils"</div>
@@ -235,8 +235,8 @@ pub fn DocsInteractivity() -> Node {
                         <div><span class="token-tag">"</TypewriterCode>"</span></div>
                     </div>
                     <div class="ide-status">
-                        <span>"solveSpring(k, c, m) analytical harmonic oscillator solver"</span>
-                        <span class="text-ok">"GPU Composited"</span>
+                        <span data-i18n="docs.int.4_3_st_l">"solveSpring(k, c, m) analytical harmonic oscillator solver"</span>
+                        <span class="text-ok" data-i18n="docs.int.4_3_st_r">"GPU Composited"</span>
                     </div>
                 </div>
             </section>
@@ -247,12 +247,12 @@ pub fn DocsInteractivity() -> Node {
             <section id="micro-signals" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.4"</span>
-                    <span class="t">"Declarative Reactive Signals (yav:state)"</span>
+                    <span class="t" data-i18n="docs.int.4_4_sec">"Declarative Reactive Signals (yav:state)"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"yav:state"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Instant client calculators and dynamic gauges in markup."</h2>
-                <p class="text-mute text-[15.5px] leading-relaxed">
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_4_title">"Instant client calculators and dynamic gauges in markup."</h2>
+                <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="docs.int.4_4_lede">
                     "Build interactive state islands, dynamic price calculators, live sliders, and gauge bars directly with declarative HTML5 directives without writing JavaScript functions."
                 </p>
 
@@ -264,7 +264,7 @@ pub fn DocsInteractivity() -> Node {
                                 "src/components/CounterCalculator.rs"
                             </div>
                         </div>
-                        <span class="text-[11px] text-oxide font-mono">"~0.9 KB signals runtime"</span>
+                        <span class="text-[11px] text-oxide font-mono" data-i18n="docs.int.4_4_badge">"~0.9 KB signals runtime"</span>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#0b0b0d]">
                         <div class="token-comment">"// Reactive local state island with two-way binding and inline style computation"</div>
@@ -274,7 +274,7 @@ pub fn DocsInteractivity() -> Node {
                         <div>"        "<span class="token-tag">"<span "</span><span class="token-attr">"yav:text="</span><span class="token-string">"\"count\" "</span><span class="token-attr">"class="</span><span class="token-string">"\"font-bold\""</span><span class="token-tag">">"</span>"\"1\""<span class="token-tag">"</span>"</span></div>
                         <div>"        "<span class="token-tag">"<button "</span><span class="token-attr">"yav:on-click="</span><span class="token-string">"\"count = count + 1\""</span><span class="token-tag">">"</span>"\"+\""<span class="token-tag">"</button>"</span></div>
                         <div>"    "<span class="token-tag">"</div>"</span></div>
-                        <div>"    "<span class="token-tag">"<p "</span><span class="token-attr">"class="</span><span class="token-string">"\"mt-4\""</span><span class="token-tag">">"</span>"\"Total : \" "<span class="token-tag">"<span "</span><span class="token-attr">"yav:text="</span><span class="token-string">"\"'€' + (count * unit_price)\""</span><span class="token-tag">">"</span>"\"€49\""<span class="token-tag">"</span></p>"</span></div>
+                        <div>"    "<span class="token-tag">"<p "</span><span class="token-attr">"class="</span><span class="token-string">"\"mt-4\""</span><span class="token-tag">">"</span>"\"Total: \" "<span class="token-tag">"<span "</span><span class="token-attr">"yav:text="</span><span class="token-string">"\"'€' + (count * unit_price)\""</span><span class="token-tag">">"</span>"\"€49\""<span class="token-tag">"</span></p>"</span></div>
                         <div>"    "<span class="token-tag">"<div "</span><span class="token-attr">"class="</span><span class="token-string">"\"track h-2 bg-zinc-800 rounded mt-4\""</span><span class="token-tag">">"</span></div>
                         <div>"        "<span class="token-tag">"<div "</span><span class="token-attr">"yav:style-width="</span><span class="token-string">"\"Math.min(100, count * 10) + '%'\" "</span><span class="token-attr">"class="</span><span class="token-string">"\"h-full bg-orange-500 rounded\""</span><span class="token-tag">" />"</span></div>
                         <div>"    "<span class="token-tag">"</div>"</span></div>
@@ -282,7 +282,7 @@ pub fn DocsInteractivity() -> Node {
                     </div>
                     <div class="ide-status">
                         <span>"yav:state · yav:bind · yav:text · yav:on-click · yav:style-*"</span>
-                        <span class="text-ok">"Reactive Signal Graph"</span>
+                        <span class="text-ok" data-i18n="docs.int.4_4_st_r">"Reactive Signal Graph"</span>
                     </div>
                 </div>
             </section>
@@ -293,47 +293,47 @@ pub fn DocsInteractivity() -> Node {
             <section id="theme-system" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.5"</span>
-                    <span class="t">"Multi-Theme Design System (8 Themes)"</span>
+                    <span class="t" data-i18n="docs.int.4_5_sec">"Multi-Theme Design System (8 Themes)"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"ThemeSelector"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"8 built-in themes with cookie & localStorage persistence."</h2>
-                <p class="text-mute text-[15.5px] leading-relaxed">
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_5_title">"8 built-in themes with cookie & localStorage persistence."</h2>
+                <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="docs.int.4_5_lede">
                     "Yav v0.1.5 features a complete zero-dependency multi-theme engine equipped with 8 pre-calibrated themes, instant switching, and compile-time anti-FOUC injection ensuring zero flash of unstyled theme on page reload."
                 </p>
 
                 <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
                     <div class="plate p-4 bg-ink-2 space-y-1.5 border-l-2 border-l-oxide">
                         <div class="text-paper font-semibold">"Editorial Blueprint"</div>
-                        <p class="text-mute text-[11px]">"Flagship carbon #0b0b0c & rust oxide #e0592f"</p>
+                        <p class="text-mute text-[11px]" data-i18n="docs.int.t1_d">"Flagship carbon #0b0b0c & rust oxide #e0592f"</p>
                     </div>
                     <div class="plate p-4 bg-ink-2 space-y-1.5 border-l-2 border-l-[#6366f1]">
                         <div class="text-paper font-semibold">"Obsidian Minimal"</div>
-                        <p class="text-mute text-[11px]">"OLED black #09090b & electric indigo #6366f1"</p>
+                        <p class="text-mute text-[11px]" data-i18n="docs.int.t2_d">"OLED black #09090b & electric indigo #6366f1"</p>
                     </div>
                     <div class="plate p-4 bg-ink-2 space-y-1.5 border-l-2 border-l-[#c85a32]">
                         <div class="text-paper font-semibold">"Nordic Paper"</div>
-                        <p class="text-mute text-[11px]">"Alabaster #f7f5f0 & terracotta #c85a32"</p>
+                        <p class="text-mute text-[11px]" data-i18n="docs.int.t3_d">"Alabaster #f7f5f0 & terracotta #c85a32"</p>
                     </div>
                     <div class="plate p-4 bg-ink-2 space-y-1.5 border-l-2 border-l-[#00ff66]">
                         <div class="text-paper font-semibold">"Cyber Terminal"</div>
-                        <p class="text-mute text-[11px]">"Matrix green #00ff66 & phosphor amber #ffb000"</p>
+                        <p class="text-mute text-[11px]" data-i18n="docs.int.t4_d">"Matrix green #00ff66 & phosphor amber #ffb000"</p>
                     </div>
                     <div class="plate p-4 bg-ink-2 space-y-1.5 border-l-2 border-l-[#2aa198]">
                         <div class="text-paper font-semibold">"Solarized Lab"</div>
-                        <p class="text-mute text-[11px]">"Parchment #fdf6e3 & precision cyan #2aa198"</p>
+                        <p class="text-mute text-[11px]" data-i18n="docs.int.t5_d">"Parchment #fdf6e3 & precision cyan #2aa198"</p>
                     </div>
                     <div class="plate p-4 bg-ink-2 space-y-1.5 border-l-2 border-l-[#8b5cf6]">
                         <div class="text-paper font-semibold">"Glass Aurora"</div>
-                        <p class="text-mute text-[11px]">"Midnight #070913 & frosted violet #8b5cf6"</p>
+                        <p class="text-mute text-[11px]" data-i18n="docs.int.t6_d">"Midnight #070913 & frosted violet #8b5cf6"</p>
                     </div>
                     <div class="plate p-4 bg-ink-2 space-y-1.5 border-l-2 border-l-[#2563eb]">
                         <div class="text-paper font-semibold">"Classic Light"</div>
-                        <p class="text-mute text-[11px]">"Pure white #ffffff & royal blue #2563eb"</p>
+                        <p class="text-mute text-[11px]" data-i18n="docs.int.t7_d">"Pure white #ffffff & royal blue #2563eb"</p>
                     </div>
                     <div class="plate p-4 bg-ink-2 space-y-1.5 border-l-2 border-l-[#38bdf8]">
                         <div class="text-paper font-semibold">"Slate Dark"</div>
-                        <p class="text-mute text-[11px]">"Slate 900 #0f172a & sky 400 #38bdf8"</p>
+                        <p class="text-mute text-[11px]" data-i18n="docs.int.t8_d">"Slate 900 #0f172a & sky 400 #38bdf8"</p>
                     </div>
                 </div>
 
@@ -345,7 +345,7 @@ pub fn DocsInteractivity() -> Node {
                                 "src/layouts/RootLayout.rs"
                             </div>
                         </div>
-                        <span class="text-[11px] text-ok font-mono">"Zero-FOUC Guarantee"</span>
+                        <span class="text-[11px] text-ok font-mono" data-i18n="docs.int.4_5_badge">"Zero-FOUC Guarantee"</span>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#0b0b0d]">
                         <div class="token-comment">"// 1. Inject all themes CSS variables & anti-FOUC script in head"</div>
@@ -358,8 +358,8 @@ pub fn DocsInteractivity() -> Node {
                         <div><span class="token-tag">"<ThemeSelector "</span><span class="token-attr">"default_theme="</span><span class="token-string">"\"editorial-blueprint\" "</span><span class="token-tag">"/>"</span></div>
                     </div>
                     <div class="ide-status">
-                        <span>"Persists in localStorage and document.cookie"</span>
-                        <span class="text-ok">"Inline Anti-FOUC Script"</span>
+                        <span data-i18n="docs.int.4_5_st_l">"Persists in localStorage and document.cookie"</span>
+                        <span class="text-ok" data-i18n="docs.int.4_5_st_r">"Inline Anti-FOUC Script"</span>
                     </div>
                 </div>
             </section>
@@ -370,26 +370,26 @@ pub fn DocsInteractivity() -> Node {
             <section id="tree-shaking" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.6"</span>
-                    <span class="t">"SSR Tree-Shaking Runtimes & WebSockets"</span>
+                    <span class="t" data-i18n="docs.int.4_6_sec">"SSR Tree-Shaking Runtimes & WebSockets"</span>
                     <span class="sec-rule"></span>
-                    <span class="r">"0 KB JS Guarantee"</span>
+                    <span class="r" data-i18n="docs.int.4_6_r">"0 KB JS Guarantee"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Only pay for what your page actually renders."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_6_title">"Only pay for what your page actually renders."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "During HTML serialization, Yav scans the rendered DOM string and tree-shakes client runtimes before transmitting the response. If a page uses no interactive attributes, exactly "
-                    <strong class="text-paper">"0 bytes"</strong>
-                    " of client JavaScript are injected. For real-time updates, "
+                    <span data-i18n="docs.int.4_6_p1">"During HTML serialization, Yav scans the rendered DOM string and tree-shakes client runtimes before transmitting the response. If a page uses no interactive attributes, exactly "</span>
+                    <strong class="text-paper" data-i18n="docs.int.4_6_b">"0 bytes"</strong>
+                    <span data-i18n="docs.int.4_6_p2">" of client JavaScript are injected. For real-time updates, "</span>
                     <code class="inline">"WsBroadcast"</code>
-                    " pushes server-rendered HTML fragments over WebSockets."
+                    <span data-i18n="docs.int.4_6_p3">" pushes server-rendered HTML fragments over WebSockets."</span>
                 </p>
 
                 <div class="table-scroll pb-2">
                     <table class="dtable min-w-[580px]">
                         <thead>
                             <tr>
-                                <th>"Detected Attributes on Page"</th>
-                                <th>"Injected Micro-Runtime"</th>
-                                <th>"Bundle Overhead"</th>
+                                <th data-i18n="docs.int.4_6_th1">"Detected Attributes on Page"</th>
+                                <th data-i18n="docs.int.4_6_th2">"Injected Micro-Runtime"</th>
+                                <th data-i18n="docs.int.4_6_th3">"Bundle Overhead"</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -414,9 +414,9 @@ pub fn DocsInteractivity() -> Node {
                                 <td>"~0.9 KB"</td>
                             </tr>
                             <tr class="us">
-                                <td class="text-ok font-semibold">"None of the above (Static Page)"</td>
-                                <td class="text-ok">"None"</td>
-                                <td class="text-ok font-bold">"0 KB JS"</td>
+                                <td class="text-ok font-semibold" data-i18n="docs.int.4_6_none_attrs">"None of the above (Static Page)"</td>
+                                <td class="text-ok" data-i18n="docs.int.4_6_none">"None"</td>
+                                <td class="text-ok font-bold" data-i18n="docs.int.4_6_zero">"0 KB JS"</td>
                             </tr>
                         </tbody>
                     </table>
@@ -429,13 +429,13 @@ pub fn DocsInteractivity() -> Node {
             <section id="htmx-interactivity" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.7"</span>
-                    <span class="t">"HTMX Integration & Partial HTML Swaps"</span>
+                    <span class="t" data-i18n="docs.int.4_7_sec">"HTMX Integration & Partial HTML Swaps"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"HtmlFragment"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Rich dynamic UI without complex client-side SPA state."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_7_title">"Rich dynamic UI without complex client-side SPA state."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "All standard HTMX attributes ("
+                    <span data-i18n="docs.int.4_7_p1">"All standard HTMX attributes ("</span>
                     <code class="inline">"hx-get"</code>
                     ", "
                     <code class="inline">"hx-post"</code>
@@ -445,9 +445,9 @@ pub fn DocsInteractivity() -> Node {
                     <code class="inline">"hx-swap"</code>
                     ", "
                     <code class="inline">"hx-trigger"</code>
-                    ") are first-class attributes in RSX. Server handlers return lightweight "
+                    <span data-i18n="docs.int.4_7_p2">") are first-class attributes in RSX. Server handlers return lightweight "</span>
                     <code class="inline">"HtmlFragment"</code>
-                    " partials."
+                    <span data-i18n="docs.int.4_7_p3">" partials."</span>
                 </p>
 
                 <div class="ide-window">
@@ -460,7 +460,7 @@ pub fn DocsInteractivity() -> Node {
                         </div>
                         <button data-copy="use yav::prelude::*;\nuse yav::server::HtmlFragment;\n\npub async fn increment_counter() -> HtmlFragment {\n    let new_total = 42;\n    HtmlFragment::new(rsx! {\n        <div id=&quot;counter-box&quot; class=&quot;p-4 border rounded-xl flex items-center gap-4&quot;>\n            <span class=&quot;text-2xl font-bold&quot;>Total: {new_total}</span>\n            <button hx-post=&quot;/api/counter&quot; hx-target=&quot;#counter-box&quot; hx-swap=&quot;outerHTML&quot;>\n                +1 Increment\n            </button>\n        </div>\n    })\n    .hx_trigger(&quot;counterUpdated&quot;)\n    .hx_push_url(&quot;/dashboard?updated=true&quot;)\n}" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                            <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                         </button>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
@@ -486,8 +486,8 @@ pub fn DocsInteractivity() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"HtmlFragment · Lightweight swap without <!DOCTYPE html>"</span>
-                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span>"0 kB Client JS"</span>
+                        <span data-i18n="docs.int.4_7_st_l">"HtmlFragment · Lightweight swap without <!DOCTYPE html>"</span>
+                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span><span data-i18n="docs.int.4_7_st_r">"0 kB Client JS"</span></span>
                     </div>
                 </div>
             </section>
@@ -498,13 +498,19 @@ pub fn DocsInteractivity() -> Node {
             <section id="icons-catalog" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.8"</span>
-                    <span class="t">"Built-in 13,000+ Icon System"</span>
+                    <span class="t" data-i18n="docs.int.4_8_sec">"Built-in 13,000+ Icon System"</span>
                     <span class="sec-rule"></span>
                     <span class="r">"yav-icons"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Embedded SVGs. Zero external webfont requests."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_8_title">"Embedded SVGs. Zero external webfont requests."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Yav incorporates over 13,000 pre-optimized SVG icons organized across 3 aesthetic families: <strong class=\"text-paper\">Classic</strong> (Lucide), <strong class=\"text-paper\">Minimal</strong> (MynaUI), and <strong class=\"text-paper\">System</strong> (Phosphor), embedded directly in the binary with zero runtime HTTP requests."
+                    <span data-i18n="docs.int.4_8_p1">"Yav incorporates over 13,000 pre-optimized SVG icons organized across 3 aesthetic families: "</span>
+                    <strong class="text-paper">"Classic"</strong>
+                    <span data-i18n="docs.int.4_8_p2">" (Lucide), "</span>
+                    <strong class="text-paper">"Minimal"</strong>
+                    <span data-i18n="docs.int.4_8_p3">" (MynaUI), and "</span>
+                    <strong class="text-paper">"System"</strong>
+                    <span data-i18n="docs.int.4_8_p4">" (Phosphor), embedded directly in the binary with zero runtime HTTP requests."</span>
                 </p>
 
                 <div class="ide-window">
@@ -530,8 +536,8 @@ pub fn DocsInteractivity() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"Lucide + MynaUI + Phosphor embedded SVGs"</span>
-                        <span>"0 External Network Requests"</span>
+                        <span data-i18n="docs.int.4_8_st_l">"Lucide + MynaUI + Phosphor embedded SVGs"</span>
+                        <span data-i18n="docs.int.4_8_st_r">"0 External Network Requests"</span>
                     </div>
                 </div>
             </section>
@@ -542,17 +548,17 @@ pub fn DocsInteractivity() -> Node {
             <section id="ui-scaffolding" class="space-y-6 scroll-mt-24">
                 <div class="sec-head">
                     <span class="n">"4.9"</span>
-                    <span class="t">"UI Component Scaffolding (yav add - 60+ Primitives)"</span>
+                    <span class="t" data-i18n="docs.int.4_9_sec">"UI Component Scaffolding (yav add - 60+ Primitives)"</span>
                     <span class="sec-rule"></span>
-                    <span class="r">"60+ primitives"</span>
+                    <span class="r" data-i18n="docs.int.4_9_r">"60+ primitives"</span>
                 </div>
-                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight">"Copy-paste ownership. No opaque UI black-boxes."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper pt-2 leading-tight" data-i18n="docs.int.4_9_title">"Copy-paste ownership. No opaque UI black-boxes."</h2>
                 <p class="text-mute text-[15.5px] leading-relaxed">
-                    "Similar to shadcn/ui, "
+                    <span data-i18n="docs.int.4_9_p1">"Similar to shadcn/ui, "</span>
                     <code class="inline">"yav add <component>"</code>
-                    " copies production-tested, beautifully-styled component source files directly into your project's "
+                    <span data-i18n="docs.int.4_9_p2">" copies production-tested, beautifully-styled component source files directly into your project's "</span>
                     <code class="inline">"src/components/"</code>
-                    " directory. Over 60 enterprise primitives (Charts, DataGrid, Kanban, FlowCanvas, DevTools, Spreadsheets, 3D Mesh, Media Player, and more) are available for instant scaffolding."
+                    <span data-i18n="docs.int.4_9_p3">" directory. Over 60 enterprise primitives (Charts, DataGrid, Kanban, FlowCanvas, DevTools, Spreadsheets, 3D Mesh, Media Player, and more) are available for instant scaffolding."</span>
                 </p>
 
                 <div class="term-window">
@@ -567,7 +573,7 @@ pub fn DocsInteractivity() -> Node {
                         </div>
                         <button data-copy="yav add charts data-grid kanban-board flow-canvas devtools spreadsheet model-viewer-3d" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                            <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                         </button>
                     </div>
                     <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#070709]">

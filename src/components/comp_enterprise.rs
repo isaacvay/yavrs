@@ -9,12 +9,12 @@ pub fn ComponentEnterprise() -> Node {
         <section id="enterprise" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.18"</span>
-                <span class="t">"Enterprise DataGrid, Kanban & FlowCanvas"</span>
+                <span class="t" data-i18n="comp.ent.sec">"Enterprise DataGrid, Kanban & FlowCanvas"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add data-grid kanban flow-canvas"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"High-throughput enterprise application primitives."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.ent.title">"High-throughput enterprise application primitives."</h2>
                 <button
                     data-copy="yav add data-grid kanban-board flow-canvas devtools"
                     onclick="copyText(this)"
@@ -22,11 +22,11 @@ pub fn ComponentEnterprise() -> Node {
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add data-grid kanban flow-canvas"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
-                "Production-grade productivity engines: searchable and selectable enterprise DataGrids, drag-and-drop Kanban workflow boards with $O(1)$ fractional LexoRank ordering, interactive node-graph FlowCanvases with live cubic Bézier edge calculation, and in-app DevTools telemetry."
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.ent.lede">
+                "Production-grade productivity engines: searchable and selectable enterprise DataGrids, drag-and-drop Kanban workflow boards with O(1) fractional LexoRank ordering, interactive node-graph FlowCanvases with live cubic Bézier edge calculation, and in-app DevTools telemetry."
             </p>
 
             // Live Interactive Preview Plate
@@ -35,15 +35,15 @@ pub fn ComponentEnterprise() -> Node {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "LIVE PREVIEW — WORKFLOW ENGINES"
+                        <span data-i18n="comp.ent.preview_head">"LIVE PREVIEW — WORKFLOW ENGINES"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"LexoRank $O(1)$ · Bézier Rerouting"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.ent.preview_sub">"LexoRank O(1) · Bézier Rerouting"</span>
                 </div>
                 <div class="p-6 sm:p-8 space-y-8 bg-ink-2">
                     // 1. Kanban Board Demo
                     <div class="space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-mono text-dim uppercase">"Multi-Column Kanban with LexoRank Fractional Indexing"</span>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs font-mono text-dim uppercase" data-i18n="comp.ent.kanban_lbl">"Multi-Column Kanban with LexoRank Fractional Indexing"</span>
                             <span class="chip text-[11px]">"yav:drop-url=\"/api/kanban/move\""</span>
                         </div>
                         <div class="grid md:grid-cols-3 gap-4">
@@ -52,7 +52,7 @@ pub fn ComponentEnterprise() -> Node {
                                 <div class="flex items-center justify-between text-xs font-mono">
                                     <span class="font-semibold text-paper flex items-center gap-1.5">
                                         <span class="w-2 h-2 rounded-full bg-dim"></span>
-                                        "Backlog"
+                                        <span data-i18n="comp.ent.col_backlog">"Backlog"</span>
                                     </span>
                                     <span class="text-dim">"2"</span>
                                 </div>
@@ -61,7 +61,7 @@ pub fn ComponentEnterprise() -> Node {
                                         <span class="text-oxide font-semibold">"YAV-104"</span>
                                         <span class="text-dim">"rank: U"</span>
                                     </div>
-                                    <p class="text-xs text-paper font-medium">"CRDT Multiplayer Presence Room"</p>
+                                    <p class="text-xs text-paper font-medium" data-i18n="comp.ent.k1">"CRDT Multiplayer Presence Room"</p>
                                     <div class="flex items-center justify-between text-[10px] font-mono text-dim pt-1 border-t border-rule">
                                         <span class="px-1.5 py-0.5 rounded bg-sunk text-paper">"collab"</span>
                                         <span>"@isaac"</span>
@@ -72,7 +72,7 @@ pub fn ComponentEnterprise() -> Node {
                                         <span class="text-oxide font-semibold">"YAV-105"</span>
                                         <span class="text-dim">"rank: V"</span>
                                     </div>
-                                    <p class="text-xs text-paper font-medium">"WebAssembly Client Islands"</p>
+                                    <p class="text-xs text-paper font-medium" data-i18n="comp.ent.k2">"WebAssembly Client Islands"</p>
                                     <div class="flex items-center justify-between text-[10px] font-mono text-dim pt-1 border-t border-rule">
                                         <span class="px-1.5 py-0.5 rounded bg-sunk text-paper">"core"</span>
                                         <span>"@team"</span>
@@ -85,7 +85,7 @@ pub fn ComponentEnterprise() -> Node {
                                 <div class="flex items-center justify-between text-xs font-mono">
                                     <span class="font-semibold text-paper flex items-center gap-1.5">
                                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                                        "In Progress"
+                                        <span data-i18n="comp.ent.col_prog">"In Progress"</span>
                                     </span>
                                     <span class="text-dim">"1"</span>
                                 </div>
@@ -94,7 +94,7 @@ pub fn ComponentEnterprise() -> Node {
                                         <span class="text-oxide font-semibold">"YAV-102"</span>
                                         <span class="text-dim">"rank: W"</span>
                                     </div>
-                                    <p class="text-xs text-paper font-medium">"Model Context Protocol (MCP) Server"</p>
+                                    <p class="text-xs text-paper font-medium" data-i18n="comp.ent.k3">"Model Context Protocol (MCP) Server"</p>
                                     <div class="flex items-center justify-between text-[10px] font-mono text-dim pt-1 border-t border-rule">
                                         <span class="px-1.5 py-0.5 rounded bg-sunk text-oxide">"ai"</span>
                                         <span>"@isaac"</span>
@@ -107,7 +107,7 @@ pub fn ComponentEnterprise() -> Node {
                                 <div class="flex items-center justify-between text-xs font-mono">
                                     <span class="font-semibold text-paper flex items-center gap-1.5">
                                         <span class="w-2 h-2 rounded-full bg-ok"></span>
-                                        "Production Done"
+                                        <span data-i18n="comp.ent.col_done">"Production Done"</span>
                                     </span>
                                     <span class="text-dim">"3"</span>
                                 </div>
@@ -116,7 +116,7 @@ pub fn ComponentEnterprise() -> Node {
                                         <span class="text-ok font-semibold">"YAV-098"</span>
                                         <span class="text-dim">"rank: Z"</span>
                                     </div>
-                                    <p class="text-xs text-paper font-medium">"Partial Prerendering (PPR) Engine"</p>
+                                    <p class="text-xs text-paper font-medium" data-i18n="comp.ent.k4">"Partial Prerendering (PPR) Engine"</p>
                                     <div class="flex items-center justify-between text-[10px] font-mono text-dim pt-1 border-t border-rule">
                                         <span class="px-1.5 py-0.5 rounded bg-sunk text-ok">"server"</span>
                                         <span>"@isaac"</span>
@@ -128,9 +128,9 @@ pub fn ComponentEnterprise() -> Node {
 
                     // 2. FlowCanvas Interactive Node Graph Demo
                     <div class="space-y-3 pt-4 border-t border-rule">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-mono text-dim uppercase">"FlowCanvas — Reactive Node Graph with Live Bézier Edge Rerouting"</span>
-                            <span class="text-xs font-mono text-dim">"drag nodes to update SVG paths"</span>
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <span class="text-xs font-mono text-dim uppercase" data-i18n="comp.ent.flow_lbl">"FlowCanvas — Reactive Node Graph with Live Bézier Edge Rerouting"</span>
+                            <span class="text-xs font-mono text-dim" data-i18n="comp.ent.flow_sub">"drag nodes to update SVG paths"</span>
                         </div>
                         <div class="table-scroll pb-1">
                             <div class="p-6 bg-sunk border border-rule rounded relative overflow-hidden h-56 bp-grid min-w-[580px]">
@@ -162,7 +162,7 @@ pub fn ComponentEnterprise() -> Node {
                                         <span>"WORKER"</span>
                                         <span class="w-1.5 h-1.5 rounded-full bg-oxide"></span>
                                     </div>
-                                    <div class="text-xs font-bold text-paper">"AI Classifier"</div>
+                                    <div class="text-xs font-bold text-paper" data-i18n="comp.ent.n2">"AI Classifier"</div>
                                     <div class="text-[10px] font-mono text-dim">"gpt-4o-mini"</div>
                                 </div>
 
@@ -172,8 +172,8 @@ pub fn ComponentEnterprise() -> Node {
                                         <span>"STORAGE"</span>
                                         <span class="w-1.5 h-1.5 rounded-full bg-dim"></span>
                                     </div>
-                                    <div class="text-xs font-bold text-paper">"Audit Ledger"</div>
-                                    <div class="text-[10px] font-mono text-dim">"Append-only"</div>
+                                    <div class="text-xs font-bold text-paper" data-i18n="comp.ent.n3">"Audit Ledger"</div>
+                                    <div class="text-[10px] font-mono text-dim" data-i18n="comp.ent.n3_sub">"Append-only"</div>
                                 </div>
 
                                 // Node 4: Dispatch
@@ -182,8 +182,8 @@ pub fn ComponentEnterprise() -> Node {
                                         <span>"DISPATCH"</span>
                                         <span class="w-1.5 h-1.5 rounded-full bg-ok"></span>
                                     </div>
-                                    <div class="text-xs font-bold text-paper">"Client SSE Stream"</div>
-                                    <div class="text-[10px] font-mono text-ok">"0ms latency"</div>
+                                    <div class="text-xs font-bold text-paper" data-i18n="comp.ent.n4">"Client SSE Stream"</div>
+                                    <div class="text-[10px] font-mono text-ok" data-i18n="comp.ent.n4_sub">"0ms latency"</div>
                                 </div>
                             </div>
                         </div>
@@ -201,12 +201,12 @@ pub fn ComponentEnterprise() -> Node {
                         </div>
                     </div>
                     <button
-                        data-copy="use yav::ui::kanban::{KanbanBoard, KanbanColumn, KanbanCard};\nuse yav::ui::flow_canvas::{FlowCanvas, FlowNode, FlowEdge};\n\nlet board = KanbanBoard::new(\"sprint-board\")\n    .drop_url(\"/api/kanban/move\")\n    .column(KanbanColumn::new(\"todo\", \"À Faire\")\n        .card(KanbanCard::new(\"ISS-1\", \"Moteur CRDT\", \"U\").tag(\"core\")))\n    .column(KanbanColumn::new(\"in_progress\", \"En Cours\"))\n    .render();\n\nlet canvas = FlowCanvas::new(\"pipeline\")\n    .node(FlowNode::new(\"n1\", \"Webhook\", 50, 100))\n    .node(FlowNode::new(\"n2\", \"AI Worker\", 260, 40))\n    .edge(FlowEdge::new(\"e1\", \"n1\", \"n2\").animated(true))\n    .render();"
+                        data-copy="use yav::ui::kanban::{KanbanBoard, KanbanColumn, KanbanCard};\nuse yav::ui::flow_canvas::{FlowCanvas, FlowNode, FlowEdge};\n\nlet board = KanbanBoard::new(\"sprint-board\")\n    .drop_url(\"/api/kanban/move\")\n    .column(KanbanColumn::new(\"todo\", \"To Do\")\n        .card(KanbanCard::new(\"ISS-1\", \"CRDT Engine\", \"U\").tag(\"core\")))\n    .column(KanbanColumn::new(\"in_progress\", \"In Progress\"))\n    .render();\n\nlet canvas = FlowCanvas::new(\"pipeline\")\n    .node(FlowNode::new(\"n1\", \"Webhook\", 50, 100))\n    .node(FlowNode::new(\"n2\", \"AI Worker\", 260, 40))\n    .edge(FlowEdge::new(\"e1\", \"n1\", \"n2\").animated(true))\n    .render();"
                         onclick="copyText(this)"
                         class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono mr-2"
                     >
                         {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                        <span data-copy-label="" class="text-oxide font-medium">"copy"</span>
+                        <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium">"copy"</span>
                     </button>
                 </div>
                 <div class="p-6 code space-y-1.5 overflow-x-auto text-[13px] bg-[#0b0b0d]">
@@ -215,8 +215,8 @@ pub fn ComponentEnterprise() -> Node {
                     <div><span class="token-keyword">"use "</span>"yav::ui::flow_canvas::{"<span class="token-type">"FlowCanvas"</span>", "<span class="token-type">"FlowNode"</span>", "<span class="token-type">"FlowEdge"</span>"};"</div>
                     <div class="pt-2"><span class="token-keyword">"let "</span>"board = "<span class="token-type">"KanbanBoard"</span>"::new("<span class="token-string">"\"sprint-board\""</span>")"</div>
                     <div>"    .drop_url("<span class="token-string">"\"/api/kanban/move\""</span>")"</div>
-                    <div>"    .column("<span class="token-type">"KanbanColumn"</span>"::new("<span class="token-string">"\"todo\""</span>", "<span class="token-string">"\"À Faire\""</span>")"</div>
-                    <div>"        .card("<span class="token-type">"KanbanCard"</span>"::new("<span class="token-string">"\"ISS-1\""</span>", "<span class="token-string">"\"Moteur CRDT\""</span>", "<span class="token-string">"\"U\""</span>").tag("<span class="token-string">"\"core\""</span>")))"</div>
+                    <div>"    .column("<span class="token-type">"KanbanColumn"</span>"::new("<span class="token-string">"\"todo\""</span>", "<span class="token-string">"\"To Do\""</span>")"</div>
+                    <div>"        .card("<span class="token-type">"KanbanCard"</span>"::new("<span class="token-string">"\"ISS-1\""</span>", "<span class="token-string">"\"CRDT Engine\""</span>", "<span class="token-string">"\"U\""</span>").tag("<span class="token-string">"\"core\""</span>")))"</div>
                     <div>"    .render();"</div>
                     <div class="pt-2"><span class="token-keyword">"let "</span>"canvas = "<span class="token-type">"FlowCanvas"</span>"::new("<span class="token-string">"\"pipeline\""</span>")"</div>
                     <div>"    .node("<span class="token-type">"FlowNode"</span>"::new("<span class="token-string">"\"n1\""</span>", "<span class="token-string">"\"Webhook\""</span>", 50, 100))"</div>
@@ -225,8 +225,8 @@ pub fn ComponentEnterprise() -> Node {
                     <div>"    .render();"</div>
                 </div>
                 <div class="ide-status">
-                    <span>"Zero external JS libraries · 100% SVG and standard DOM mutations"</span>
-                    <span class="text-ok">"LexoRank $O(1)$ Fractional Persistence"</span>
+                    <span data-i18n="comp.ent.ide_l">"Zero external JS libraries · 100% SVG and standard DOM mutations"</span>
+                    <span class="text-ok" data-i18n="comp.ent.ide_r">"LexoRank O(1) Fractional Persistence"</span>
                 </div>
             </div>
         </section>

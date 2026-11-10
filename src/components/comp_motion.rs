@@ -9,22 +9,22 @@ pub fn ComponentMotion() -> Node {
         <section id="motion" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.11"</span>
-                <span class="t">"Spring Physics"</span>
+                <span class="t" data-i18n="comp.motion.sec">"Spring Physics"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add motion"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"Mechanical spring dynamics."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.motion.title">"Mechanical spring dynamics."</h2>
                 <button
                     onclick="copyText(this, 'yav add motion')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add motion"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.motion.lede">
                 "Micro-interactions governed by harmonic oscillator physics (stiffness, damping, mass) instead of arbitrary cubic-bezier timing curves. Driven by Web Animations API in less than 2 KB runtime."
             </p>
 
@@ -40,15 +40,15 @@ pub fn ComponentMotion() -> Node {
                 >
                     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
                     <div class="flex items-center justify-between">
-                        <span class="font-mono text-[11px] text-oxide">"STIFFNESS: 320 · DAMPING: 18"</span>
+                        <span class="font-mono text-[11px] text-oxide" data-i18n="comp.motion.c1_meta">"STIFFNESS: 320 · DAMPING: 18"</span>
                         <span class="dot dot-ok"></span>
                     </div>
-                    <h3 class="text-[22px] text-paper">"Snappy Recoil"</h3>
-                    <p class="text-[13.5px] text-mute leading-relaxed">
+                    <h3 class="text-[22px] text-paper" data-i18n="comp.motion.c1_title">"Snappy Recoil"</h3>
+                    <p class="text-[13.5px] text-mute leading-relaxed" data-i18n="comp.motion.c1_desc">
                         "Click or hover over this card to trigger rapid spring acceleration with zero perceptual settling delay."
                     </p>
                     <div class="font-mono text-[11px] text-dim pt-2 border-t border-[rgba(236,233,227,0.08)] flex justify-between">
-                        <span>"Hover scale 1.02 / y -4px"</span>
+                        <span data-i18n="comp.motion.c1_l">"Hover scale 1.02 / y -4px"</span>
                         <span class="text-oxide">"while_tap 0.97"</span>
                     </div>
                 </div>
@@ -63,15 +63,15 @@ pub fn ComponentMotion() -> Node {
                 >
                     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
                     <div class="flex items-center justify-between">
-                        <span class="font-mono text-[11px] text-oxide">"STIFFNESS: 240 · DAMPING: 15"</span>
+                        <span class="font-mono text-[11px] text-oxide" data-i18n="comp.motion.c2_meta">"STIFFNESS: 240 · DAMPING: 15"</span>
                         <span class="dot"></span>
                     </div>
-                    <h3 class="text-[22px] text-paper">"Tactile Wobble"</h3>
-                    <p class="text-[13.5px] text-mute leading-relaxed">
+                    <h3 class="text-[22px] text-paper" data-i18n="comp.motion.c2_title">"Tactile Wobble"</h3>
+                    <p class="text-[13.5px] text-mute leading-relaxed" data-i18n="comp.motion.c2_desc">
                         "Subtle physical angular momentum response on click for satisfying tactile control feedback."
                     </p>
                     <div class="font-mono text-[11px] text-dim pt-2 border-t border-[rgba(236,233,227,0.08)] flex justify-between">
-                        <span>"Angular rotate +1°"</span>
+                        <span data-i18n="comp.motion.c2_l">"Angular rotate +1°"</span>
                         <span class="text-oxide">"while_tap -1°"</span>
                     </div>
                 </div>
@@ -86,16 +86,16 @@ pub fn ComponentMotion() -> Node {
                 >
                     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
                     <div class="flex items-center justify-between">
-                        <span class="font-mono text-[11px] text-oxide">"STIFFNESS: 160 · DAMPING: 26"</span>
+                        <span class="font-mono text-[11px] text-oxide" data-i18n="comp.motion.c3_meta">"STIFFNESS: 160 · DAMPING: 26"</span>
                         <span class="dot text-dim"></span>
                     </div>
-                    <h3 class="text-[22px] text-paper">"Heavy Inertia"</h3>
-                    <p class="text-[13.5px] text-mute leading-relaxed">
+                    <h3 class="text-[22px] text-paper" data-i18n="comp.motion.c3_title">"Heavy Inertia"</h3>
+                    <p class="text-[13.5px] text-mute leading-relaxed" data-i18n="comp.motion.c3_desc">
                         "High critical damping model mimicking dense materials, ideal for structural modal panels and sliding drawers."
                     </p>
                     <div class="font-mono text-[11px] text-dim pt-2 border-t border-[rgba(236,233,227,0.08)] flex justify-between">
-                        <span>"High mass resistance"</span>
-                        <span class="text-paper">"Smooth return"</span>
+                        <span data-i18n="comp.motion.c3_l">"High mass resistance"</span>
+                        <span class="text-paper" data-i18n="comp.motion.c3_r">"Smooth return"</span>
                     </div>
                 </div>
 
@@ -109,16 +109,16 @@ pub fn ComponentMotion() -> Node {
                 >
                     <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
                     <div class="flex items-center justify-between">
-                        <span class="font-mono text-[11px] text-oxide">"STIFFNESS: 400 · DAMPING: 12"</span>
+                        <span class="font-mono text-[11px] text-oxide" data-i18n="comp.motion.c4_meta">"STIFFNESS: 400 · DAMPING: 12"</span>
                         <span class="dot dot-ok"></span>
                     </div>
-                    <h3 class="text-[22px] text-paper">"Elastic Bounce"</h3>
-                    <p class="text-[13.5px] text-mute leading-relaxed">
+                    <h3 class="text-[22px] text-paper" data-i18n="comp.motion.c4_title">"Elastic Bounce"</h3>
+                    <p class="text-[13.5px] text-mute leading-relaxed" data-i18n="comp.motion.c4_desc">
                         "Under-damped spring oscillator that oscillates smoothly around resting equilibrium before settling."
                     </p>
                     <div class="font-mono text-[11px] text-dim pt-2 border-t border-[rgba(236,233,227,0.08)] flex justify-between">
-                        <span>"Low damping ratio (0.3)"</span>
-                        <span class="text-oxide">"Spring oscillation"</span>
+                        <span data-i18n="comp.motion.c4_l">"Low damping ratio (0.3)"</span>
+                        <span class="text-oxide" data-i18n="comp.motion.c4_r">"Spring oscillation"</span>
                     </div>
                 </div>
             </div>
@@ -135,7 +135,7 @@ pub fn ComponentMotion() -> Node {
                         </div>
                         <button data-copy="<div data-motion=&quot;true&quot; data-motion-hover=&quot;{'y':-4}&quot; data-motion-transition=&quot;{'is_spring':true,'stiffness':320,'damping':18}&quot;>Card</div>" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                            <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                         </button>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
@@ -153,7 +153,7 @@ pub fn ComponentMotion() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"Calculates dynamic analytical spring position on UI thread"</span>
+                        <span data-i18n="comp.motion.ide_l">"Calculates dynamic analytical spring position on UI thread"</span>
                         <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span>"60–120 FPS"</span>
                     </div>
                 </div>
@@ -167,11 +167,11 @@ pub fn ComponentMotion() -> Node {
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/70 inline-block"></span>
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#22c55e]/70 inline-block"></span>
                             </div>
-                            <span class="text-faint text-[11px] ml-2">"bash — yav-cli scaffold"</span>
+                            <span class="text-faint text-[11px] ml-2" data-i18n="comp.common.term_head">"bash — yav-cli scaffold"</span>
                         </div>
                         <button onclick="copyText(this, 'yav add motion')" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy command"</span>
+                            <span data-copy-label="" data-i18n="common.copy_cmd" class="text-oxide font-medium">"copy command"</span>
                         </button>
                     </div>
                     <div class="p-4 code space-y-1 text-[13px] bg-[#070709]">

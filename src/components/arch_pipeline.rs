@@ -6,16 +6,19 @@ use yav::icons::{render_icon, IconSize};
 #[component]
 pub fn ArchPipeline() -> Node {
     let script = Node::raw(r#"<script>
-window.selectPipelineStage = function(stageIdx) {
+window._archPipeIdx = 0;
+window.selectPipelineStage = function(stageIdx, skipScroll) {
+    var t = function(k, fb) { return window.yavT ? window.yavT(k, fb) : fb; };
+    window._archPipeIdx = stageIdx;
     var stages = [
         {
             num: '01',
             phase: 'INGRESS',
-            title: 'Stage 01 — Socket Ingress & Frame Parsing',
-            sub: 'Non-blocking Tokio worker accepts TCP/TLS socket; Hyper parses HTTP frames directly into unallocated slices.',
+            title: t('arch.pipe.s0.title', 'Stage 01 — Socket Ingress & Frame Parsing'),
+            sub: t('arch.pipe.s0.sub', 'Non-blocking Tokio worker accepts TCP/TLS socket; Hyper parses HTTP frames directly into unallocated slices.'),
             time: '~38 µs',
-            alloc: '0 B heap (Zero-Copy)',
-            syscall: 'epoll_wait / accept4',
+            alloc: t('arch.pipe.s0.alloc', '0 B heap (Zero-Copy)'),
+            syscall: t('arch.pipe.s0.syscall', 'epoll_wait / accept4'),
             file: 'yav-server/src/conn.rs',
             hardware: 'L1/L2 Cache Hit',
             code: '// Tokio Worker Thread (Non-blocking I/O loop)\nlet (socket, remote_addr) = listener.accept().await?;\nlet stream = hyper_util::rt::TokioIo::new(socket);\n\n// Hyper HTTP/1.1 & HTTP/2 frame parsing\nlet conn = hyper::server::conn::auto::Builder::new(TokioExecutor::new())\n    .serve_connection(stream, service);\n\n// Slices buffers directly from OS ring buffer with zero allocations.',
@@ -24,11 +27,11 @@ window.selectPipelineStage = function(stageIdx) {
         {
             num: '02',
             phase: 'ROUTING',
-            title: 'Stage 02 — Zero-Allocation Radix Resolution',
-            sub: 'Matchit Radix tree matches URI against compiled route tree in O(k) steps where k is path length.',
+            title: t('arch.pipe.s1.title', 'Stage 02 — Zero-Allocation Radix Resolution'),
+            sub: t('arch.pipe.s1.sub', 'Matchit Radix tree matches URI against compiled route tree in O(k) steps where k is path length.'),
             time: '~4 µs',
-            alloc: '0 B (Stack slices)',
-            syscall: 'None (In-Memory)',
+            alloc: t('arch.pipe.s1.alloc', '0 B (Stack slices)'),
+            syscall: t('arch.pipe.s1.syscall', 'None (In-Memory)'),
             file: 'yav-router/src/radix.rs',
             hardware: 'CPU Register Bound',
             code: '// Matchit Radix tree lookup (Compiled at launch by auto_routes!)\nlet path = req.uri().path();\nmatch router.at(path) {\n    Ok(matched) => {\n        // Extracted route parameters are borrowed &str slices\n        let id: &str = matched.params.get("id").unwrap_or_default();\n        matched.value(req, id).await\n    }\n    Err(_) => handle_404(req).await,\n}',
@@ -37,11 +40,11 @@ window.selectPipelineStage = function(stageIdx) {
         {
             num: '03',
             phase: 'SECURITY',
-            title: 'Stage 03 — Tower Middleware & Stateless Session HMAC',
-            sub: 'Double-submit CSRF verification, security headers, and HMAC-SHA256 signature verification in constant time.',
+            title: t('arch.pipe.s2.title', 'Stage 03 — Tower Middleware & Stateless Session HMAC'),
+            sub: t('arch.pipe.s2.sub', 'Double-submit CSRF verification, security headers, and HMAC-SHA256 signature verification in constant time.'),
             time: '~24 µs',
-            alloc: '0 B (Constant-Time CMP)',
-            syscall: 'None (Local CPU)',
+            alloc: t('arch.pipe.s2.alloc', '0 B (Constant-Time CMP)'),
+            syscall: t('arch.pipe.s2.syscall', 'None (Local CPU)'),
             file: 'yav-server/src/session.rs',
             hardware: 'SIMD Accelerated',
             code: '// Cryptographic Cookie Session Verification\nlet cookie = req.headers().get(header::COOKIE)?;\nlet (payload, signature) = parse_signed_cookie(cookie)?;\n\n// Constant-time HMAC comparison (subtle::ConstantTimeEq)\nif !verify_hmac_sha256(payload, signature, &SECRET_KEY) {\n    return Err(StatusCode::UNAUTHORIZED);\n}\n// No Redis lookup. No external latency. Zero lock contention.',
@@ -50,11 +53,11 @@ window.selectPipelineStage = function(stageIdx) {
         {
             num: '04',
             phase: 'TEMPLATE',
-            title: 'Stage 04 — RSX Compile-time Direct Buffer Splicing',
-            sub: 'Proc-macro renders static string slices and escaped expressions directly into a contiguous pre-reserved buffer.',
+            title: t('arch.pipe.s3.title', 'Stage 04 — RSX Compile-time Direct Buffer Splicing'),
+            sub: t('arch.pipe.s3.sub', 'Proc-macro renders static string slices and escaped expressions directly into a contiguous pre-reserved buffer.'),
             time: '~162 µs',
-            alloc: '0 B (Pre-Sized Buffer)',
-            syscall: 'None (RAM L1/L2)',
+            alloc: t('arch.pipe.s3.alloc', '0 B (Pre-Sized Buffer)'),
+            syscall: t('arch.pipe.s3.syscall', 'None (RAM L1/L2)'),
             file: 'yav-macros/src/rsx.rs',
             hardware: 'Contiguous Memory Stream',
             code: '// Generated by rsx! proc macro at compile time:\nlet mut buf = String::with_capacity(ESTIMATED_SIZE);\nbuf.push_str("<main class=\"wrap\"><h1>");\n// Fast SIMD-accelerated HTML escaping into buffer\nyav::core::escape_html_into(&user_name, &mut buf);\nbuf.push_str("</h1><p>Session active</p></main>");\n\n// ZERO virtual DOM tree. ZERO node reconciliation diff.',
@@ -63,11 +66,11 @@ window.selectPipelineStage = function(stageIdx) {
         {
             num: '05',
             phase: 'TRANSMISSION',
-            title: 'Stage 05 — Kernel TCP Socket Flush to Wire',
-            sub: 'Hyper streams contiguous buffer with HTTP/2 framing and optional Brotli pre-compression via vectored I/O.',
+            title: t('arch.pipe.s4.title', 'Stage 05 — Kernel TCP Socket Flush to Wire'),
+            sub: t('arch.pipe.s4.sub', 'Hyper streams contiguous buffer with HTTP/2 framing and optional Brotli pre-compression via vectored I/O.'),
             time: '~52 µs',
-            alloc: '0 B (Zero-Copy writev)',
-            syscall: 'writev / sendfile',
+            alloc: t('arch.pipe.s4.alloc', '0 B (Zero-Copy writev)'),
+            syscall: t('arch.pipe.s4.syscall', 'writev / sendfile'),
             file: 'yav-server/src/wire.rs',
             hardware: 'Kernel NIC Ring',
             code: '// HTTP Response packaging with pre-compressed Brotli\nlet response = Response::builder()\n    .status(StatusCode::OK)\n    .header(header::CONTENT_TYPE, "text/html; charset=utf-8")\n    .header(header::CONTENT_ENCODING, "br")\n    .body(Full::new(Bytes::from(buf)))?;\n\n// Kernel flushes bytes to client network card in ~52 µs',
@@ -119,13 +122,16 @@ window.selectPipelineStage = function(stageIdx) {
     }
 
     // On mobile / small viewports, ensure plate stays visible
-    if (window.innerWidth < 1024) {
+    if (!skipScroll && window.innerWidth < 1024) {
         var plate = document.getElementById('pipe-plate-container');
         if (plate) {
             plate.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     }
 };
+window.addEventListener('yav:langchange', function() {
+    window.selectPipelineStage(window._archPipeIdx || 0, true);
+});
 </script>"#);
 
     rsx! {
@@ -133,17 +139,18 @@ window.selectPipelineStage = function(stageIdx) {
             // Section Header
             <div class="sec-head reveal">
                 <span class="n">"2.1"</span>
-                <span class="t">"Execution pipeline"</span>
+                <span class="t" data-i18n="arch.pipe.badge">"Execution pipeline"</span>
                 <span class="sec-rule"></span>
-                <span class="r">"280 µs socket-to-wire"</span>
+                <span class="r" data-i18n="arch.pipe.meta">"280 µs socket-to-wire"</span>
             </div>
 
             // Section Headline & Narrative Intro (Elevated above grid for perfect vertical alignment)
             <div class="pt-6 pb-6 max-w-3xl space-y-3 reveal pl-5 sm:pl-7 border-l-2 border-oxide/50">
                 <h2 class="h-section text-paper leading-[1.18]">
-                    "From socket to wire in "<span class="serif text-oxide">"280 microseconds."</span>
+                    <span data-i18n="arch.pipe.title.lead">"From socket to wire in "</span>
+                    <span class="serif text-oxide" data-i18n="arch.pipe.title.accent">"280 microseconds."</span>
                 </h2>
-                <p class="text-[15.5px] sm:text-[16px] text-mute leading-[1.8]">
+                <p class="text-[15.5px] sm:text-[16px] text-mute leading-[1.8]" data-i18n="arch.pipe.lede">
                     "Every incoming HTTP request traverses five zero-allocation, compile-time specialized phases. There are no virtual DOM trees, no intermediate JavaScript bridges, and zero memory allocations on the hot path."
                 </p>
             </div>
@@ -162,8 +169,8 @@ window.selectPipelineStage = function(stageIdx) {
                             <div class="flex items-center gap-3.5 pl-1">
                                 <span id="pipe-dot-0" class="dot dot-ok" style="opacity:1"></span>
                                 <div>
-                                    <span class="text-[10px] text-dim block tracking-wider">"PHASE 01 / INGRESS"</span>
-                                    <span class="font-medium text-paper text-[13.5px]">"Socket Ingress & Framing"</span>
+                                    <span class="text-[10px] text-dim block tracking-wider" data-i18n="arch.pipe.b0.kicker">"PHASE 01 / INGRESS"</span>
+                                    <span class="font-medium text-paper text-[13.5px]" data-i18n="arch.pipe.b0.name">"Socket Ingress & Framing"</span>
                                 </div>
                             </div>
                             <span class="text-dim group-hover:text-paper font-semibold text-[12px]">"~38 µs"</span>
@@ -179,8 +186,8 @@ window.selectPipelineStage = function(stageIdx) {
                             <div class="flex items-center gap-3.5 pl-1">
                                 <span id="pipe-dot-1" class="dot dot-ok" style="opacity:0.25"></span>
                                 <div>
-                                    <span class="text-[10px] text-dim block tracking-wider">"PHASE 02 / ROUTING"</span>
-                                    <span class="font-medium text-paper text-[13.5px]">"Radix Path Match"</span>
+                                    <span class="text-[10px] text-dim block tracking-wider" data-i18n="arch.pipe.b1.kicker">"PHASE 02 / ROUTING"</span>
+                                    <span class="font-medium text-paper text-[13.5px]" data-i18n="arch.pipe.b1.name">"Radix Path Match"</span>
                                 </div>
                             </div>
                             <span class="text-dim group-hover:text-paper font-semibold text-[12px]">"~4 µs"</span>
@@ -196,8 +203,8 @@ window.selectPipelineStage = function(stageIdx) {
                             <div class="flex items-center gap-3.5 pl-1">
                                 <span id="pipe-dot-2" class="dot dot-ok" style="opacity:0.25"></span>
                                 <div>
-                                    <span class="text-[10px] text-dim block tracking-wider">"PHASE 03 / SECURITY"</span>
-                                    <span class="font-medium text-paper text-[13.5px]">"Tower Layers & HMAC"</span>
+                                    <span class="text-[10px] text-dim block tracking-wider" data-i18n="arch.pipe.b2.kicker">"PHASE 03 / SECURITY"</span>
+                                    <span class="font-medium text-paper text-[13.5px]" data-i18n="arch.pipe.b2.name">"Tower Layers & HMAC"</span>
                                 </div>
                             </div>
                             <span class="text-dim group-hover:text-paper font-semibold text-[12px]">"~24 µs"</span>
@@ -213,8 +220,8 @@ window.selectPipelineStage = function(stageIdx) {
                             <div class="flex items-center gap-3.5 pl-1">
                                 <span id="pipe-dot-3" class="dot dot-ok" style="opacity:0.25"></span>
                                 <div>
-                                    <span class="text-[10px] text-oxide block tracking-wider font-semibold">"PHASE 04 / TEMPLATE"</span>
-                                    <span class="font-medium text-oxide text-[13.5px]">"RSX Buffer Stream"</span>
+                                    <span class="text-[10px] text-oxide block tracking-wider font-semibold" data-i18n="arch.pipe.b3.kicker">"PHASE 04 / TEMPLATE"</span>
+                                    <span class="font-medium text-oxide text-[13.5px]" data-i18n="arch.pipe.b3.name">"RSX Buffer Stream"</span>
                                 </div>
                             </div>
                             <span class="text-oxide font-bold text-[12px]">"~162 µs"</span>
@@ -230,8 +237,8 @@ window.selectPipelineStage = function(stageIdx) {
                             <div class="flex items-center gap-3.5 pl-1">
                                 <span id="pipe-dot-4" class="dot dot-ok" style="opacity:0.25"></span>
                                 <div>
-                                    <span class="text-[10px] text-dim block tracking-wider">"PHASE 05 / WIRE"</span>
-                                    <span class="font-medium text-paper text-[13.5px]">"Kernel Socket Flush"</span>
+                                    <span class="text-[10px] text-dim block tracking-wider" data-i18n="arch.pipe.b4.kicker">"PHASE 05 / WIRE"</span>
+                                    <span class="font-medium text-paper text-[13.5px]" data-i18n="arch.pipe.b4.name">"Kernel Socket Flush"</span>
                                 </div>
                             </div>
                             <span class="text-dim group-hover:text-paper font-semibold text-[12px]">"~52 µs"</span>
@@ -245,7 +252,7 @@ window.selectPipelineStage = function(stageIdx) {
                         <div class="plate-head min-h-14 py-2.5 px-4 sm:px-8 flex items-center justify-between gap-3">
                             <span class="flex items-center gap-2.5 font-medium tracking-wide min-w-0">
                                 {render_icon("terminal", IconSize::Sm, Some("w-4 h-4 text-oxide shrink-0"), None)}
-                                <span id="pipe-stage-title" class="text-[13px] sm:text-[13.5px] text-paper truncate">"Stage 01 — Socket Ingress & Frame Parsing"</span>
+                                <span id="pipe-stage-title" class="text-[13px] sm:text-[13.5px] text-paper truncate" data-i18n="arch.pipe.s0.title">"Stage 01 — Socket Ingress & Frame Parsing"</span>
                             </span>
                             <span class="text-oxide font-mono text-[12px] font-bold shrink-0" id="pipe-stage-time">"~38 µs"</span>
                         </div>
@@ -253,22 +260,22 @@ window.selectPipelineStage = function(stageIdx) {
                         // Telemetry stats row
                         <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-[rgba(236,233,227,0.08)] bg-[rgba(236,233,227,0.02)] flex flex-wrap items-center justify-between gap-3 sm:gap-6 font-mono text-[11.5px] sm:text-[12px]">
                             <div>
-                                <span class="text-dim">"Heap Allocation: "</span>
-                                <span id="pipe-stage-alloc" class="text-paper font-semibold">"0 B heap (Zero-Copy)"</span>
+                                <span class="text-dim" data-i18n="arch.pipe.lbl.alloc">"Heap Allocation: "</span>
+                                <span id="pipe-stage-alloc" class="text-paper font-semibold" data-i18n="arch.pipe.s0.alloc">"0 B heap (Zero-Copy)"</span>
                             </div>
                             <div>
-                                <span class="text-dim">"Kernel Syscall: "</span>
-                                <span id="pipe-stage-syscall" class="text-oxide font-semibold">"epoll_wait / accept4"</span>
+                                <span class="text-dim" data-i18n="arch.pipe.lbl.syscall">"Kernel Syscall: "</span>
+                                <span id="pipe-stage-syscall" class="text-oxide font-semibold" data-i18n="arch.pipe.s0.syscall">"epoll_wait / accept4"</span>
                             </div>
                             <div>
-                                <span class="text-dim">"Concurrency: "</span>
-                                <span class="text-paper font-semibold">"Tokio Work-Stealing"</span>
+                                <span class="text-dim" data-i18n="arch.pipe.lbl.conc">"Concurrency: "</span>
+                                <span class="text-paper font-semibold" data-i18n="arch.pipe.conc_val">"Tokio Work-Stealing"</span>
                             </div>
                         </div>
 
                         // Stage description
                         <div class="p-5 sm:p-8 pl-6 sm:pl-9 border-b border-[rgba(236,233,227,0.08)]">
-                            <p id="pipe-stage-sub" class="text-[14px] sm:text-[14.5px] text-mute leading-[1.8]">
+                            <p id="pipe-stage-sub" class="text-[14px] sm:text-[14.5px] text-mute leading-[1.8]" data-i18n="arch.pipe.s0.sub">
                                 "Non-blocking Tokio worker accepts TCP/TLS socket; Hyper parses HTTP frames directly into unallocated slices."
                             </p>
                         </div>
@@ -278,7 +285,7 @@ window.selectPipelineStage = function(stageIdx) {
                             <div class="flex items-center justify-between pb-3 text-dim font-mono text-[11.5px]">
                                 <div class="flex items-center gap-2">
                                     <span id="pipe-stage-file" class="text-paper font-medium">"yav-server/src/conn.rs"</span>
-                                    <span class="text-oxide font-medium">"· zero-allocation buffer"</span>
+                                    <span class="text-oxide font-medium" data-i18n="arch.pipe.file_tag">"· zero-allocation buffer"</span>
                                 </div>
                                 <button
                                     id="pipe-stage-copy"
@@ -287,7 +294,7 @@ window.selectPipelineStage = function(stageIdx) {
                                     class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono"
                                 >
                                     {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                                    <span data-copy-label="" class="text-oxide font-medium">"copy snippet"</span>
+                                    <span data-copy-label="" data-i18n="common.copy_snippet" class="text-oxide font-medium">"copy snippet"</span>
                                 </button>
                             </div>
                             <pre class="font-mono text-[13px] leading-[1.85] text-paper-2 selection:bg-oxide selection:text-ink"><code id="pipe-stage-code">
@@ -308,23 +315,23 @@ window.selectPipelineStage = function(stageIdx) {
             <div class="pt-8 sm:pt-10 pb-6">
                 <div class="cells grid-cols-1 md:grid-cols-3">
                     <article class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4">
-                        <div class="flex justify-between pb-2"><span class="cn font-mono text-[12px]">"Phase 01"</span><span class="font-mono text-[12px] text-dim font-semibold">"~42 µs total"</span></div>
-                        <h3 class="text-[22px] text-paper">"Zero-Alloc Ingress"</h3>
-                        <p class="text-[14.5px] leading-[1.75] text-mute">"Tokio epoll workers accept connections without thread context switches. Matchit resolves static and parameterized paths in nanoseconds."</p>
-                        <div class="dim-line pt-6"><span>"protocol"</span><span class="bar"></span><span>"HTTP/1.1 + HTTP/2"</span></div>
+                        <div class="flex justify-between pb-2"><span class="cn font-mono text-[12px]" data-i18n="arch.pipe.c1.phase">"Phase 01"</span><span class="font-mono text-[12px] text-dim font-semibold" data-i18n="arch.pipe.c1.time">"~42 µs total"</span></div>
+                        <h3 class="text-[22px] text-paper" data-i18n="arch.pipe.c1.title">"Zero-Alloc Ingress"</h3>
+                        <p class="text-[14.5px] leading-[1.75] text-mute" data-i18n="arch.pipe.c1.desc">"Tokio epoll workers accept connections without thread context switches. Matchit resolves static and parameterized paths in nanoseconds."</p>
+                        <div class="dim-line pt-6"><span data-i18n="arch.pipe.c1.k">"protocol"</span><span class="bar"></span><span>"HTTP/1.1 + HTTP/2"</span></div>
                     </article>
 
                     <article class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4">
-                        <div class="flex justify-between pb-2"><span class="cn text-oxide font-mono text-[12px]">"Phase 02"</span><span class="font-mono text-[12px] text-oxide font-semibold">"~162 µs total"</span></div>
-                        <h3 class="text-[22px] text-paper">"RSX Buffer Writes"</h3>
-                        <p class="text-[14.5px] leading-[1.75] text-mute">"Your component executes without creating an intermediate object tree. Static HTML literals are pushed into a pre-reserved contiguous buffer."</p>
-                        <div class="dim-line pt-6"><span>"vdom heap"</span><span class="bar"></span><span class="text-oxide font-semibold">"0 bytes"</span></div>
+                        <div class="flex justify-between pb-2"><span class="cn text-oxide font-mono text-[12px]" data-i18n="arch.pipe.c2.phase">"Phase 02"</span><span class="font-mono text-[12px] text-oxide font-semibold" data-i18n="arch.pipe.c2.time">"~162 µs total"</span></div>
+                        <h3 class="text-[22px] text-paper" data-i18n="arch.pipe.c2.title">"RSX Buffer Writes"</h3>
+                        <p class="text-[14.5px] leading-[1.75] text-mute" data-i18n="arch.pipe.c2.desc">"Your component executes without creating an intermediate object tree. Static HTML literals are pushed into a pre-reserved contiguous buffer."</p>
+                        <div class="dim-line pt-6"><span data-i18n="arch.pipe.c2.k">"vdom heap"</span><span class="bar"></span><span class="text-oxide font-semibold" data-i18n="arch.pipe.c2.v">"0 bytes"</span></div>
                     </article>
 
                     <article class="cell p-8 sm:p-10 pl-8 sm:pl-10 space-y-4">
-                        <div class="flex justify-between pb-2"><span class="cn font-mono text-[12px]">"Phase 03"</span><span class="font-mono text-[12px] text-dim font-semibold">"~76 µs total"</span></div>
-                        <h3 class="text-[22px] text-paper">"Wire Transmission"</h3>
-                        <p class="text-[14.5px] leading-[1.75] text-mute">"Pre-compressed Brotli payload is written directly to the kernel socket via writev. The browser receives the first byte in under 0.3 ms."</p>
+                        <div class="flex justify-between pb-2"><span class="cn font-mono text-[12px]" data-i18n="arch.pipe.c3.phase">"Phase 03"</span><span class="font-mono text-[12px] text-dim font-semibold" data-i18n="arch.pipe.c3.time">"~76 µs total"</span></div>
+                        <h3 class="text-[22px] text-paper" data-i18n="arch.pipe.c3.title">"Wire Transmission"</h3>
+                        <p class="text-[14.5px] leading-[1.75] text-mute" data-i18n="arch.pipe.c3.desc">"Pre-compressed Brotli payload is written directly to the kernel socket via writev. The browser receives the first byte in under 0.3 ms."</p>
                         <div class="dim-line pt-6"><span>"p50 TTFB"</span><span class="bar"></span><span>"0.28 ms"</span></div>
                     </article>
                 </div>

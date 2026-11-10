@@ -216,23 +216,23 @@ window.switchHeroTab = function(tab) {
         <section class="wrap pt-12 sm:pt-16">
             <div class="sec-head reveal">
                 <span class="n">"01"</span>
-                <span class="t">"The code"</span>
+                <span class="t" data-i18n="studio.badge">"The code"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"src/routes/"</span>
             </div>
             <div class="grid lg:grid-cols-12 gap-10 pt-6">
                 <div class="lg:col-span-4 space-y-6 reveal">
                     <h2 class="h-section text-paper">
-                        "Markup the compiler "<span class="serif text-oxide">"understands."</span>
+                        <span data-i18n="studio.title.lead">"Markup the compiler "</span><span class="serif text-oxide" data-i18n="studio.title.accent">"understands."</span>
                     </h2>
-                    <p class="lede">
+                    <p class="lede" data-i18n="studio.lede">
                         "RSX is expanded and checked by rustc. Unclosed tags, wrong prop types and unescaped inputs fail during compilation — never in production."
                     </p>
                     <ul class="space-y-3 pt-2 font-mono text-[13px] text-mute">
-                        <li class="flex gap-3"><span class="text-oxide">"→"</span>"One file, one route"</li>
-                        <li class="flex gap-3"><span class="text-oxide">"→"</span>"HTML escaped by default (zero XSS)"</li>
-                        <li class="flex gap-3"><span class="text-oxide">"→"</span>"Zero runtime template parsing"</li>
-                        <li class="flex gap-3"><span class="text-oxide">"→"</span>"Direct memory buffer appends"</li>
+                        <li class="flex gap-3"><span class="text-oxide">"→"</span><span data-i18n="studio.bullet.1">"One file, one route"</span></li>
+                        <li class="flex gap-3"><span class="text-oxide">"→"</span><span data-i18n="studio.bullet.2">"HTML escaped by default (zero XSS)"</span></li>
+                        <li class="flex gap-3"><span class="text-oxide">"→"</span><span data-i18n="studio.bullet.3">"Zero runtime template parsing"</span></li>
+                        <li class="flex gap-3"><span class="text-oxide">"→"</span><span data-i18n="studio.bullet.4">"Direct memory buffer appends"</span></li>
                     </ul>
                 </div>
 
@@ -254,12 +254,12 @@ window.switchHeroTab = function(tab) {
                             </button>
                             <button id="btn-file-term" onclick="window.switchHeroTab('term')" class="tab-btn">
                                 {render_icon("terminal", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                <span>"terminal"</span>
+                                <span data-i18n="studio.tab.term">"terminal"</span>
                             </button>
                             <span class="flex-1"></span>
-                            <button id="btn-replay-code" onclick="window.replayCurrentTab()" class="hidden sm:flex items-center gap-1.5 px-3 font-mono text-[11px] text-dim hover:text-oxide transition-colors cursor-pointer" title="Rejouer l'animation d'écriture">
+                            <button id="btn-replay-code" onclick="window.replayCurrentTab()" class="hidden sm:flex items-center gap-1.5 px-3 font-mono text-[11px] text-dim hover:text-oxide transition-colors cursor-pointer" title="Replay typing animation" data-i18n-title="studio.replay.title">
                                 {render_icon("play", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                                <span>"Replay"</span>
+                                <span data-i18n="studio.replay">"Replay"</span>
                             </button>
                             <span class="hidden sm:flex items-center gap-2 px-4 font-mono text-[11px] text-dim border-l border-[rgba(236,233,227,0.08)]">
                                 <span class="dot dot-ok"></span>
@@ -268,7 +268,7 @@ window.switchHeroTab = function(tab) {
                         </div>
                         <div class="grid md:grid-cols-12">
                             // Code block left pane
-                            <div class="md:col-span-8 bg-sunk p-6 overflow-x-auto code min-h-[380px] cursor-pointer" onclick="window.skipTyping()" title="Cliquer pour afficher tout le code immédiatement">
+                            <div class="md:col-span-8 bg-sunk p-6 overflow-x-auto code min-h-[380px] cursor-pointer" onclick="window.skipTyping()" title="Click to show full code immediately" data-i18n-title="studio.skip.title">
                                 <div id="hero-code-rsx">
                                     <div><span class="ln">"1"</span><span class="token-keyword">"use"</span>" yav::prelude::*;"</div>
                                     <div><span class="ln">"2"</span></div>
@@ -316,7 +316,7 @@ window.switchHeroTab = function(tab) {
                                 </div>
                                 <div id="hero-code-term" class="hidden">
                                     <div class="text-dim">"$ yav dev"</div>
-                                    <div class="pt-2">"  yav dev server  v0.1.4"</div>
+                                    <div class="pt-2">"  yav dev server  v0.1.5"</div>
                                     <div class="text-dim">"  ─────────────────────────────"</div>
                                     <div>"  tailwind   "<span class="token-string">"compiled"</span><span class="text-dim">"  48ms"</span></div>
                                     <div>"  rustc      "<span class="token-string">"ok"</span><span class="text-dim">"        1.9s"</span></div>
@@ -330,8 +330,8 @@ window.switchHeroTab = function(tab) {
                             <div class="md:col-span-4 border-t md:border-t-0 md:border-l border-[rgba(236,233,227,0.08)] p-6 flex flex-col justify-between gap-6">
                                 <div id="hero-output-rsx" class="space-y-6">
                                     <div class="label flex items-center justify-between">
-                                        <span>"Output"</span>
-                                        <span class="text-oxide">"RSX Island"</span>
+                                        <span data-i18n="studio.out.label">"Output"</span>
+                                        <span class="text-oxide" data-i18n="studio.out.island">"RSX Island"</span>
                                     </div>
                                     <div>
                                         <div class="text-[26px] tracking-[-0.03em] text-paper leading-tight">"Hello, metal."</div>
@@ -342,15 +342,15 @@ window.switchHeroTab = function(tab) {
                                         </div>
                                     </div>
                                     <div class="space-y-2 font-mono text-[11.5px] border-t border-[rgba(236,233,227,0.08)] pt-4">
-                                        <div class="flex justify-between"><span class="text-dim">"escaping"</span><span class="text-paper">"auto on (zero XSS)"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.escaping">"escaping"</span><span class="text-paper" data-i18n="studio.out.escaping_val">"auto on (zero XSS)"</span></div>
                                         <div class="flex justify-between"><span class="text-dim">"node_modules"</span><span class="text-paper">"0 B"</span></div>
-                                        <div class="flex justify-between"><span class="text-dim">"hydration JS"</span><span class="text-paper">"0 KB"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.hydration">"hydration JS"</span><span class="text-paper">"0 KB"</span></div>
                                     </div>
                                 </div>
 
                                 <div id="hero-output-api" class="hidden space-y-6">
                                     <div class="label flex items-center justify-between">
-                                        <span>"Response"</span>
+                                        <span data-i18n="studio.out.response">"Response"</span>
                                         <span class="text-ok">"HTTP 200 OK"</span>
                                     </div>
                                     <div class="bg-sunk p-4 border border-[rgba(236,233,227,0.08)] font-mono text-[12px] text-paper space-y-1">
@@ -362,55 +362,55 @@ window.switchHeroTab = function(tab) {
                                         <div>"}"</div>
                                     </div>
                                     <div class="space-y-2 font-mono text-[11.5px] border-t border-[rgba(236,233,227,0.08)] pt-4">
-                                        <div class="flex justify-between"><span class="text-dim">"extractor"</span><span class="text-paper">"Path<u64>"</span></div>
-                                        <div class="flex justify-between"><span class="text-dim">"latency"</span><span class="text-paper">"18 ns (zero-copy)"</span></div>
-                                        <div class="flex justify-between"><span class="text-dim">"format"</span><span class="text-paper">"serde_json"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.extractor">"extractor"</span><span class="text-paper">"Path<u64>"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.latency">"latency"</span><span class="text-paper" data-i18n="studio.out.latency_val">"18 ns (zero-copy)"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.format">"format"</span><span class="text-paper">"serde_json"</span></div>
                                     </div>
                                 </div>
 
                                 <div id="hero-output-yavml" class="hidden space-y-6">
                                     <div class="label flex items-center justify-between">
-                                        <span>"Pipeline"</span>
+                                        <span data-i18n="studio.out.pipeline">"Pipeline"</span>
                                         <span class="text-paper">"package.yavml"</span>
                                     </div>
                                     <div class="space-y-3 font-mono text-[12px]">
                                         <div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] flex justify-between items-center">
                                             <span class="text-dim">"Tailwind CLI"</span>
-                                            <span class="chip font-bold text-oxide">"Standalone"</span>
+                                            <span class="chip font-bold text-oxide" data-i18n="studio.out.standalone">"Standalone"</span>
                                         </div>
                                         <div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] flex justify-between items-center">
-                                            <span class="text-dim">"Compression"</span>
+                                            <span class="text-dim" data-i18n="studio.out.compression">"Compression"</span>
                                             <span class="text-paper">"Brotli + Gzip"</span>
                                         </div>
                                         <div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] flex justify-between items-center">
-                                            <span class="text-dim">"ETags Cache"</span>
-                                            <span class="text-paper">"304 Conditional"</span>
+                                            <span class="text-dim" data-i18n="studio.out.etags">"ETags Cache"</span>
+                                            <span class="text-paper" data-i18n="studio.out.etags_val">"304 Conditional"</span>
                                         </div>
                                     </div>
                                     <div class="space-y-2 font-mono text-[11.5px] border-t border-[rgba(236,233,227,0.08)] pt-4">
-                                        <div class="flex justify-between"><span class="text-dim">"fingerprint"</span><span class="text-paper">"blake3 hash"</span></div>
-                                        <div class="flex justify-between"><span class="text-dim">"node required"</span><span class="text-paper">"Never"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.fingerprint">"fingerprint"</span><span class="text-paper" data-i18n="studio.out.fingerprint_val">"blake3 hash"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.node_req">"node required"</span><span class="text-paper" data-i18n="cmp.val.never">"Never"</span></div>
                                     </div>
                                 </div>
 
                                 <div id="hero-output-term" class="hidden space-y-6">
                                     <div class="label flex items-center justify-between">
-                                        <span>"Dev Server"</span>
+                                        <span data-i18n="studio.out.dev_server">"Dev Server"</span>
                                         <span class="dot dot-ok"></span>
                                     </div>
                                     <div class="space-y-3 font-mono text-[12px]">
                                         <div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] space-y-1">
-                                            <div class="text-dim text-[11px]">"LIVE RELOAD LISTENER"</div>
+                                            <div class="text-dim text-[11px]" data-i18n="studio.out.livereload">"LIVE RELOAD LISTENER"</div>
                                             <div class="text-paper">"ws://127.0.0.1:35729"</div>
                                         </div>
                                         <div class="p-3 bg-sunk border border-[rgba(236,233,227,0.08)] flex justify-between items-center">
-                                            <span class="text-dim">"Error Overlay"</span>
-                                            <span class="text-ok">"Dark modal on"</span>
+                                            <span class="text-dim" data-i18n="studio.out.overlay">"Error Overlay"</span>
+                                            <span class="text-ok" data-i18n="studio.out.overlay_val">"Dark modal on"</span>
                                         </div>
                                     </div>
                                     <div class="space-y-2 font-mono text-[11.5px] border-t border-[rgba(236,233,227,0.08)] pt-4">
-                                        <div class="flex justify-between"><span class="text-dim">"rebuild time"</span><span class="text-paper">"48 ms"</span></div>
-                                        <div class="flex justify-between"><span class="text-dim">"file watcher"</span><span class="text-paper">"kqueue / inotify"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.rebuild">"rebuild time"</span><span class="text-paper">"48 ms"</span></div>
+                                        <div class="flex justify-between"><span class="text-dim" data-i18n="studio.out.watcher">"file watcher"</span><span class="text-paper">"kqueue / inotify"</span></div>
                                     </div>
                                 </div>
                             </div>

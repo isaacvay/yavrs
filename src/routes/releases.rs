@@ -25,39 +25,71 @@ pub async fn releases(_req: Request) -> yav::server::HtmlPage {
 
                 // Timeline
                 <div class="space-y-12">
-                    // Release v0.1.4
+                    // Release v0.1.5
                     <section class="plate p-6 sm:p-8 bg-ink-2 space-y-6 relative border-l-2 border-l-ok">
                         <div class="flex flex-wrap items-center justify-between gap-4">
                             <div class="flex items-center gap-3">
-                                <span class="text-2xl font-bold font-mono text-paper">"v0.1.4"</span>
-                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-ok border border-rule">
+                                <span class="text-2xl font-bold font-mono text-paper">"v0.1.5"</span>
+                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-ok border border-rule" data-i18n="releases.tag.current">
                                     "CURRENT STABLE"
                                 </span>
                             </div>
-                            <span class="text-xs font-mono text-dim">"October 2026"</span>
+                            <span class="text-xs font-mono text-dim" data-i18n="releases.v015.date">"November 2026"</span>
                         </div>
-                        <p class="text-mute text-[14.5px] leading-relaxed">
-                            "Milestone enterprise release introducing Model Context Protocol (MCP) server, native AI SDK with streaming UI & Hybrid RAG, WebAuthn Passkeys biometric authentication, 60+ enterprise UI components (Charts, DataGrid, Kanban with O(1) LexoRank, FlowCanvas), proactive resilience (CircuitBreaker, Bulkhead, Multi-Region DB Replicas), modern protocols (GraphQL, TurboStream, Tus v1.0.0 resumable uploads), real-time CRDT collaboration, O(L) Radix RouteTrie with parallel/intercepting slots, Zero-JS motion physics, and the complete 20-command yav CLI suite."
+                        <p class="text-mute text-[14.5px] leading-relaxed" data-i18n="releases.v015.summary">
+                            "Milestone enterprise release introducing Model Context Protocol (MCP) server, native AI SDK with streaming UI & Hybrid RAG, WebAuthn Passkeys biometric authentication, 60+ enterprise UI components (Charts, DataGrid, Kanban with O(1) LexoRank, FlowCanvas), proactive resilience (CircuitBreaker, Bulkhead, Multi-Region DB Replicas), modern protocols (GraphQL, TurboStream, Tus v1.0.0 resumable uploads), real-time CRDT collaboration, O(L) Radix RouteTrie with parallel/intercepting slots, security audit remediations, and the complete 20-command yav CLI suite."
                         </p>
                         <div class="space-y-3 font-sans text-xs">
-                            <div class="text-paper font-semibold font-mono uppercase tracking-wider text-[11px]">
+                            <div class="text-paper font-semibold font-mono uppercase tracking-wider text-[11px]" data-i18n="releases.highlights_lbl">
                                 "Highlights & Architectural Additions:"
                             </div>
                             <ul class="space-y-2 text-mute pl-4 list-disc">
-                                <li><strong class="text-paper">"Model Context Protocol (MCP) & Native AI SDK:"</strong>" JSON-RPC 2.0 McpServer exposing live tools, resources, and prompt templates to AI agents (Claude Desktop, Cursor, Copilot), multi-turn Conversation, JSON-Schema ToolRegistry, stream_ui_fragment SSE streaming, cosine VectorIndex, and Reciprocal Rank Fusion (reciprocal_rank_fusion)."</li>
-                                <li><strong class="text-paper">"WebAuthn / Passkeys Biometric Auth:"</strong>" Native passwordless FIDO2 authentication (Touch ID, Face ID, Windows Hello, YubiKey) with challenge verification and client scripts via PasskeyManager."</li>
-                                <li><strong class="text-paper">"60+ Enterprise UI Components & Charts:"</strong>" Server-rendered SVG charts (LineChart, BarChart, DonutChart, Sparkline, Heatmap, Sankey, Radar), enterprise DataGrid, KanbanBoard with O(1) LexoRank, FlowCanvas with live Bézier curve rerouting, in-app DevTools HUD, Calendar/Scheduler, reactive Spreadsheet formula engine, and pure-Rust 3D ModelViewer."</li>
-                                <li><strong class="text-paper">"Proactive Resilience & High Availability:"</strong>" CircuitBreaker with half-open recovery probes, Bulkhead isolation, AdaptiveConcurrencyLimiter, TransactionalOutbox pattern with event bus, and multi-region DbReplicaPool with Read-Your-Own-Writes session stickiness."</li>
-                                <li><strong class="text-paper">"Modern Protocols in Pure Rust:"</strong>" Zero-dependency GraphQlSchema with embedded GraphiQL 3.x explorer, Hotwire-compatible TurboStream multi-zone DOM mutations (7 actions), Tus Protocol v1.0.0 resumable chunked uploads with disk spooling, and RFC 8291/8292 Web Push with VAPID."</li>
-                                <li><strong class="text-paper">"Real-Time Collaboration & CRDTs:"</strong>" Conflict-free LwwRegister/LwwMap, multiplayer PresenceRoom cursor/selection tracking, LexoRank O(1) fractional ordering, StateMachine statecharts, and SagaWorkflow compensating transactions."</li>
-                                <li><strong class="text-paper">"Multi-Tier Distributed Cache & XFetch:"</strong>" L1 in-memory + L2 distributed cache with probabilistic early expiration (XFetch) to completely eliminate cache stampedes, paired with cluster-wide DistributedLock and leader election."</li>
-                                <li><strong class="text-paper">"O(L) Radix Route Trie & App Router Slots:"</strong>" Constant O(L) route resolution matching file routing, Parallel Routes (@slot), Intercepting Routes ((.) / (..) / (...)), Optional Catch-All ([[...slug]]), and auto-wiring #[server] Server Actions."</li>
-                                <li><strong class="text-paper">"Database Tooling & 20 CLI Commands:"</strong>" Full yav db suite with SQLite and PostgreSQL runners, Up/Down migrations, and SHA-256 tamper-evident journal checks in _yav_migrations."</li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h1_t">"Model Context Protocol (MCP) & Native AI SDK:"</strong><span data-i18n="releases.v015.h1_d">" JSON-RPC 2.0 McpServer exposing live tools, resources, and prompt templates to AI agents (Claude Desktop, Cursor, Copilot), multi-turn Conversation, JSON-Schema ToolRegistry, stream_ui_fragment SSE streaming, cosine VectorIndex, and Reciprocal Rank Fusion (reciprocal_rank_fusion)."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h2_t">"WebAuthn / Passkeys Biometric Auth:"</strong><span data-i18n="releases.v015.h2_d">" Native passwordless FIDO2 authentication (Touch ID, Face ID, Windows Hello, YubiKey) with challenge verification and client scripts via PasskeyManager."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h3_t">"60+ Enterprise UI Components & Charts:"</strong><span data-i18n="releases.v015.h3_d">" Server-rendered SVG charts (LineChart, BarChart, DonutChart, Sparkline, Heatmap, Sankey, Radar), enterprise DataGrid, KanbanBoard with O(1) LexoRank, FlowCanvas with live Bézier curve rerouting, in-app DevTools HUD, Calendar/Scheduler, reactive Spreadsheet formula engine, and pure-Rust 3D ModelViewer."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h4_t">"Proactive Resilience & High Availability:"</strong><span data-i18n="releases.v015.h4_d">" CircuitBreaker with half-open recovery probes, Bulkhead isolation, AdaptiveConcurrencyLimiter, TransactionalOutbox pattern with event bus, and multi-region DbReplicaPool with Read-Your-Own-Writes session stickiness."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h5_t">"Modern Protocols in Pure Rust:"</strong><span data-i18n="releases.v015.h5_d">" Zero-dependency GraphQlSchema with embedded GraphiQL 3.x explorer, Hotwire-compatible TurboStream multi-zone DOM mutations (7 actions), Tus Protocol v1.0.0 resumable chunked uploads with disk spooling, and RFC 8291/8292 Web Push with VAPID."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h6_t">"Real-Time Collaboration & CRDTs:"</strong><span data-i18n="releases.v015.h6_d">" Conflict-free LwwRegister/LwwMap, multiplayer PresenceRoom cursor/selection tracking, LexoRank O(1) fractional ordering, StateMachine statecharts, and SagaWorkflow compensating transactions."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h7_t">"Multi-Tier Distributed Cache & XFetch:"</strong><span data-i18n="releases.v015.h7_d">" L1 in-memory + L2 distributed cache with probabilistic early expiration (XFetch) to completely eliminate cache stampedes, paired with cluster-wide DistributedLock and leader election."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h8_t">"O(L) Radix Route Trie & App Router Slots:"</strong><span data-i18n="releases.v015.h8_d">" Constant O(L) route resolution matching file routing, Parallel Routes (@slot), Intercepting Routes ((.) / (..) / (...)), Optional Catch-All ([[...slug]]), and auto-wiring #[server] Server Actions."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v015.h9_t">"Security Remediations, i18n Lint & 20 CLI Commands:"</strong><span data-i18n="releases.v015.h9_d">" Full yav db suite with SQLite and PostgreSQL runners, Up/Down migrations, SHA-256 tamper-evident journal checks, static site export (yav export), fuzzy search indexing, and security audit hardenings."</span></li>
+                            </ul>
+                        </div>
+                        <div class="pt-4 border-t border-rule flex flex-wrap items-center justify-between text-xs font-mono text-dim gap-2">
+                            <span>"crates.io: yav 0.1.5 · yav-cli 0.1.5"</span>
+                            <a href="https://github.com/isaacvay/yav.rs/releases" target="_blank" rel="noreferrer" class="text-oxide hover:underline" data-i18n="releases.view_github">
+                                "View GitHub Release →"
+                            </a>
+                        </div>
+                    </section>
+
+                    // Release v0.1.4
+                    <section class="plate p-6 sm:p-8 bg-ink-2 space-y-6 relative border-l-2 border-l-oxide">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
+                            <div class="flex items-center gap-3">
+                                <span class="text-2xl font-bold font-mono text-paper">"v0.1.4"</span>
+                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-dim border border-rule" data-i18n="releases.tag.stable">
+                                    "STABLE"
+                                </span>
+                            </div>
+                            <span class="text-xs font-mono text-dim" data-i18n="releases.v014.date">"October 2026"</span>
+                        </div>
+                        <p class="text-mute text-[14.5px] leading-relaxed" data-i18n="releases.v014.summary">
+                            "Design & motion runtime update delivering Zero-JS spring physics, GPU cursor effects, an 8-theme OKLCH token engine with anti-FOUC injection, declarative yav:* micro-actions, and complete developer documentation."
+                        </p>
+                        <div class="space-y-3 font-sans text-xs">
+                            <div class="text-paper font-semibold font-mono uppercase tracking-wider text-[11px]" data-i18n="releases.highlights_lbl">
+                                "Highlights & Architectural Additions:"
+                            </div>
+                            <ul class="space-y-2 text-mute pl-4 list-disc">
+                                <li><strong class="text-paper" data-i18n="releases.v014.h1_t">"Zero-JS Spring Motion Engine (yav::ui::motion):"</strong><span data-i18n="releases.v014.h1_d">" CSS linear() easing curves and GPU-accelerated ScrollReveal, StaggerList, TextReveal, Parallax, and KineticMarquee components."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v014.h2_t">"Cursor Engine & Tactile Micro-Actions:"</strong><span data-i18n="releases.v014.h2_d">" CursorAura, MagneticButton, SpotlightGrid, and zero-boilerplate yav:toggle, yav:copy, yav:hotkey, and yav:tab directives."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v014.h3_t">"8-Theme System & Anti-FOUC Injection:"</strong><span data-i18n="releases.v014.h3_d">" Pre-calibrated Carbon, Nord, Rose Pine, Brutalist, Tokyo Night, Latte, Catppuccin, and Dracula themes with instant dark-first bootstrap."</span></li>
                             </ul>
                         </div>
                         <div class="pt-4 border-t border-rule flex flex-wrap items-center justify-between text-xs font-mono text-dim gap-2">
                             <span>"crates.io: yav 0.1.4 · yav-cli 0.1.4"</span>
-                            <a href="https://github.com/isaacvay/yav.rs/releases" target="_blank" rel="noreferrer" class="text-oxide hover:underline">
+                            <a href="https://github.com/isaacvay/yav.rs/releases" target="_blank" rel="noreferrer" class="text-oxide hover:underline" data-i18n="releases.view_github">
                                 "View GitHub Release →"
                             </a>
                         </div>
@@ -68,29 +100,29 @@ pub async fn releases(_req: Request) -> yav::server::HtmlPage {
                         <div class="flex flex-wrap items-center justify-between gap-4">
                             <div class="flex items-center gap-3">
                                 <span class="text-2xl font-bold font-mono text-paper">"v0.1.3"</span>
-                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-dim border border-rule">
+                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-dim border border-rule" data-i18n="releases.tag.stable">
                                     "STABLE"
                                 </span>
                             </div>
-                            <span class="text-xs font-mono text-dim">"October 2026"</span>
+                            <span class="text-xs font-mono text-dim" data-i18n="releases.v013.date">"October 2026"</span>
                         </div>
-                        <p class="text-mute text-[14.5px] leading-relaxed">
+                        <p class="text-mute text-[14.5px] leading-relaxed" data-i18n="releases.v013.summary">
                             "Major server engine modernization introducing Axum 0.8.1 foundation, hyper 1.0 high-concurrency primitives, and the embedded 13,000+ vector icon system with zero network requests."
                         </p>
                         <div class="space-y-3 font-sans text-xs">
-                            <div class="text-paper font-semibold font-mono uppercase tracking-wider text-[11px]">
+                            <div class="text-paper font-semibold font-mono uppercase tracking-wider text-[11px]" data-i18n="releases.highlights_lbl">
                                 "Highlights & Architectural Additions:"
                             </div>
                             <ul class="space-y-2 text-mute pl-4 list-disc">
-                                <li><strong class="text-paper">"Axum 0.8 & hyper 1.0 Foundation:"</strong>" Complete refactor of internal router pipeline for zero-copy buffer streaming and lock-free concurrency."</li>
-                                <li><strong class="text-paper">"Embedded 13,000+ Icon Engine (yav-icons):"</strong>" Lucide, MynaUI, and Phosphor sets bundled directly into the binary with size enums."</li>
-                                <li><strong class="text-paper">"Sliding-Window Rate Limiting:"</strong>" Cryptographic IP and token-bucket protection against DDoS and automated credential stuffing."</li>
-                                <li><strong class="text-paper">"Zero-Tax Pre-Compression:"</strong>" Built-in Brotli and Gzip archive generation during release builds with Blake3 ETags."</li>
+                                <li><strong class="text-paper" data-i18n="releases.v013.h1_t">"Axum 0.8 & hyper 1.0 Foundation:"</strong><span data-i18n="releases.v013.h1_d">" Complete refactor of internal router pipeline for zero-copy buffer streaming and lock-free concurrency."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v013.h2_t">"Embedded 13,000+ Icon Engine (yav-icons):"</strong><span data-i18n="releases.v013.h2_d">" Lucide, MynaUI, and Phosphor sets bundled directly into the binary with size enums."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v013.h3_t">"Sliding-Window Rate Limiting:"</strong><span data-i18n="releases.v013.h3_d">" Cryptographic IP and token-bucket protection against DDoS and automated credential stuffing."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v013.h4_t">"Zero-Tax Pre-Compression:"</strong><span data-i18n="releases.v013.h4_d">" Built-in Brotli and Gzip archive generation during release builds with Blake3 ETags."</span></li>
                             </ul>
                         </div>
                         <div class="pt-4 border-t border-rule flex flex-wrap items-center justify-between text-xs font-mono text-dim gap-2">
                             <span>"crates.io: yav 0.1.3 · yav-cli 0.1.3"</span>
-                            <a href="https://github.com/isaacvay/yav.rs/releases" target="_blank" rel="noreferrer" class="text-oxide hover:underline">
+                            <a href="https://github.com/isaacvay/yav.rs/releases" target="_blank" rel="noreferrer" class="text-oxide hover:underline" data-i18n="releases.view_github">
                                 "View GitHub Release →"
                             </a>
                         </div>
@@ -101,28 +133,28 @@ pub async fn releases(_req: Request) -> yav::server::HtmlPage {
                         <div class="flex flex-wrap items-center justify-between gap-4">
                             <div class="flex items-center gap-3">
                                 <span class="text-2xl font-bold font-mono text-paper">"v0.1.2"</span>
-                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-dim border border-rule">
+                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-dim border border-rule" data-i18n="releases.tag.stable">
                                     "STABLE"
                                 </span>
                             </div>
-                            <span class="text-xs font-mono text-dim">"September 2026"</span>
+                            <span class="text-xs font-mono text-dim" data-i18n="releases.v012.date">"September 2026"</span>
                         </div>
-                        <p class="text-mute text-[14.5px] leading-relaxed">
+                        <p class="text-mute text-[14.5px] leading-relaxed" data-i18n="releases.v012.summary">
                             "Security hardening update bringing stateless cryptographic sessions, constant-time CSRF token verification, and signed Flash notification cookies."
                         </p>
                         <div class="space-y-3 font-sans text-xs">
-                            <div class="text-paper font-semibold font-mono uppercase tracking-wider text-[11px]">
+                            <div class="text-paper font-semibold font-mono uppercase tracking-wider text-[11px]" data-i18n="releases.highlights_lbl">
                                 "Highlights & Architectural Additions:"
                             </div>
                             <ul class="space-y-2 text-mute pl-4 list-disc">
-                                <li><strong class="text-paper">"HMAC-SHA256 Stateless Sessions:"</strong>" Tamper-proof cookie encoding with constant-time equality checks."</li>
-                                <li><strong class="text-paper">"CSRF Guard Form Binding:"</strong>" Automatic hidden token generation and header injection preventing cross-site forgery."</li>
-                                <li><strong class="text-paper">"Standalone Tailwind JIT:"</strong>" Automated binary caching eliminating Node.js, npm, and vite completely."</li>
+                                <li><strong class="text-paper" data-i18n="releases.v012.h1_t">"HMAC-SHA256 Stateless Sessions:"</strong><span data-i18n="releases.v012.h1_d">" Tamper-proof cookie encoding with constant-time equality checks."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v012.h2_t">"CSRF Guard Form Binding:"</strong><span data-i18n="releases.v012.h2_d">" Automatic hidden token generation and header injection preventing cross-site forgery."</span></li>
+                                <li><strong class="text-paper" data-i18n="releases.v012.h3_t">"Standalone Tailwind JIT:"</strong><span data-i18n="releases.v012.h3_d">" Automated binary caching eliminating Node.js, npm, and vite completely."</span></li>
                             </ul>
                         </div>
                         <div class="pt-4 border-t border-rule flex flex-wrap items-center justify-between text-xs font-mono text-dim gap-2">
                             <span>"crates.io: yav 0.1.2 · yav-cli 0.1.2"</span>
-                            <a href="https://github.com/isaacvay/yav.rs/releases" target="_blank" rel="noreferrer" class="text-oxide hover:underline">
+                            <a href="https://github.com/isaacvay/yav.rs/releases" target="_blank" rel="noreferrer" class="text-oxide hover:underline" data-i18n="releases.view_github">
                                 "View GitHub Release →"
                             </a>
                         </div>
@@ -133,13 +165,13 @@ pub async fn releases(_req: Request) -> yav::server::HtmlPage {
                         <div class="flex flex-wrap items-center justify-between gap-4">
                             <div class="flex items-center gap-3">
                                 <span class="text-2xl font-bold font-mono text-paper">"v0.1.0 — Genesis"</span>
-                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-dim border border-rule">
+                                <span class="px-2.5 py-0.5 text-[11px] font-mono font-semibold bg-sunk text-dim border border-rule" data-i18n="releases.tag.initial">
                                     "INITIAL RELEASE"
                                 </span>
                             </div>
-                            <span class="text-xs font-mono text-dim">"July 2026"</span>
+                            <span class="text-xs font-mono text-dim" data-i18n="releases.v010.date">"July 2026"</span>
                         </div>
-                        <p class="text-mute text-[14.5px] leading-relaxed">
+                        <p class="text-mute text-[14.5px] leading-relaxed" data-i18n="releases.v010.summary">
                             "Initial open-source release of the Yav engine: procedural RSX declarative macros, Radix tree file-system router, and multi-stage distroless Docker scaffolding."
                         </p>
                     </section>

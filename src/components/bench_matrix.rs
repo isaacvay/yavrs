@@ -23,19 +23,19 @@ pub fn BenchMatrix() -> Node {
             {script}
             <div class="sec-head">
                 <span class="n">"4.3"</span>
-                <span class="t">"Comparative Framework Performance Matrix"</span>
+                <span class="t" data-i18n="bench.matrix.badge">"Comparative Framework Performance Matrix"</span>
                 <span class="sec-rule"></span>
-                <span class="r">"8 vCPU Dedicated · 16 GB RAM"</span>
+                <span class="r" data-i18n="bench.matrix.meta">"8 vCPU Dedicated · 16 GB RAM"</span>
             </div>
 
             // Filter Tabs
             <div class="pt-8 flex flex-wrap items-center justify-between gap-4">
                 <div class="table-scroll pb-1 w-full sm:w-auto">
                     <div class="btn-group font-mono text-xs min-w-max">
-                        <button data-cat="all" onclick="filterBenchMatrix('all')" class="btn tab-btn matrix-cat-btn active">
+                        <button data-cat="all" onclick="filterBenchMatrix('all')" class="btn tab-btn matrix-cat-btn active" data-i18n="bench.matrix.tab_all">
                             "All Frameworks"
                         </button>
-                        <button data-cat="rust" onclick="filterBenchMatrix('rust')" class="btn tab-btn matrix-cat-btn">
+                        <button data-cat="rust" onclick="filterBenchMatrix('rust')" class="btn tab-btn matrix-cat-btn" data-i18n="bench.matrix.tab_rust">
                             "Rust Ecosystem"
                         </button>
                         <button data-cat="go" onclick="filterBenchMatrix('go')" class="btn tab-btn matrix-cat-btn">
@@ -50,7 +50,7 @@ pub fn BenchMatrix() -> Node {
                     </div>
                 </div>
 
-                <div class="text-xs font-mono text-dim">
+                <div class="text-xs font-mono text-dim" data-i18n="bench.matrix.load_note">
                     "Under identical load: 200 conns, 30s duration"
                 </div>
             </div>
@@ -62,14 +62,14 @@ pub fn BenchMatrix() -> Node {
                     <table class="dtable min-w-[840px]">
                         <thead>
                             <tr>
-                                <th>"Framework"</th>
-                                <th>"Language / Runtime"</th>
-                                <th>"Architecture"</th>
-                                <th class="num">"Throughput"</th>
+                                <th data-i18n="bench.matrix.col1">"Framework"</th>
+                                <th data-i18n="bench.matrix.col2">"Language / Runtime"</th>
+                                <th data-i18n="bench.matrix.col3">"Architecture"</th>
+                                <th class="num" data-i18n="bench.matrix.col4">"Throughput"</th>
                                 <th class="num">"p50 TTFB"</th>
-                                <th class="num">"p99 Tail"</th>
-                                <th class="num">"RAM (Idle → Load)"</th>
-                                <th class="num">"Hydration Tax"</th>
+                                <th class="num" data-i18n="bench.matrix.col6">"p99 Tail"</th>
+                                <th class="num" data-i18n="bench.matrix.col7">"RAM (Idle → Load)"</th>
+                                <th class="num" data-i18n="bench.matrix.col8">"Hydration Tax"</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,7 +77,7 @@ pub fn BenchMatrix() -> Node {
                             <tr class="us matrix-row" data-cat="rust">
                                 <td class="font-bold text-paper flex items-center gap-2">
                                     <span class="dot dot-ok pulse-dot"></span>
-                                    "yav.rs 0.1.3"
+                                    "yav.rs 0.1.5"
                                 </td>
                                 <td class="text-paper">"Rust · Tokio 1.40"</td>
                                 <td class="text-dim">"Compiled RSX · Radix O(k)"</td>
@@ -85,31 +85,31 @@ pub fn BenchMatrix() -> Node {
                                 <td class="num text-oxide font-medium">"0.28 ms"</td>
                                 <td class="num text-paper font-medium">"1.12 ms"</td>
                                 <td class="num text-ok">"8 MB → 24 MB"</td>
-                                <td class="num text-ok font-semibold">"0 kB (None)"</td>
+                                <td class="num text-ok font-semibold" data-i18n="bench.matrix.tax_none">"0 kB (None)"</td>
                             </tr>
 
                             // ACTIX-WEB
                             <tr class="matrix-row" data-cat="rust">
                                 <td class="font-medium text-paper">"actix-web 4.9"</td>
                                 <td>"Rust · Tokio"</td>
-                                <td class="text-dim">"Raw API Handler (No HTML)"</td>
+                                <td class="text-dim" data-i18n="bench.matrix.arch_actix">"Raw API Handler (No HTML)"</td>
                                 <td class="num text-paper">"128,000 req/s"</td>
                                 <td class="num">"0.25 ms"</td>
                                 <td class="num">"1.05 ms"</td>
                                 <td class="num text-ok">"7 MB → 22 MB"</td>
-                                <td class="num text-dim">"N/A (Raw API)"</td>
+                                <td class="num text-dim" data-i18n="bench.matrix.tax_na">"N/A (Raw API)"</td>
                             </tr>
 
                             // AXUM
                             <tr class="matrix-row" data-cat="rust">
                                 <td class="font-medium text-paper">"axum 0.8"</td>
                                 <td>"Rust · Tokio"</td>
-                                <td class="text-dim">"Raw Router (No Template)"</td>
+                                <td class="text-dim" data-i18n="bench.matrix.arch_axum">"Raw Router (No Template)"</td>
                                 <td class="num text-paper">"126,200 req/s"</td>
                                 <td class="num">"0.27 ms"</td>
                                 <td class="num">"1.08 ms"</td>
                                 <td class="num text-ok">"8 MB → 23 MB"</td>
-                                <td class="num text-dim">"N/A (Raw API)"</td>
+                                <td class="num text-dim" data-i18n="bench.matrix.tax_na">"N/A (Raw API)"</td>
                             </tr>
 
                             // GIN
@@ -121,7 +121,7 @@ pub fn BenchMatrix() -> Node {
                                 <td class="num">"0.85 ms"</td>
                                 <td class="num">"3.20 ms"</td>
                                 <td class="num">"18 MB → 65 MB"</td>
-                                <td class="num text-ok">"0 kB (None)"</td>
+                                <td class="num text-ok" data-i18n="bench.matrix.tax_none">"0 kB (None)"</td>
                             </tr>
 
                             // FIBER
@@ -133,7 +133,7 @@ pub fn BenchMatrix() -> Node {
                                 <td class="num">"0.78 ms"</td>
                                 <td class="num">"2.90 ms"</td>
                                 <td class="num">"22 MB → 72 MB"</td>
-                                <td class="num text-ok">"0 kB (None)"</td>
+                                <td class="num text-ok" data-i18n="bench.matrix.tax_none">"0 kB (None)"</td>
                             </tr>
 
                             // FASTIFY
@@ -145,7 +145,7 @@ pub fn BenchMatrix() -> Node {
                                 <td class="num">"2.10 ms"</td>
                                 <td class="num">"7.80 ms"</td>
                                 <td class="num text-bad">"45 MB → 180 MB"</td>
-                                <td class="num text-dim">"Varies"</td>
+                                <td class="num text-dim" data-i18n="bench.matrix.tax_varies">"Varies"</td>
                             </tr>
 
                             // NEXT.JS 15
@@ -205,9 +205,9 @@ pub fn BenchMatrix() -> Node {
                 <div class="plate p-6 bg-ink-2 space-y-2 border-l-2 border-l-oxide">
                     <div class="text-oxide font-bold font-mono text-[13px] flex items-center gap-2">
                         {render_icon("zap", IconSize::Sm, Some("w-4 h-4 text-oxide"), None)}
-                        "14.0× Faster than Next.js SSR"
+                        <span data-i18n="bench.matrix.sc1.title">"14.0× Faster than Next.js SSR"</span>
                     </div>
-                    <p class="text-[13.5px] text-mute leading-relaxed">
+                    <p class="text-[13.5px] text-mute leading-relaxed" data-i18n="bench.matrix.sc1.desc">
                         "While Next.js serializes JSON props and constructs dynamic Virtual DOM trees on Node.js, Yav streams compiled byte buffers directly from Rust thread memory with zero serialization penalty."
                     </p>
                 </div>
@@ -215,9 +215,9 @@ pub fn BenchMatrix() -> Node {
                 <div class="plate p-6 bg-ink-2 space-y-2 border-l-2 border-l-ok">
                     <div class="text-ok font-bold font-mono text-[13px] flex items-center gap-2">
                         {render_icon("database", IconSize::Sm, Some("w-4 h-4 text-ok"), None)}
-                        "17.5× Less Memory RSS"
+                        <span data-i18n="bench.matrix.sc2.title">"17.5× Less Memory RSS"</span>
                     </div>
-                    <p class="text-[13.5px] text-mute leading-relaxed">
+                    <p class="text-[13.5px] text-mute leading-relaxed" data-i18n="bench.matrix.sc2.desc">
                         "Node.js and V8 garbage collectors hold hundreds of megabytes of object trees under load. Yav's native RAII memory management drops memory instantly the moment a socket closes."
                     </p>
                 </div>
@@ -225,9 +225,9 @@ pub fn BenchMatrix() -> Node {
                 <div class="plate p-6 bg-ink-2 space-y-2 border-l-2 border-l-paper">
                     <div class="text-paper font-bold font-mono text-[13px] flex items-center gap-2">
                         {render_icon("shield-check", IconSize::Sm, Some("w-4 h-4 text-paper"), None)}
-                        "97.3% of Raw Actix-Web"
+                        <span data-i18n="bench.matrix.sc3.title">"97.3% of Raw Actix-Web"</span>
                     </div>
-                    <p class="text-[13.5px] text-mute leading-relaxed">
+                    <p class="text-[13.5px] text-mute leading-relaxed" data-i18n="bench.matrix.sc3.desc">
                         "You get full file routing, layouts, typed component props, and cryptographic HMAC sessions with less than a 2.7% performance delta compared to hand-rolled raw Actix-web code."
                     </p>
                 </div>

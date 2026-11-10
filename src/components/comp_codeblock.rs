@@ -28,22 +28,22 @@ window.replayTypewriter = function() {
         <section id="codeblock" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.16"</span>
-                <span class="t">"CodeBlock & Typewriter"</span>
+                <span class="t" data-i18n="comp.cb.sec">"CodeBlock & Typewriter"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add code-block stepper"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"Syntax CodeBlocks, Typewriter & Stepper."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.cb.title">"Syntax CodeBlocks, Typewriter & Stepper."</h2>
                 <button
                     onclick="copyText(this, 'yav add code-block stepper')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add code-block stepper"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.cb.lede">
                 "Technical documentation primitives: syntax-highlighted code blocks with line numbering and copy action, syntax-preserving typewriter animations, and multi-step progression steppers."
             </p>
 
@@ -53,28 +53,28 @@ window.replayTypewriter = function() {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "LIVE PREVIEW — TECHNICAL PRIMITIVES"
+                        <span data-i18n="comp.cb.preview_head">"LIVE PREVIEW — TECHNICAL PRIMITIVES"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"click typewriter to replay"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.cb.preview_sub">"click typewriter to replay"</span>
                 </div>
                 <div class="p-6 sm:p-8 space-y-8 bg-ink-2">
                     // Stepper Progress Indicator
                     <div class="space-y-2">
-                        <div class="text-[11px] font-mono text-dim uppercase tracking-wider">"Multi-Step Process Indicator (Stepper)"</div>
+                        <div class="text-[11px] font-mono text-dim uppercase tracking-wider" data-i18n="comp.cb.step_lbl">"Multi-Step Process Indicator (Stepper)"</div>
                         <div class="flex items-center justify-between max-w-xl font-mono text-xs">
                             <div class="flex items-center gap-2 text-ok">
                                 <span class="w-6 h-6 rounded-full bg-ok/20 border border-ok flex items-center justify-center font-bold text-[11px]">"✓"</span>
-                                <span>"1. Manifest"</span>
+                                <span data-i18n="comp.cb.s1">"1. Manifest"</span>
                             </div>
                             <div class="h-0.5 flex-1 bg-ok mx-3"></div>
                             <div class="flex items-center gap-2 text-oxide font-bold">
                                 <span class="w-6 h-6 rounded-full bg-oxide/20 border border-oxide flex items-center justify-center text-[11px]">"2"</span>
-                                <span>"2. Compile"</span>
+                                <span data-i18n="comp.cb.s2">"2. Compile"</span>
                             </div>
                             <div class="h-0.5 flex-1 bg-rule mx-3"></div>
                             <div class="flex items-center gap-2 text-dim">
                                 <span class="w-6 h-6 rounded-full bg-ink-2 border border-rule flex items-center justify-center text-[11px]">"3"</span>
-                                <span>"3. Deploy"</span>
+                                <span data-i18n="comp.cb.s3">"3. Deploy"</span>
                             </div>
                         </div>
                     </div>
@@ -82,10 +82,10 @@ window.replayTypewriter = function() {
                     // Syntax-Preserving Typewriter
                     <div class="space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-mono text-dim uppercase tracking-wider">"TypewriterCode Engine"</span>
+                            <span class="text-[11px] font-mono text-dim uppercase tracking-wider" data-i18n="comp.cb.tw_lbl">"TypewriterCode Engine"</span>
                             <button onclick="replayTypewriter()" class="text-xs font-mono text-oxide hover:underline cursor-pointer flex items-center gap-1">
                                 {render_icon("refresh-cw", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                                "Replay Animation"
+                                <span data-i18n="comp.cb.replay">"Replay Animation"</span>
                             </button>
                         </div>
                         <div onclick="replayTypewriter()" class="p-6 rounded-xl border border-rule bg-sunk font-mono text-[13px] leading-[1.8] cursor-pointer hover:border-oxide/60 transition-colors select-none">
@@ -109,7 +109,7 @@ window.replayTypewriter = function() {
                     </div>
                     <button data-copy="use yav::ui::{CodeBlock, TypewriterCode, Stepper};\n\nrsx! {\n    <TypewriterCode speed_ms={20} skip_on_click=true>\n        <code>&quot;pub fn main() {}&quot;</code>\n    </TypewriterCode>\n}" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                         {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                        <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                        <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                     </button>
                 </div>
                 <div class="flex bg-[#0b0b0d]">
@@ -127,8 +127,8 @@ window.replayTypewriter = function() {
                     </div>
                 </div>
                 <div class="ide-status">
-                    <span>"Zero external JS libraries · WAAPI Accelerated"</span>
-                    <span class="text-ok">"SSR Compatible"</span>
+                    <span data-i18n="comp.cb.ide_l">"Zero external JS libraries · WAAPI Accelerated"</span>
+                    <span class="text-ok" data-i18n="comp.cb.ide_r">"SSR Compatible"</span>
                 </div>
             </div>
 

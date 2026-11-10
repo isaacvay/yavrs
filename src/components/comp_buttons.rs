@@ -9,22 +9,22 @@ pub fn ComponentButtons() -> Node {
         <section id="buttons" class="space-y-6 scroll-mt-24">
             <div class="sec-head">
                 <span class="n">"5.1"</span>
-                <span class="t">"Buttons & Actions"</span>
+                <span class="t" data-i18n="comp.btn.badge">"Buttons & Actions"</span>
                 <span class="sec-rule"></span>
                 <span class="r">"yav add button"</span>
             </div>
             <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 pt-2">
-                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight">"Tactile engineering actions."</h2>
+                <h2 class="text-[30px] sm:text-[34px] text-paper leading-tight" data-i18n="comp.btn.title">"Tactile engineering actions."</h2>
                 <button
                     onclick="copyText(this, 'yav add button')"
                     class="self-start sm:self-auto font-mono text-[11px] text-dim hover:text-paper bg-ink-2 border border-rule px-2.5 py-1 rounded flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                     <span class="text-oxide">"$"</span>
                     <span>"yav add button"</span>
-                    <span data-copy-label="" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
+                    <span data-copy-label="" data-i18n="common.copy" class="text-oxide font-medium border-l border-rule pl-1.5">"copy"</span>
                 </button>
             </div>
-            <p class="text-mute text-[15.5px] leading-relaxed">
+            <p class="text-mute text-[15.5px] leading-relaxed" data-i18n="comp.btn.lede">
                 "Precision button primitives calibrated for high-density engineering consoles, command bars, and telemetry interfaces. Supports solid primary, oxide accent, line boundary, ghost, button groups, embedded vector icons, and loading states."
             </p>
 
@@ -34,33 +34,33 @@ pub fn ComponentButtons() -> Node {
                 <div class="plate-head">
                     <span class="flex items-center gap-2">
                         <span class="w-2 h-2 rounded-full bg-oxide"></span>
-                        "LIVE PREVIEW — BUTTON VARIANTS"
+                        <span data-i18n="comp.btn.preview_head">"LIVE PREVIEW — BUTTON VARIANTS"</span>
                     </span>
-                    <span class="text-faint font-mono text-[11px]">"hover / tap / focus / active"</span>
+                    <span class="text-faint font-mono text-[11px]" data-i18n="comp.btn.preview_sub">"hover / tap / focus / active"</span>
                 </div>
                 <div class="p-8 space-y-8 bg-ink-2">
                     // Row 1: Primary Variants
                     <div class="space-y-3">
-                        <div class="text-[11px] font-mono text-dim uppercase tracking-wider">"Core Variants"</div>
+                        <div class="text-[11px] font-mono text-dim uppercase tracking-wider" data-i18n="comp.btn.row1">"Core Variants"</div>
                         <div class="flex flex-wrap items-center gap-4">
                             <button class="btn btn-solid">
-                                "Solid Primary"
+                                <span data-i18n="comp.btn.v1">"Solid Primary"</span>
                                 <span class="arr">"→"</span>
                             </button>
                             <button class="btn btn-oxide">
-                                "Oxide Accent"
+                                <span data-i18n="comp.btn.v2">"Oxide Accent"</span>
                                 <span class="arr">"→"</span>
                             </button>
-                            <button class="btn btn-line">
+                            <button class="btn btn-line" data-i18n="comp.btn.v3">
                                 "Line Boundary"
                             </button>
-                            <button class="btn btn-ghost">
+                            <button class="btn btn-ghost" data-i18n="comp.btn.v4">
                                 "Ghost Action"
                             </button>
-                            <button class="btn btn-sm btn-solid">
+                            <button class="btn btn-sm btn-solid" data-i18n="comp.btn.v5">
                                 "Compact Sm"
                             </button>
-                            <button class="btn btn-sm border border-red-500/40 text-red-400 hover:bg-red-950/20">
+                            <button class="btn btn-sm border border-red-500/40 text-red-400 hover:bg-red-950/20" data-i18n="comp.btn.v6">
                                 "Destructive"
                             </button>
                         </div>
@@ -68,31 +68,31 @@ pub fn ComponentButtons() -> Node {
 
                     // Row 2: Button Groups, Icons, and Loading States
                     <div class="pt-6 border-t border-[rgba(236,233,227,0.08)] space-y-3">
-                        <div class="text-[11px] font-mono text-dim uppercase tracking-wider">"Groups, Icons & States"</div>
+                        <div class="text-[11px] font-mono text-dim uppercase tracking-wider" data-i18n="comp.btn.row2">"Groups, Icons & States"</div>
                         <div class="flex flex-wrap items-center gap-6">
                             // Segmented Button Group
                             <div class="btn-group">
-                                <button class="btn btn-sm btn-line">"Execute"</button>
-                                <button class="btn btn-sm btn-line">"Dry Run"</button>
-                                <button class="btn btn-sm btn-line text-mute">"Cancel"</button>
+                                <button class="btn btn-sm btn-line" data-i18n="comp.btn.g1">"Execute"</button>
+                                <button class="btn btn-sm btn-line" data-i18n="comp.btn.g2">"Dry Run"</button>
+                                <button class="btn btn-sm btn-line text-mute" data-i18n="comp.btn.g3">"Cancel"</button>
                             </div>
 
                             // Icon Action Button
                             <button class="btn btn-sm btn-line flex items-center gap-2">
                                 {render_icon("terminal", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                <span>"Open Console"</span>
+                                <span data-i18n="comp.btn.console">"Open Console"</span>
                             </button>
 
                             // Loading state button
                             <button class="btn btn-sm btn-line flex items-center gap-2 opacity-80 cursor-wait">
                                 <span class="w-3.5 h-3.5 border-2 border-oxide border-t-transparent rounded-full animate-spin"></span>
-                                <span>"Compiling..."</span>
+                                <span data-i18n="comp.btn.compiling">"Compiling..."</span>
                             </button>
 
                             // Copy Command button
                             <button class="btn btn-sm btn-line flex items-center gap-2 hover:border-oxide/40" onclick="copyText(this, 'cargo build --release')">
                                 {render_icon("copy", IconSize::Sm, Some("w-3.5 h-3.5 text-oxide"), None)}
-                                <span data-copy-label="" class="text-oxide font-medium">"Copy Command"</span>
+                                <span data-copy-label="" data-i18n="comp.btn.copy_cmd_lbl" class="text-oxide font-medium">"Copy Command"</span>
                             </button>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ pub fn ComponentButtons() -> Node {
                         </div>
                         <button data-copy="<button class=&quot;btn btn-solid&quot;>Primary</button>\n<button class=&quot;btn btn-oxide&quot;>Oxide</button>\n<div class=&quot;btn-group&quot;><button class=&quot;btn btn-sm btn-line&quot;>Execute</button></div>" onclick="copyText(this)" class="text-dim hover:text-oxide transition-colors text-[11px] flex items-center gap-1.5 font-mono cursor-pointer">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy rsx"</span>
+                            <span data-copy-label="" data-i18n="common.copy_rsx" class="text-oxide font-medium">"copy rsx"</span>
                         </button>
                     </div>
                     <div class="flex bg-[#0b0b0d]">
@@ -144,8 +144,8 @@ pub fn ComponentButtons() -> Node {
                         </div>
                     </div>
                     <div class="ide-status">
-                        <span>"Zero JS runtime · Native HTML button primitives"</span>
-                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span>"W3C Accessible"</span>
+                        <span data-i18n="comp.btn.ide_l">"Zero JS runtime · Native HTML button primitives"</span>
+                        <span class="flex items-center gap-1.5"><span class="dot dot-ok"></span><span data-i18n="comp.btn.ide_r">"W3C Accessible"</span></span>
                     </div>
                 </div>
 
@@ -158,11 +158,11 @@ pub fn ComponentButtons() -> Node {
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#eab308]/70 inline-block"></span>
                                 <span class="w-2.5 h-2.5 rounded-full bg-[#22c55e]/70 inline-block"></span>
                             </div>
-                            <span class="text-faint text-[11px] ml-2">"bash — yav-cli scaffold"</span>
+                            <span class="text-faint text-[11px] ml-2" data-i18n="comp.common.term_head">"bash — yav-cli scaffold"</span>
                         </div>
                         <button onclick="copyText(this, 'yav add button')" class="text-dim hover:text-oxide transition-colors cursor-pointer text-[11px] flex items-center gap-1.5 font-mono">
                             {render_icon("copy", IconSize::Sm, Some("w-3 h-3 text-oxide"), None)}
-                            <span data-copy-label="" class="text-oxide font-medium">"copy command"</span>
+                            <span data-copy-label="" data-i18n="common.copy_cmd" class="text-oxide font-medium">"copy command"</span>
                         </button>
                     </div>
                     <div class="p-4 code space-y-1 text-[13px] bg-[#070709]">
